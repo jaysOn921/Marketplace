@@ -192,7 +192,7 @@ describe('order steps', () => {
     expect(accepted.body.order).toMatchObject({
       status: 'ACCEPTED',
       role: 'seller',
-      actions: ['ready', 'cancel', 'mark-paid'],
+      actions: ['ready', 'complete', 'cancel', 'mark-paid'],
     });
     // Contact details are shared once accepted.
     expect(accepted.body.order.buyer.phone).toBe('+260977123456');
@@ -202,11 +202,31 @@ describe('order steps', () => {
     ).not.toBeNull();
 
     expect((await sellerClient.post(`/orders/${id}/ready`)).body.order.status).toBe('READY');
+
+    // The buyer says they paid; it only counts as paid once the seller confirms.
+    const reported = await buyerClient.post(`/orders/${id}/report-paid`);
+    expect(reported.body.order).toMatchObject({ paymentStatus: 'UNPAID', actions: ['received'] });
+    expect(reported.body.order.buyerPaidAt).not.toBeNull();
+    expect((await buyerClient.post(`/orders/${id}/report-paid`)).status).toBe(409); // only once
     expect((await sellerClient.post(`/orders/${id}/mark-paid`)).body.order.paymentStatus).toBe(
       'PAID_OFFLINE',
     );
-    expect((await buyerClient.post(`/orders/${id}/cancel`)).status).toBe(409); // too late to cancel
-    const done = await buyerClient.post(`/orders/${id}/complete`);
+
+    // Only the seller completes; the buyer confirms receipt.
+    expect((await buyerClient.post(`/orders/${id}/complete`)).status).toBe(403);
+    const received = await buyerClient.post(`/orders/${id}/received`);
+    expect(received.body.order).toMatchObject({ status: 'READY', actions: [] });
+    expect(received.body.order.receivedAt).not.toBeNull();
+    expect(
+      await prisma.notification.findFirst({
+        where: {
+          userId: (await prisma.order.findUniqueOrThrow({ where: { id } })).sellerId,
+          type: 'order.received',
+        },
+      }),
+    ).not.toBeNull();
+
+    const done = await sellerClient.post(`/orders/${id}/complete`);
     expect(done.body.order).toMatchObject({ status: 'COMPLETED', actions: [] });
     expect(done.body.order.completedAt).not.toBeNull();
     expect(
@@ -215,9 +235,21 @@ describe('order steps', () => {
       'placed:buyer',
       'accepted:seller',
       'ready:seller',
+      'buyer_paid:buyer',
       'paid:seller',
-      'completed:buyer',
+      'received:buyer',
+      'completed:seller',
     ]);
+  });
+
+  it('blocks cancelling once the buyer has received the item', async () => {
+    const { id, sellerClient, buyerClient } = await placed();
+    await sellerClient.post(`/orders/${id}/accept`);
+    // e.g. collected in person before the seller marked it ready
+    expect((await buyerClient.post(`/orders/${id}/received`)).status).toBe(200);
+    expect((await buyerClient.post(`/orders/${id}/cancel`)).status).toBe(409);
+    expect((await sellerClient.post(`/orders/${id}/cancel`)).status).toBe(409);
+    expect((await sellerClient.post(`/orders/${id}/complete`)).body.order.status).toBe('COMPLETED');
   });
 
   it('does not share a seller’s phone if they prefer messages only', async () => {

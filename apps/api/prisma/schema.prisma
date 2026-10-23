@@ -328,6 +328,10 @@ model Order {
   buyerNote      String?        @db.VarChar(500)
   cancelReason   String?        @db.VarChar(500)
   acceptedAt     DateTime?
+  /// The buyer said they paid (the seller still confirms with paymentStatus).
+  buyerPaidAt    DateTime?
+  /// The buyer confirmed they received the item; the seller then completes the order.
+  receivedAt     DateTime?
   completedAt    DateTime?
   cancelledAt    DateTime?
   createdAt      DateTime       @default(now())

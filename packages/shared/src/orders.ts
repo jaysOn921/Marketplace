@@ -20,6 +20,8 @@ export const ORDER_ACTIONS = [
   'accept',
   'decline',
   'ready',
+  'received',
+  'report-paid',
   'complete',
   'cancel',
   'mark-paid',
@@ -34,7 +36,12 @@ export const ORDER_TRANSITIONS: Record<
   accept: { from: ['PLACED'], to: 'ACCEPTED', buyer: false, seller: true },
   decline: { from: ['PLACED'], to: 'DECLINED', buyer: false, seller: true, needsReason: true },
   ready: { from: ['ACCEPTED'], to: 'READY', buyer: false, seller: true },
-  complete: { from: ['READY'], to: 'COMPLETED', buyer: true, seller: true },
+  // The buyer confirms receipt (e.g. after collecting); the seller then completes the order.
+  received: { from: ['ACCEPTED', 'READY'], buyer: true, seller: false },
+  // The buyer says they paid; the seller confirms with mark-paid. Status doesn't change.
+  'report-paid': { from: ['ACCEPTED', 'READY', 'COMPLETED'], buyer: true, seller: false },
+  complete: { from: ['ACCEPTED', 'READY'], to: 'COMPLETED', buyer: false, seller: true },
+  // Not after the buyer has confirmed receipt.
   cancel: { from: ['PLACED', 'ACCEPTED'], to: 'CANCELLED', buyer: true, seller: true },
   // Payment happens offline; the seller records it. Status doesn't change.
   'mark-paid': { from: ['ACCEPTED', 'READY', 'COMPLETED'], buyer: false, seller: true },
@@ -42,13 +49,23 @@ export const ORDER_TRANSITIONS: Record<
 
 /** Actions available to one side of an order right now. */
 export function availableOrderActions(
-  order: { status: OrderStatus; paymentStatus: PaymentStatus },
+  order: {
+    status: OrderStatus;
+    paymentStatus: PaymentStatus;
+    buyerPaidAt?: unknown;
+    receivedAt?: unknown;
+  },
   role: 'buyer' | 'seller',
 ): OrderAction[] {
+  const received = Boolean(order.receivedAt);
   return ORDER_ACTIONS.filter((a) => {
     const t = ORDER_TRANSITIONS[a];
     if (!t[role] || !t.from.includes(order.status)) return false;
-    return a !== 'mark-paid' || order.paymentStatus === 'UNPAID';
+    if (a === 'mark-paid') return order.paymentStatus === 'UNPAID';
+    if (a === 'report-paid') return order.paymentStatus === 'UNPAID' && !order.buyerPaidAt;
+    if (a === 'received') return !received;
+    if (a === 'cancel') return !received;
+    return true;
   });
 }
 
@@ -129,6 +146,8 @@ export interface OrderDetail extends OrderSummary {
   events: OrderEventDto[];
   actions: OrderAction[];
   acceptedAt: string | null;
+  buyerPaidAt: string | null;
+  receivedAt: string | null;
   completedAt: string | null;
   cancelledAt: string | null;
 }

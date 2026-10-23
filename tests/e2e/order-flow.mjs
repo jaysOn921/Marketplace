@@ -1,6 +1,7 @@
 // Browser smoke test of ordering, using the dev seed accounts:
 // a Zambian buyer orders Tanzanian kitenge (cross-border) → stock goes down → the seller
-// accepts, marks it sent and records payment → the buyer confirms receipt.
+// accepts and marks it sent → the buyer says they paid → the seller records payment →
+// the buyer confirms receipt → the seller completes the order.
 // Needs the dev servers running (npm run dev) and the dev seed.
 // Usage: node tests/e2e/order-flow.mjs [baseUrl]
 import { existsSync, readdirSync } from 'node:fs';
@@ -61,18 +62,37 @@ await seller.getByRole('button', { name: 'Accept order' }).click();
 await seller.getByText('Accepted by the seller').waitFor();
 await seller.getByRole('button', { name: 'Mark ready / sent' }).click();
 await seller.getByText('Ready for collection / sent').waitFor();
+step('seller accepted and marked it sent');
+
+// Buyer says they paid
+await buyer.goto(orderUrl);
+await buyer.getByRole('button', { name: "I've paid" }).click();
+await buyer.getByText('You told the seller you paid', { exact: false }).waitFor();
+step('buyer tapped "I\'ve paid"');
+
+// Seller confirms payment
+await seller.goto(orderUrl);
+await seller.getByText('The buyer says they paid', { exact: false }).waitFor();
 await seller.getByRole('button', { name: 'Record payment received' }).click();
 await seller.getByText('Payment recorded').waitFor();
-step('seller accepted, marked sent and recorded payment');
-await seller.screenshot({ path: out + 'phase5-order-seller-desktop.png', fullPage: true });
+step('seller saw the claim and recorded the payment');
 
-// Buyer confirms
+// Buyer confirms receipt, seller completes
 await buyer.goto(orderUrl);
 await buyer.getByRole('button', { name: "I've received it" }).click();
-await buyer.getByText('This order is complete. Thanks for buying on TZed!').waitFor();
-step('buyer confirmed receipt: order completed');
+await buyer.getByText('The seller will now complete the order.', { exact: false }).waitFor();
+if (await buyer.getByRole('button', { name: 'Mark completed' }).count())
+  errors.push('buyer can complete');
+step('buyer confirmed receipt (no complete button for the buyer)');
 await buyer.screenshot({ path: out + 'phase5-order-buyer-mobile.png', fullPage: true });
 
+await seller.goto(orderUrl);
+await seller.getByRole('button', { name: 'Mark completed' }).click();
+await seller.getByText('This order is complete.', { exact: true }).waitFor();
+step('seller completed the order');
+await seller.screenshot({ path: out + 'phase5-order-seller-desktop.png', fullPage: true });
+
+await buyer.goto(orderUrl);
 const listingLink = await buyer.getByRole('link', { name: /Kitenge fabric/ }).getAttribute('href');
 await buyer.goto(base + listingLink);
 const availableAfter = Number(await buyer.locator('dt:has-text("Available") + dd').textContent());

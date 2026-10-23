@@ -45,8 +45,7 @@ function Actions({ order }: { order: OrderDetail }) {
     'rounded-lg border border-stone-300 px-4 py-2.5 text-sm font-medium hover:bg-stone-50 disabled:opacity-60';
   const danger =
     'rounded-lg px-4 py-2.5 text-sm font-medium text-red-700 hover:bg-red-50 disabled:opacity-60';
-  const label = (a: OrderAction) =>
-    t(`order.actions.${a}${a === 'complete' ? `.${order.role}` : ''}`);
+  const label = (a: OrderAction) => t(`order.actions.${a}`);
 
   return (
     <section className="space-y-3 rounded-xl border border-stone-200 bg-white p-4">
@@ -102,7 +101,7 @@ function Actions({ order }: { order: OrderDetail }) {
                 type="button"
                 disabled={act.isPending}
                 onClick={() => run(a)}
-                className={a === 'mark-paid' ? secondary : primary}
+                className={a === 'mark-paid' || a === 'report-paid' ? secondary : primary}
               >
                 {label(a)}
               </button>
@@ -191,6 +190,16 @@ export function OrderPage() {
         <Alert kind="success">{t('order.placedNotice')}</Alert>
       )}
       <Alert kind="info">{t(`order.next.${order.role}.${order.status}`)}</Alert>
+      {order.buyerPaidAt && order.paymentStatus === 'UNPAID' && (
+        <Alert kind="info">
+          {t(`order.buyerPaidNotice.${order.role}`, { date: when(order.buyerPaidAt) })}
+        </Alert>
+      )}
+      {order.receivedAt && order.status !== 'COMPLETED' && (
+        <Alert kind="success">
+          {t(`order.receivedNotice.${order.role}`, { date: when(order.receivedAt) })}
+        </Alert>
+      )}
       {order.cancelReason && (
         <Alert>
           <span className="font-medium">{t('order.reasonLabel')}</span> {order.cancelReason}

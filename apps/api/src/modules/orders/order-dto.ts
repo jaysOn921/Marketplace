@@ -103,6 +103,8 @@ export function toOrderDetail(order: OrderRow, viewerId: number): OrderDetail {
         ? availableOrderActions(order, summary.role)
         : [],
     acceptedAt: order.acceptedAt?.toISOString() ?? null,
+    buyerPaidAt: order.buyerPaidAt?.toISOString() ?? null,
+    receivedAt: order.receivedAt?.toISOString() ?? null,
     completedAt: order.completedAt?.toISOString() ?? null,
     cancelledAt: order.cancelledAt?.toISOString() ?? null,
   };

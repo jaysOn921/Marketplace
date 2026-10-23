@@ -546,12 +546,11 @@
       "accept": "Accept order",
       "decline": "Decline",
       "ready": "Mark ready / sent",
-      "complete": {
-        "buyer": "I've received it",
-        "seller": "Mark completed"
-      },
+      "complete": "Mark completed",
       "cancel": "Cancel order",
-      "mark-paid": "Record payment received"
+      "mark-paid": "Record payment received",
+      "received": "I've received it",
+      "report-paid": "I've paid"
     },
     "reason": {
       "decline": "Why are you declining? (shown to the buyer)",
@@ -564,7 +563,9 @@
       "ready": "Ready for collection / sent",
       "paid": "Payment recorded",
       "completed": "Completed",
-      "cancelled": "Cancelled"
+      "cancelled": "Cancelled",
+      "received": "Buyer received the item",
+      "buyer_paid": "Buyer says they paid"
     },
     "actor": {
       "buyer": "buyer",
@@ -574,8 +575,8 @@
     "next": {
       "buyer": {
         "PLACED": "Waiting for the seller to accept. Don't pay yet.",
-        "ACCEPTED": "The seller accepted. Agree on payment and delivery with them, using the contact details below.",
-        "READY": "Your item is ready for collection or on its way. Confirm here once you've received it.",
+        "ACCEPTED": "The seller accepted. Agree on payment and delivery with them, using the contact details below. Tap \"I've paid\" after paying, and \"I've received it\" once you have the item.",
+        "READY": "Your item is ready for collection or on its way. Tap \"I've received it\" once you have it; the seller then completes the order.",
         "COMPLETED": "This order is complete. Thanks for buying on TZed!",
         "DECLINED": "The seller declined this order.",
         "CANCELLED": "This order was cancelled."
@@ -583,7 +584,7 @@
       "seller": {
         "PLACED": "New order! Accept it if you can fulfil it, or decline with a reason. The stock is held until you decide.",
         "ACCEPTED": "Arrange payment and delivery with the buyer. Mark it ready or sent when it is, and record the payment when you receive it.",
-        "READY": "Waiting for the buyer to confirm they've received it. You can also mark it completed.",
+        "READY": "Waiting for the buyer to confirm they've received it. Mark the order completed when the sale is done.",
         "COMPLETED": "This order is complete.",
         "DECLINED": "You declined this order. The stock was put back.",
         "CANCELLED": "This order was cancelled. The stock was put back."
@@ -593,6 +594,14 @@
       "PICKUP": "The buyer collects from you in {{town}}",
       "LOCAL": "You deliver locally",
       "CROSS_BORDER": "You send it to the buyer in {{country}} (cross-border)"
+    },
+    "buyerPaidNotice": {
+      "buyer": "You told the seller you paid on {{date}}. It shows as paid once they confirm receiving it.",
+      "seller": "The buyer says they paid on {{date}}. Check you received the money, then record the payment."
+    },
+    "receivedNotice": {
+      "buyer": "You confirmed you received the item on {{date}}. The seller will now complete the order.",
+      "seller": "The buyer confirmed they received the item on {{date}}. You can mark the order completed."
     }
   }
 }

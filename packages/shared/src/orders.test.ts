@@ -8,13 +8,21 @@ describe('availableOrderActions', () => {
     expect(availableOrderActions(order, 'buyer')).toEqual(['cancel']);
   });
 
-  it('lets either side complete a ready order and only the seller record payment', () => {
+  it('lets the buyer confirm receipt and report payment, and only the seller complete', () => {
     const order = { status: 'READY', paymentStatus: 'UNPAID' } as const;
+    expect(availableOrderActions(order, 'buyer')).toEqual(['received', 'report-paid']);
     expect(availableOrderActions(order, 'seller')).toEqual(['complete', 'mark-paid']);
-    expect(availableOrderActions(order, 'buyer')).toEqual(['complete']);
-    expect(availableOrderActions({ ...order, paymentStatus: 'PAID_OFFLINE' }, 'seller')).toEqual([
-      'complete',
-    ]);
+  });
+
+  it('hides buyer confirmations once given, and blocks cancelling after receipt', () => {
+    const order = {
+      status: 'ACCEPTED',
+      paymentStatus: 'UNPAID',
+      buyerPaidAt: 'x',
+      receivedAt: 'y',
+    } as const;
+    expect(availableOrderActions(order, 'buyer')).toEqual([]);
+    expect(availableOrderActions(order, 'seller')).toEqual(['ready', 'complete', 'mark-paid']);
   });
 
   it('offers nothing on finished orders except recording a late payment', () => {
@@ -24,5 +32,8 @@ describe('availableOrderActions', () => {
     expect(
       availableOrderActions({ status: 'COMPLETED', paymentStatus: 'UNPAID' }, 'seller'),
     ).toEqual(['mark-paid']);
+    expect(
+      availableOrderActions({ status: 'COMPLETED', paymentStatus: 'PAID_OFFLINE' }, 'buyer'),
+    ).toEqual([]);
   });
 });

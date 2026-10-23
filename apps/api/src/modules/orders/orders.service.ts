@@ -23,6 +23,8 @@ const EVENT_FOR: Record<OrderAction, string> = {
   accept: 'accepted',
   decline: 'declined',
   ready: 'ready',
+  received: 'received',
+  'report-paid': 'buyer_paid',
   complete: 'completed',
   cancel: 'cancelled',
   'mark-paid': 'paid',
@@ -187,6 +189,14 @@ const MESSAGES: Record<
     title: 'Order declined',
     body: `The seller declined your order for “${t}”.${r ? ` Reason: ${r}` : ''}`,
   }),
+  received: (t) => ({
+    title: 'Buyer received the item',
+    body: `The buyer confirmed they received “${t}”. You can now mark the order completed.`,
+  }),
+  'report-paid': (t) => ({
+    title: 'Buyer says they paid',
+    body: `The buyer says they have paid for “${t}”. Check you received it, then record the payment.`,
+  }),
   ready: (t) => ({ title: 'Order ready', body: `“${t}” is ready for collection or on its way.` }),
   complete: (t) => ({ title: 'Order completed', body: `The order for “${t}” is complete.` }),
   cancel: (t, r) => ({
@@ -215,14 +225,18 @@ export async function changeOrder(user: AuthUser, id: number, action: OrderActio
   const data: Prisma.OrderUpdateManyMutationInput =
     action === 'mark-paid'
       ? { paymentStatus: 'PAID_OFFLINE' }
-      : {
-          status: rule.to,
-          ...(action === 'accept' ? { acceptedAt: now } : {}),
-          ...(action === 'complete' ? { completedAt: now } : {}),
-          ...(action === 'cancel' || action === 'decline'
-            ? { cancelledAt: now, cancelReason: reason }
-            : {}),
-        };
+      : action === 'report-paid'
+        ? { buyerPaidAt: now }
+        : action === 'received'
+          ? { receivedAt: now }
+          : {
+              status: rule.to,
+              ...(action === 'accept' ? { acceptedAt: now } : {}),
+              ...(action === 'complete' ? { completedAt: now } : {}),
+              ...(action === 'cancel' || action === 'decline'
+                ? { cancelledAt: now, cancelReason: reason }
+                : {}),
+            };
 
   await prisma.$transaction(async (tx) => {
     // Conditional on the current status, so double clicks or both sides acting at once are safe.
@@ -231,6 +245,9 @@ export async function changeOrder(user: AuthUser, id: number, action: OrderActio
         id,
         status: { in: rule.from as OrderStatus[] },
         ...(action === 'mark-paid' ? { paymentStatus: 'UNPAID' } : {}),
+        ...(action === 'report-paid' ? { paymentStatus: 'UNPAID', buyerPaidAt: null } : {}),
+        // Once the buyer has the item, the order can't be cancelled, and receipt is confirmed once.
+        ...(action === 'received' || action === 'cancel' ? { receivedAt: null } : {}),
       },
       data,
     });

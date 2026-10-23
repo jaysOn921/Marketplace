@@ -79,6 +79,8 @@ function orderDetail(overrides: Partial<OrderDetail> = {}): OrderDetail {
     events: [{ type: 'placed', note: null, actor: 'buyer', createdAt: '2026-10-23T10:00:00.000Z' }],
     actions: ['cancel'],
     acceptedAt: null,
+    buyerPaidAt: null,
+    receivedAt: null,
     completedAt: null,
     cancelledAt: null,
     ...overrides,
@@ -255,5 +257,37 @@ describe('Orders list', () => {
     expect(screen.getByText('From Amina Electronics', { exact: false })).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: /Selling/ }));
     expect(await screen.findByText(/To Baraka Said/)).toBeInTheDocument();
+  });
+});
+
+describe('Buyer confirmations', () => {
+  it('lets the buyer report payment and confirm receipt, but not complete the order', async () => {
+    const calls: string[] = [];
+    let current = orderDetail({ status: 'READY', actions: ['received', 'report-paid'] });
+    mockApi(
+      {
+        'GET /orders/41': () => ({ body: { order: current } }),
+        'POST /orders/41/report-paid': () => {
+          calls.push('report-paid');
+          current = { ...current, buyerPaidAt: '2026-10-23T12:00:00.000Z', actions: ['received'] };
+          return { body: { order: current } };
+        },
+        'POST /orders/41/received': () => {
+          calls.push('received');
+          current = { ...current, receivedAt: '2026-10-23T13:00:00.000Z', actions: [] };
+          return { body: { order: current } };
+        },
+      },
+      { user: zambian },
+    );
+    renderApp('/orders/41');
+    expect(await screen.findByRole('button', { name: "I've received it" })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Mark completed' })).not.toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: "I've paid" }));
+    expect(await screen.findByText(/You told the seller you paid/)).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: "I've received it" }));
+    expect(await screen.findByText(/The seller will now complete the order/)).toBeInTheDocument();
+    expect(calls).toEqual(['report-paid', 'received']);
   });
 });
