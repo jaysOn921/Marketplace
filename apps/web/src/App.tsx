@@ -4,7 +4,16 @@ import { RequireAdmin } from './components/RequireAdmin';
 import { RequireAuth } from './components/RequireAuth';
 import { AccountPage } from './pages/account/AccountPage';
 import { MyListingsPage } from './pages/account/MyListingsPage';
+import { AdminListingsPage } from './pages/admin/AdminListingsPage';
+import { AdminLayout } from './pages/admin/AdminLayout';
+import { AdminTicketPage, AdminTicketsPage } from './pages/admin/AdminTicketsPage';
+import { AuditPage } from './pages/admin/AuditPage';
+import { CategoriesPage } from './pages/admin/CategoriesPage';
+import { DashboardPage } from './pages/admin/DashboardPage';
+import { FaqAdminPage } from './pages/admin/FaqAdminPage';
+import { RatesPage } from './pages/admin/RatesPage';
 import { ReportsPage } from './pages/admin/ReportsPage';
+import { UsersPage } from './pages/admin/UsersPage';
 import { ReviewQueuePage } from './pages/admin/ReviewQueuePage';
 import { ContactPage } from './pages/help/ContactPage';
 import { HelpArticlePage } from './pages/help/HelpArticlePage';
@@ -47,14 +56,6 @@ export function App() {
             <RequireAuth>
               <TicketsPage />
             </RequireAuth>
-          }
-        />
-        <Route
-          path="admin/reports"
-          element={
-            <RequireAdmin>
-              <ReportsPage />
-            </RequireAdmin>
           }
         />
         <Route path="converter" element={<ConverterPage />} />
@@ -111,14 +112,6 @@ export function App() {
           }
         />
         <Route
-          path="admin/review"
-          element={
-            <RequireAdmin>
-              <ReviewQueuePage />
-            </RequireAdmin>
-          }
-        />
-        <Route
           path="orders"
           element={
             <RequireAuth>
@@ -153,6 +146,26 @@ export function App() {
             </RequireAuth>
           }
         />
+        <Route
+          path="admin"
+          element={
+            <RequireAdmin>
+              <AdminLayout />
+            </RequireAdmin>
+          }
+        >
+          <Route index element={<DashboardPage />} />
+          <Route path="review" element={<ReviewQueuePage />} />
+          <Route path="reports" element={<ReportsPage />} />
+          <Route path="tickets" element={<AdminTicketsPage />} />
+          <Route path="tickets/:id" element={<AdminTicketPage />} />
+          <Route path="users" element={<UsersPage />} />
+          <Route path="listings" element={<AdminListingsPage />} />
+          <Route path="rates" element={<RatesPage />} />
+          <Route path="categories" element={<CategoriesPage />} />
+          <Route path="help" element={<FaqAdminPage />} />
+          <Route path="audit" element={<AuditPage />} />
+        </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

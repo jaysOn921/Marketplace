@@ -53,6 +53,7 @@ API tests run against a separate `tzed_test` database (`TEST_DATABASE_URL`), mig
 | `node tests/e2e/messaging-flow.mjs`                  | Browser smoke test of messages and notifications: ask → badges → reply → live update (dev servers + seed)                            |
 | `node tests/e2e/review-flow.mjs`                     | Browser smoke test of reviews: rate a completed order → shop and search show the rating (after order-flow)                           |
 | `node tests/e2e/support-flow.mjs`                    | Browser smoke test of help search, guest support ticket via emailed link, reporting and the admin reports queue (dev servers + seed) |
+| `node tests/e2e/admin-flow.mjs`                      | Browser smoke test of the admin area: dashboard, exchange rate, ticket reply, users, listings, audit log (dev servers + seed)        |
 
 ## Repo layout
 

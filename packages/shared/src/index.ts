@@ -9,3 +9,4 @@ export * from './orders.js';
 export * from './messaging.js';
 export * from './reviews.js';
 export * from './support.js';
+export * from './admin.js';

@@ -11,6 +11,7 @@ import { loadUser } from './middleware/auth.js';
 import { csrfProtection } from './middleware/csrf.js';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.js';
 import { createRateLimits } from './middleware/rate-limit.js';
+import { adminRouter } from './modules/admin/admin.routes.js';
 import { authRouter } from './modules/auth/auth.routes.js';
 import { PrismaSessionStore, SESSION_COOKIE } from './modules/auth/session-store.js';
 import { geoRouter } from './modules/geo/geo.routes.js';
@@ -87,6 +88,7 @@ export function createApp(options: AppOptions = {}) {
   api.use('/help', helpRouter);
   api.use('/support', supportRouter(rateLimit));
   api.use(reportsRouter(rateLimit));
+  api.use('/admin', adminRouter);
   api.use('/orders', ordersRouter);
   api.use('/conversations', messagingRouter(rateLimit));
   api.use('/admin/listings', moderationRouter);

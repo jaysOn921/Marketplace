@@ -16,7 +16,8 @@
     "myListings": "My listings",
     "review": "Review listings",
     "orders": "Orders",
-    "reports": "Reports"
+    "reports": "Reports",
+    "admin": "Admin"
   },
   "search": {
     "placeholder": "Search for phones, furniture, clothes…",
@@ -504,6 +505,122 @@
         "remove_message": "Remove the message",
         "suspend_user": "Suspend the account"
       }
+    },
+    "reason": "Reason",
+    "reasonPlaceholder": "Reason (shown to the person)",
+    "pageOf": "Page {{page}} of {{pageCount}}",
+    "total_one": "{{count}} result",
+    "total_other": "{{count}} results",
+    "none": "Nothing here.",
+    "status": "Status",
+    "allStatuses": "All statuses",
+    "nav": {
+      "label": "Admin",
+      "dashboard": "Dashboard",
+      "review": "Review listings",
+      "reports": "Reports",
+      "tickets": "Support tickets",
+      "users": "Users",
+      "listings": "Listings",
+      "rates": "Exchange rate",
+      "categories": "Categories",
+      "help": "Help articles",
+      "audit": "Audit log"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "waiting": "Waiting for you",
+      "openTickets": "Open support tickets",
+      "marketplace": "Marketplace",
+      "users": "Users",
+      "byCountry": "Users by country",
+      "newUsers": "New users this week",
+      "suspended": "Suspended accounts",
+      "liveListings": "Live listings",
+      "soldListings": "Sold listings",
+      "orders": "Orders",
+      "ordersWeek": "Orders this week",
+      "rateOld": "The exchange rate was last updated {{days}} days ago.",
+      "noRate": "No exchange rate is set, so cross-border prices and orders are paused.",
+      "updateRate": "Update it",
+      "currentRate": "Current rate: K 1 = TSh {{rate}} (set {{date}})."
+    },
+    "users": {
+      "search": "Name, email or shop",
+      "unverified": "email not confirmed",
+      "counts": "{{listings}} listings · {{orders}} orders",
+      "reports_one": "{{count}} report",
+      "reports_other": "{{count}} reports",
+      "joined": "joined {{date}}",
+      "listings": "Listings",
+      "history": "History",
+      "suspend": "Suspend",
+      "reinstate": "Reinstate"
+    },
+    "listings": {
+      "search": "Title, #id or seller email",
+      "remove": "Remove",
+      "restore": "Restore",
+      "forSeller": "Showing one seller's listings."
+    },
+    "tickets": {
+      "guest": "guest",
+      "messages_one": "{{count}} message",
+      "messages_other": "{{count}} messages",
+      "reply": "Reply as TZed support",
+      "replyHint": "Sent by email. Guests get a fresh private link with each reply.",
+      "send": "Send reply",
+      "sendClose": "Send and close"
+    },
+    "rates": {
+      "title": "Exchange rate",
+      "intro": "One rate is stored (kwacha → shillings) and the reverse is calculated, so both directions always agree. It's used for converted prices, the price filter and new orders; past orders keep their saved rate.",
+      "current": "Current rate",
+      "set": "Set a new rate",
+      "rateLabel": "How many shillings one kwacha buys",
+      "preview": "So TSh 1,000 = {{k}}",
+      "note": "Note",
+      "notePlaceholder": "e.g. source of the rate",
+      "save": "Save rate",
+      "saved": "Rate saved. It's used everywhere from now on.",
+      "confirm": "Yes, save it",
+      "history": "History",
+      "when": "When",
+      "by": "Set by",
+      "seed": "(starting rate)"
+    },
+    "categories": {
+      "intro": "Hidden categories disappear from browsing and the listing form; listings already in them stay.",
+      "name": "Name",
+      "order": "Order",
+      "listings_one": "{{count}} listing",
+      "listings_other": "{{count}} listings",
+      "hide": "Hide",
+      "show": "Show",
+      "new": "New category",
+      "parent": "Inside",
+      "topLevel": "(top level)",
+      "add": "Add"
+    },
+    "help": {
+      "intro": "Articles in the Help centre. Unpublished articles are hidden from users.",
+      "new": "New article",
+      "titleField": "Title",
+      "topic": "Topic",
+      "body": "Text",
+      "bodyHint": "Plain text. Leave an empty line between paragraphs.",
+      "published": "Published",
+      "draft": "not published",
+      "edit": "Edit"
+    },
+    "audit": {
+      "intro": "Every admin action, newest first. Tick the box to include sign-ins and other security events.",
+      "action": "Action",
+      "allActions": "All actions",
+      "from": "From",
+      "to": "To",
+      "security": "Include security events",
+      "system": "System"
     }
   },
   "card": {
