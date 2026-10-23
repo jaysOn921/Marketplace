@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, NavLink, Outlet } from 'react-router';
+import { Link, NavLink, Outlet, useNavigate } from 'react-router';
 import { ConverterMenu } from './ConverterMenu';
 import { SearchBar } from './SearchBar';
+import { UserMenu } from './UserMenu';
+import { useLogout, useMe } from '../lib/auth';
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium ${
@@ -25,6 +27,9 @@ function Logo() {
 export function Layout() {
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { data: user } = useMe();
+  const logout = useLogout();
+  const navigate = useNavigate();
   const links = [
     { to: '/search', label: t('nav.browse') },
     { to: '/sell', label: t('nav.sell') },
@@ -46,12 +51,7 @@ export function Layout() {
                   {l.label}
                 </NavLink>
               ))}
-            <NavLink
-              to="/login"
-              className="ml-2 whitespace-nowrap rounded-md border border-brand-700 px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50"
-            >
-              {t('nav.signIn')}
-            </NavLink>
+            <UserMenu />
           </nav>
           <div className="ml-auto md:ml-0">
             <ConverterMenu />
@@ -83,7 +83,15 @@ export function Layout() {
             className="border-t border-stone-200 px-4 py-2 md:hidden"
             aria-label="Mobile"
           >
-            {[...links, { to: '/login', label: t('nav.signIn') }].map((l) => (
+            {[
+              ...links,
+              ...(user
+                ? [
+                    { to: '/account', label: t('nav.account') },
+                    { to: '/account/seller', label: t('nav.sellerProfile') },
+                  ]
+                : [{ to: '/login', label: t('nav.signIn') }]),
+            ].map((l) => (
               <NavLink
                 key={l.to}
                 to={l.to}
@@ -93,6 +101,20 @@ export function Layout() {
                 {l.label}
               </NavLink>
             ))}
+            {user && (
+              <button
+                type="button"
+                className={`block w-full text-left ${navLinkClass({ isActive: false })}`}
+                onClick={() => {
+                  setMenuOpen(false);
+                  // Leave protected pages first, so they don't redirect to sign-in.
+                  navigate('/');
+                  logout.mutate();
+                }}
+              >
+                {t('nav.signOut')}
+              </button>
+            )}
           </nav>
         )}
       </header>

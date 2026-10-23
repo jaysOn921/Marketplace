@@ -9,7 +9,10 @@
     "help": "Help",
     "signIn": "Sign in",
     "menu": "Menu",
-    "converter": "Converter"
+    "converter": "Converter",
+    "account": "My account",
+    "sellerProfile": "Seller profile",
+    "signOut": "Sign out"
   },
   "search": {
     "placeholder": "Search for phones, furniture, clothes…",
@@ -68,5 +71,175 @@
     "approximate": "Converted amounts are approximate.",
     "quickTitle": "{{from}} → {{to}}",
     "disclaimer": "TZed sets this rate and updates it regularly. Converted prices are a guide. The price you agree with a seller is in the seller's currency."
+  },
+  "common": {
+    "loading": "Loading…",
+    "cancel": "Cancel"
+  },
+  "countries": {
+    "TZ": "Tanzania",
+    "ZM": "Zambia",
+    "currency": {
+      "TZ": "Prices in shillings (TSh)",
+      "ZM": "Prices in kwacha (K)"
+    }
+  },
+  "auth": {
+    "backToLogin": "Back to sign in",
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "name": "Full name",
+      "country": "Where are you based?",
+      "phoneOptional": "Phone number (optional)",
+      "currentPassword": "Current password",
+      "newPassword": "New password"
+    },
+    "login": {
+      "title": "Sign in",
+      "intro": "Welcome back to TZed.",
+      "submit": "Sign in",
+      "forgot": "Forgot password?",
+      "noAccount": "New to TZed?",
+      "register": "Create an account"
+    },
+    "register": {
+      "title": "Create your account",
+      "intro": "Buy and sell across Tanzania and Zambia. One account does both.",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "phoneHint": "Only shown to buyers you've accepted an order from.",
+      "passwordHint": "At least {{min}} characters.",
+      "consentPrefix": "I agree to the",
+      "consentAnd": "and the"
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "intro": "Enter your email and we'll send you a link to choose a new password.",
+      "submit": "Send reset link",
+      "sent": "If an account exists for {{email}}, we've sent a reset link. Check your inbox (and spam folder). The link expires in 1 hour."
+    },
+    "reset": {
+      "title": "Choose a new password",
+      "intro": "You'll be signed out on all your devices.",
+      "submit": "Save new password",
+      "done": "Your password has been changed. You can sign in now.",
+      "badLink": "This link is invalid or has expired.",
+      "requestNew": "Request a new link"
+    },
+    "verify": {
+      "title": "Confirm your email",
+      "checking": "Checking your link…",
+      "done": "Thanks, your email is confirmed.",
+      "toAccount": "Go to my account"
+    }
+  },
+  "account": {
+    "title": "My account",
+    "hello": "Signed in as {{name}}.",
+    "save": "Save changes",
+    "saved": "Saved.",
+    "welcome": "Welcome to TZed! We've sent you an email: open the link in it to confirm your address.",
+    "verify": {
+      "notice": "Please confirm your email address. Check your inbox for the link we sent.",
+      "resend": "Send the email again",
+      "sent": "Sent. Check your inbox."
+    },
+    "profile": {
+      "title": "Profile",
+      "countryHint": "Your country sets the currency your listings are priced in. It can't be changed after you've listed items."
+    },
+    "password": {
+      "title": "Password",
+      "intro": "Changing your password signs you out on your other devices.",
+      "submit": "Change password",
+      "done": "Password changed."
+    },
+    "seller": {
+      "title": "Selling on TZed",
+      "none": "Set up a seller profile to start listing items.",
+      "has": "Your seller profile is set up.",
+      "create": "Set up seller profile",
+      "edit": "Edit seller profile"
+    },
+    "data": {
+      "title": "Your data",
+      "intro": "Download a copy of everything TZed holds about you, or delete your account.",
+      "export": "Download my data"
+    },
+    "delete": {
+      "title": "Delete account",
+      "intro": "This removes your personal details and listings and signs you out everywhere. Past orders and messages stay for the other person's records, shown as \"Deleted user\". This can't be undone.",
+      "start": "Delete my account",
+      "confirmLabel": "Enter your password to confirm",
+      "confirm": "Permanently delete"
+    }
+  },
+  "seller": {
+    "title": "Seller profile",
+    "intro": "This is what buyers see about your shop. You sell from {{country}}.",
+    "newShop": "Your shop",
+    "shopLink": "Your shop link: /shop/{{slug}}",
+    "create": "Create seller profile",
+    "fields": {
+      "shopName": "Shop name",
+      "regionTZ": "Region",
+      "regionZM": "Province",
+      "choose": "Choose…",
+      "town": "Town or city",
+      "contact": "How buyers can contact you",
+      "contactHint": "Your phone number is only shared after you accept an order.",
+      "bio": "About your shop (optional)"
+    },
+    "contact": {
+      "MESSAGES": "TZed messages only",
+      "PHONE": "Phone (after an order is accepted)",
+      "BOTH": "Messages and phone"
+    }
+  },
+  "legal": {
+    "draftNotice": "Draft. To be reviewed before TZed launches.",
+    "terms": {
+      "title": "Terms of use",
+      "sections": [
+        {
+          "heading": "Using TZed",
+          "body": "TZed is a marketplace where people in Tanzania and Zambia buy and sell physical goods. You must be at least 18 and give accurate information. One person, one account."
+        },
+        {
+          "heading": "Listings",
+          "body": "Every listing is reviewed by TZed before it appears. Only list items you own and are allowed to sell. Prohibited items (see the Help centre) are removed, and accounts that break the rules may be suspended."
+        },
+        {
+          "heading": "Orders, payment and delivery",
+          "body": "Buyers and sellers agree payment and delivery between themselves. TZed records orders but does not take payments, hold money or handle customs. Converted prices are approximate; the agreed price is in the seller's currency."
+        },
+        {
+          "heading": "Reports and moderation",
+          "body": "Anyone can report a listing, user or message. TZed admins review reports and may remove content or suspend accounts. Admin actions are recorded in an audit log."
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "sections": [
+        {
+          "heading": "What we collect",
+          "body": "Your name, email, country, and optionally your phone number and shop details. Listings, orders, messages and reviews you create. Basic security logs (sign-ins, IP address) to protect accounts."
+        },
+        {
+          "heading": "Why",
+          "body": "To run the marketplace: show your listings, connect buyers and sellers, send account emails, and keep the platform safe. We don't sell your data."
+        },
+        {
+          "heading": "Who sees it",
+          "body": "Buyers see your shop name, town and listings. Your phone number is only shared with a buyer after you accept their order. TZed admins can see account data to moderate the platform."
+        },
+        {
+          "heading": "Your rights",
+          "body": "You can download all your data or delete your account at any time from My account. After deletion, past orders and messages remain for the other party's records, shown as \"Deleted user\". These rights follow Tanzania's Personal Data Protection Act 2022 and Zambia's Data Protection Act 2021."
+        }
+      ]
+    }
   }
 }

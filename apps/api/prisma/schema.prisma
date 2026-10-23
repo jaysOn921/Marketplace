@@ -152,13 +152,16 @@ model AuthToken {
   @@map("auth_tokens")
 }
 
-/// express-session store table (see the auth module).
+/// express-session store table (see src/modules/auth/session-store.ts).
+/// userId lets us sign a user out everywhere (password reset, account deletion).
 model Session {
   id      String @id @db.VarChar(128)
+  userId  Int?
   expires Int    @db.UnsignedInt
   data    String @db.MediumText
 
   @@index([expires])
+  @@index([userId])
   @@map("sessions")
 }
 

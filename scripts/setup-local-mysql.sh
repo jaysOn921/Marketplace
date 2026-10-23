@@ -44,8 +44,9 @@ CREATE USER IF NOT EXISTS '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASSWORD}
 CREATE USER IF NOT EXISTS '${DB_USER}'@'127.0.0.1' IDENTIFIED BY '${DB_PASSWORD}';
 GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO '${DB_USER}'@'localhost', '${DB_USER}'@'127.0.0.1';
 GRANT ALL PRIVILEGES ON \`${DB_TEST_NAME}\`.* TO '${DB_USER}'@'localhost', '${DB_USER}'@'127.0.0.1';
--- Prisma Migrate needs to create a temporary shadow database.
+-- Prisma Migrate creates and drops a temporary shadow database named prisma_migrate_shadow_db_*.
 GRANT CREATE, DROP ON *.* TO '${DB_USER}'@'localhost', '${DB_USER}'@'127.0.0.1';
+GRANT ALL PRIVILEGES ON \`prisma\\_migrate\\_shadow\\_db\\_%\`.* TO '${DB_USER}'@'localhost', '${DB_USER}'@'127.0.0.1';
 FLUSH PRIVILEGES;
 SQL
 

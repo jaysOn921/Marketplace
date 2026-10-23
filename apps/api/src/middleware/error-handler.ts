@@ -18,9 +18,19 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
     status = err.status;
     body = { error: { code: err.code, message: err.message, details: err.details } };
   } else if (err instanceof ZodError) {
+    // First message per field, e.g. { fields: { email: 'Enter a valid email address.' } }
+    const fields: Record<string, string> = {};
+    for (const issue of err.issues) {
+      const key = issue.path.join('.') || '_';
+      fields[key] ??= issue.message;
+    }
     status = 400;
     body = {
-      error: { code: 'VALIDATION_ERROR', message: 'Some fields are invalid.', details: err.issues },
+      error: {
+        code: 'VALIDATION_ERROR',
+        message: 'Please check the highlighted fields.',
+        details: { fields },
+      },
     };
   } else if (
     err instanceof SyntaxError &&

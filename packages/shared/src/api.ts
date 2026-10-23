@@ -38,3 +38,35 @@ export interface CountryDto {
 export interface CountriesResponse {
   countries: CountryDto[];
 }
+
+export interface SellerProfileDto {
+  shopName: string;
+  slug: string;
+  bio: string | null;
+  regionId: number | null;
+  regionName: string | null;
+  town: string | null;
+  contactPreference: 'MESSAGES' | 'PHONE' | 'BOTH';
+}
+
+/** The signed-in user, as returned by GET /auth/me. */
+export interface SessionUser {
+  id: number;
+  email: string;
+  name: string;
+  phone: string | null;
+  countryCode: CountryCode;
+  currency: CurrencyCode;
+  role: 'USER' | 'ADMIN';
+  emailVerified: boolean;
+  createdAt: string;
+  sellerProfile: SellerProfileDto | null;
+}
+
+export interface MeResponse {
+  user: SessionUser | null;
+}
+
+export interface CsrfResponse {
+  csrfToken: string;
+}

@@ -32,15 +32,16 @@ API tests run against a separate `tzed_test` database (`TEST_DATABASE_URL`), mig
 
 ## Scripts
 
-| Command                                      | What it does                                           |
-| -------------------------------------------- | ------------------------------------------------------ |
-| `npm run dev`                                | Run the API and web app with hot reload                |
-| `npm test`                                   | Run all unit and integration tests                     |
-| `npm run lint` / `npm run typecheck`         | Static checks                                          |
-| `npm run format`                             | Format the code with Prettier                          |
-| `npm run build`                              | Production build (web, then API)                       |
-| `npm start`                                  | Run the production build (the API serves the web app)  |
-| `node scripts/screenshot.mjs <url> <paths…>` | Desktop and mobile screenshots into `tests/artifacts/` |
+| Command                                      | What it does                                                                            |
+| -------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `npm run dev`                                | Run the API and web app with hot reload                                                 |
+| `npm test`                                   | Run all unit and integration tests                                                      |
+| `npm run lint` / `npm run typecheck`         | Static checks                                                                           |
+| `npm run format`                             | Format the code with Prettier                                                           |
+| `npm run build`                              | Production build (web, then API)                                                        |
+| `npm start`                                  | Run the production build (the API serves the web app)                                   |
+| `node scripts/screenshot.mjs <url> <paths…>` | Desktop and mobile screenshots into `tests/artifacts/`                                  |
+| `node tests/e2e/auth-flow.mjs`               | Browser smoke test of sign-up → verify → seller profile → sign in (dev servers running) |
 
 ## Repo layout
 
