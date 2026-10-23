@@ -10,7 +10,7 @@ Status: **Draft, awaiting approval.** No implementation code will be written unt
 - A web marketplace for **general physical goods** (electronics, furniture, clothing, household items and similar), classifieds/eBay style.
 - **Users:** one account type that can both buy and sell. A user becomes a seller by completing a seller profile. **Admins** moderate the platform.
 - **Payments in v1 are offline.** The app tracks the order lifecycle, but money changes hands outside it (cash or mobile money on delivery/pickup). The seller marks an order as paid. This keeps card data and payouts out of scope for v1.
-- **Currency/region:** one currency per deployment, set in config. Not decided yet; `USD` is a placeholder (see Open Questions).
+- **Region and currency: Zambia, Zambian kwacha (ZMW).** Prices are stored as DECIMAL(12,2), so ngwee are supported, and shown as `K 1,250.00`. Phone numbers use the +260 format. Location is a town/city plus one of the 10 provinces. The currency code lives in config, so it isn't hard-coded.
 - **Platform:** a responsive web app that works well on phones. No native app in v1.
 - **Scale:** small to start, tens to low hundreds of users and a few thousand listings. The design should reach about 10k users without a rewrite.
 
@@ -28,7 +28,7 @@ Status: **Draft, awaiting approval.** No implementation code will be written unt
 | Admin | Dashboard (counts), manage users (suspend/ban), moderate listings (remove/restore), handle reports, answer support tickets, manage categories and FAQ articles, audit log of admin actions |
 
 ### Later (explicitly out of v1)
-- Online payments and escrow (M-Pesa Daraja, Stripe Connect or Paystack), seller payouts, fees/commissions
+- Online payments and escrow: Zambian mobile money (MTN MoMo, Airtel Money, Zamtel Kwacha) and cards through an aggregator such as Lenco, DPO Pay or Flutterwave. Also seller payouts and fees/commissions
 - Multi-seller cart (the v1 schema already supports multi-item orders, so this is UI and logic only)
 - Real-time messaging (websockets), push notifications
 - Saved/favourite listings, saved searches and alerts
@@ -41,7 +41,7 @@ Status: **Draft, awaiting approval.** No implementation code will be written unt
 - **Solo developer**, built in Claude Code cloud sessions on a limited credit budget. So: one deployable app, few moving parts, and no service that isn't strictly needed.
 - **Compliance:**
   - *Payment data:* none stored in v1 (offline payments), so PCI scope is zero. When a provider is added later, use a hosted checkout so card data never reaches our servers.
-  - *PII:* store only what's needed (name, email, optional phone, rough location). Passwords are hashed with argon2. HTTPS only. A seller's phone number is shown only to buyers with an accepted order. Privacy policy and terms pages, user data export and account deletion (GDPR-style practices, adjusted to the local data-protection law once the region is confirmed).
+  - *PII:* store only what's needed (name, email, optional phone, rough location). Passwords are hashed with argon2. HTTPS only. A seller's phone number is shown only to buyers with an accepted order. Privacy policy and terms pages, user data export and account deletion (in line with Zambia's **Data Protection Act No. 3 of 2021**: users consent at sign-up, data is collected for a stated purpose, and users have access/deletion rights. If the platform grows, check whether it must register as a data controller with the Office of the Data Protection Commissioner).
 - **House rules:** search and help/support are always included. Backups, scripts and test artifacts live **inside the repo** (`scripts/`, `backups/`, `tests/artifacts/`), not in temp folders.
 
 ---
@@ -165,7 +165,7 @@ Each phase ends with working, tested code committed and pushed. The foundational
 | # | Phase | What gets built | Depends on | Size |
 |---|---|---|---|---|
 | 0 | **Scaffolding** | npm workspaces, TS config, ESLint/Prettier, Express app skeleton (health route, error handler, logging), Vite React app skeleton with routing and layout, shared package, `.env.example`, local MySQL setup script in `scripts/`, CI workflow | — | S |
-| 1 | **Data layer** | Full Prisma schema for all v1 entities, first migration, FULLTEXT indexes, seed script (categories, admin user, demo sellers/listings, FAQ articles), test-DB reset helper | 0 | M |
+| 1 | **Data layer** | Full Prisma schema for all v1 entities, first migration, FULLTEXT indexes, seed script (categories, Zambian provinces, admin user, demo sellers/listings priced in ZMW, FAQ articles), test-DB reset helper | 0 | M |
 | 2 | **Auth & accounts** | Register/login/logout, sessions, CSRF, email verification, password reset, profile and seller-profile pages, role guard middleware, rate limiting, account deletion and export | 1 | M |
 | 3 | **Listings & media** | Listing CRUD API and forms, image upload/resize/storage driver, categories, listing detail page, "My listings" dashboard, ownership checks | 2 | L |
 | 4 | **Search & browse** | Search API (FULLTEXT plus filters, sort and pagination), home/category pages, search page with filter UI, URL-synced query state, seller shop page | 3 | M |
@@ -190,14 +190,14 @@ Testing is not saved for the end. Every phase adds API integration tests for its
 ## 5. Assumptions / Open Questions
 
 Defaults I'm assuming. Correct any of them:
-1. **Region and currency:** which country or countries, and which currency (e.g. KES, NGN, USD)? This sets the currency, location fields, the future payment provider and which data-protection law applies.
-2. **Location** is a free-text city plus a region dropdown (no maps in v1).
+1. **Region and currency:** ✅ confirmed as Zambia / ZMW. Zambia only in v1, with no cross-border listings.
+2. **Location** is a free-text town/city plus a province dropdown (no maps in v1).
 3. **One account can both buy and sell.** No separate seller sign-up or seller verification/KYC in v1.
 4. **Listings go live immediately.** Admins moderate after the fact through reports. The alternative is admin approval before a listing is visible.
 5. **TypeScript** rather than plain JavaScript. This is a small change from your past projects, chosen because shared types help a solo maintainer.
 6. **Deploy target = one small VPS with Docker Compose.** Railway/Render plus a managed MySQL is an alternative if you'd rather not manage a server. Do you have a domain or hosting already?
 7. **Email provider:** SMTP credentials will be needed before production. Dev uses a console/file logger.
-8. **No online payments in v1.** The order model includes `payment_status` and a provider-agnostic design, so M-Pesa/Stripe/Paystack can be added later as a separate phase.
+8. **No online payments in v1.** The order model includes `payment_status` and a provider-agnostic design, so Zambian mobile money (MTN MoMo, Airtel Money, Zamtel) or card payments through an aggregator can be added later as a separate phase.
 9. **Branding:** working name "Marketplace". Do you want a specific name, logo or colour scheme?
 
 ---
