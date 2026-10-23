@@ -18,6 +18,8 @@ import { LegalPage } from './pages/LegalPage';
 import { EditListingPage, NewListingPage } from './pages/listings/ListingFormPage';
 import { ListingPage } from './pages/listings/ListingPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { OrderPage } from './pages/orders/OrderPage';
+import { OrdersPage } from './pages/orders/OrdersPage';
 import { SearchPage } from './pages/SearchPage';
 import { SellPage } from './pages/SellPage';
 import { ShopPage } from './pages/ShopPage';
@@ -88,6 +90,22 @@ export function App() {
             <RequireAdmin>
               <ReviewQueuePage />
             </RequireAdmin>
+          }
+        />
+        <Route
+          path="orders"
+          element={
+            <RequireAuth>
+              <OrdersPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="orders/:id"
+          element={
+            <RequireAuth>
+              <OrderPage />
+            </RequireAuth>
           }
         />
         <Route path="*" element={<NotFoundPage />} />

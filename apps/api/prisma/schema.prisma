@@ -104,6 +104,7 @@ model User {
   reportsResolved       Report[]             @relation("ReportsResolved")
   auditLogs             AuditLog[]
   ratesSet              ExchangeRate[]       @relation("RatesSet")
+  orderEvents           OrderEvent[]
 
   @@index([countryId])
   @@index([status])
@@ -332,9 +333,10 @@ model Order {
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 
-  buyer  User        @relation("BuyerOrders", fields: [buyerId], references: [id])
-  seller User        @relation("SellerOrders", fields: [sellerId], references: [id])
+  buyer  User         @relation("BuyerOrders", fields: [buyerId], references: [id])
+  seller User         @relation("SellerOrders", fields: [sellerId], references: [id])
   items  OrderItem[]
+  events OrderEvent[]
   review Review?
 
   @@index([buyerId, createdAt])
@@ -356,6 +358,21 @@ model OrderItem {
   @@index([orderId])
   @@index([listingId])
   @@map("order_items")
+}
+
+/// Timeline of an order: who did what, when (placed, accepted, paid, cancelled…).
+model OrderEvent {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  actorId   Int?
+  type      String   @db.VarChar(32) // placed, accepted, declined, ready, paid, completed, cancelled
+  note      String?  @db.VarChar(500)
+  createdAt DateTime @default(now())
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  actor     User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([orderId, createdAt])
+  @@map("order_events")
 }
 
 model Review {

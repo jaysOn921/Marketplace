@@ -2,6 +2,7 @@ import type { ListingDetail } from '@tzed/shared';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router';
+import { BuyBox } from '../../components/BuyBox';
 import { Alert } from '../../components/Form';
 import { Price } from '../../components/Price';
 import { StatusBadge } from '../../components/StatusBadge';
@@ -136,6 +137,8 @@ export function ListingPage() {
               </p>
             )}
           </div>
+
+          <BuyBox listing={listing} />
 
           <dl className="grid grid-cols-2 gap-x-4 gap-y-3 rounded-xl border border-stone-200 bg-white p-4 text-sm">
             <dt className="text-stone-500">{t('listingForm.fields.condition')}</dt>

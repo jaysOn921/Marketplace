@@ -49,6 +49,7 @@ API tests run against a separate `tzed_test` database (`TEST_DATABASE_URL`), mig
 | `node tests/e2e/auth-flow.mjs`                       | Browser smoke test of sign-up → verify → seller profile → sign in (dev servers running)                     |
 | `node tests/e2e/listing-flow.mjs`                    | Browser smoke test of list → photo → submit → reject → resubmit → approve → live (dev servers + seed)       |
 | `node tests/e2e/search-flow.mjs`                     | Browser smoke test of search: suggestions, keywords, filters, sort, shop page, mobile (dev servers + seed)  |
+| `node tests/e2e/order-flow.mjs`                      | Browser smoke test of ordering: buy (cross-border) → accept → sent → paid → received (dev servers + seed)   |
 
 ## Repo layout
 

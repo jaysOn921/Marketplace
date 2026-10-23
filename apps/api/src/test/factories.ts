@@ -68,3 +68,42 @@ export function testImage(width = 800, height = 600, format: 'png' | 'jpeg' = 'p
   const img = sharp({ create: { width, height, channels: 3, background: '#0a7' } });
   return (format === 'png' ? img.png() : img.jpeg()).toBuffer();
 }
+
+/** A live listing for a seller, with sensible defaults. */
+export async function createListing(
+  seller: { id: number; countryId: number },
+  overrides: Partial<Prisma.ListingUncheckedCreateInput> & { crossBorder?: boolean } = {},
+) {
+  const { crossBorder = false, ...data } = overrides;
+  const country = await prisma.country.findUniqueOrThrow({ where: { id: seller.countryId } });
+  const other = await prisma.country.findFirstOrThrow({ where: { id: { not: seller.countryId } } });
+  const region = await prisma.region.findFirstOrThrow({ where: { countryId: seller.countryId } });
+  const category = await prisma.category.findUniqueOrThrow({ where: { slug: 'phones-tablets' } });
+  return prisma.listing.create({
+    data: {
+      sellerId: seller.id,
+      categoryId: category.id,
+      title: 'Samsung Galaxy A15',
+      description: 'Brand new in box with charger.',
+      price: country.code === 'TZ' ? '380000' : '3500',
+      currency: country.currencyCode,
+      condition: 'NEW',
+      quantity: 3,
+      countryId: seller.countryId,
+      regionId: region.id,
+      town: 'Town',
+      deliveryPickup: true,
+      deliveryLocal: true,
+      deliveryCrossBorder: crossBorder,
+      status: 'ACTIVE',
+      publishedAt: new Date(),
+      shipTo: {
+        create: [
+          { countryId: seller.countryId },
+          ...(crossBorder ? [{ countryId: other.id }] : []),
+        ],
+      },
+      ...data,
+    },
+  });
+}
