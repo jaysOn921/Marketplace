@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router';
 import { AskSeller } from '../../components/AskSeller';
 import { BuyBox } from '../../components/BuyBox';
+import { ReportButton } from '../../components/ReportButton';
 import { Alert } from '../../components/Form';
 import { Price } from '../../components/Price';
 import { RatingSummary } from '../../components/Stars';
@@ -215,6 +216,9 @@ export function ListingPage() {
       <section className="max-w-3xl">
         <h2 className="text-lg font-semibold">{t('listing.description')}</h2>
         <p className="mt-2 whitespace-pre-line text-stone-700">{listing.description}</p>
+        {!listing.isOwner && (
+          <ReportButton targetType="LISTING" targetId={listing.id} className="mt-4" />
+        )}
       </section>
     </div>
   );

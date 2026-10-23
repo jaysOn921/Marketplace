@@ -100,6 +100,21 @@ export function UserMenu() {
           {user.role === 'ADMIN' && (
             <Link
               role="menuitem"
+              to="/admin/reports"
+              className={`${item} flex justify-between`}
+              onClick={() => setOpen(false)}
+            >
+              {t('nav.reports')}
+              {Boolean(counts?.openReports) && (
+                <span className="rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800">
+                  {counts?.openReports}
+                </span>
+              )}
+            </Link>
+          )}
+          {user.role === 'ADMIN' && (
+            <Link
+              role="menuitem"
               to="/admin/review"
               className={`${item} flex justify-between`}
               onClick={() => setOpen(false)}
@@ -112,6 +127,14 @@ export function UserMenu() {
               )}
             </Link>
           )}
+          <Link
+            role="menuitem"
+            to="/support/tickets"
+            className={item}
+            onClick={() => setOpen(false)}
+          >
+            {t('support.myTickets')}
+          </Link>
           <button
             role="menuitem"
             type="button"

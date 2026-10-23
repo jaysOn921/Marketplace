@@ -79,6 +79,8 @@ export interface SuggestResponse {
 
 export interface ShopResponse {
   shop: {
+    /** The seller's user id (used to report the seller). */
+    userId: number;
     shopName: string;
     slug: string;
     bio: string | null;

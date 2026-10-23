@@ -15,7 +15,8 @@
     "signOut": "Sign out",
     "myListings": "My listings",
     "review": "Review listings",
-    "orders": "Orders"
+    "orders": "Orders",
+    "reports": "Reports"
   },
   "search": {
     "placeholder": "Search for phones, furniture, clothes…",
@@ -96,9 +97,28 @@
   },
   "help": {
     "title": "Help centre",
-    "intro": "Answers to common questions, and a way to contact our support team.",
-    "comingSoon": "The full help centre with searchable articles and support tickets is on its way.",
-    "contact": "Need help now? Email support@tzed.example"
+    "intro": "Answers to common questions about buying and selling on TZed.",
+    "searchLabel": "Search help articles",
+    "searchPlaceholder": "e.g. converter, customs, payment",
+    "topics": "Topics",
+    "allTopics": "All",
+    "topic": {
+      "getting-started": "Getting started",
+      "buying": "Buying",
+      "selling": "Selling",
+      "payments": "Payments",
+      "safety": "Safety"
+    },
+    "resultsFor": "Articles for “{{q}}”",
+    "anyMatch": "No articles matched all of “{{q}}”, so here are articles that match some of the words.",
+    "noResults": "No articles found for “{{q}}”. Try another word, or contact us below.",
+    "stillNeed": "Still need help?",
+    "stillNeedBody": "Send us a message and our team will reply by email, usually within one working day.",
+    "contactUs": "Contact support",
+    "notFound": "Help article not found",
+    "back": "Help centre",
+    "related": "Related articles",
+    "notAnswered": "Didn't answer your question?"
   },
   "footer": {
     "help": "Help centre",
@@ -460,6 +480,30 @@
         "price": "The price looks wrong. Please check it's in your own currency.",
         "details": "Please add more details: condition, size and what's included."
       }
+    },
+    "reports": {
+      "title": "Reports",
+      "intro": "Reports are grouped by what was reported. Act on them or dismiss them; reporters are told the outcome and every decision is logged.",
+      "empty": "No open reports. 🎉",
+      "count_one": "{{count}} report",
+      "count_other": "{{count}} reports",
+      "owner": "By {{name}}",
+      "previous": "Reported and resolved {{count}} time(s) before",
+      "actions": "Actions",
+      "note": "Note (shown to the person affected)",
+      "takeAction": "Take action",
+      "dismiss": "Dismiss",
+      "type": {
+        "LISTING": "Listing",
+        "USER": "User",
+        "MESSAGE": "Message"
+      },
+      "action": {
+        "none": "No action",
+        "remove_listing": "Remove the listing",
+        "remove_message": "Remove the message",
+        "suspend_user": "Suspend the account"
+      }
     }
   },
   "card": {
@@ -636,7 +680,8 @@
     "cannotReply": "This person's account is no longer active, so you can't reply.",
     "ask": "Ask the seller a question",
     "askLabel": "Message {{shop}}",
-    "askPlaceholder": "e.g. Is it still available? Can you send it to Lusaka?"
+    "askPlaceholder": "e.g. Is it still available? Can you send it to Lusaka?",
+    "removed": "This message was removed by TZed."
   },
   "reviews": {
     "title": "Reviews",
@@ -665,5 +710,50 @@
     "submit": "Submit review",
     "breakdown": "Ratings breakdown",
     "bought": "Bought: {{title}}"
+  },
+  "support": {
+    "contactTitle": "Contact support",
+    "contactIntro": "Tell us what's happening. Include order numbers or listing links if you have them.",
+    "asUser": "We'll reply to {{email}} and in your TZed account.",
+    "subject": "Subject",
+    "message": "Message",
+    "messageHint": "Please don't include passwords or mobile money PINs.",
+    "send": "Send message",
+    "sentTitle": "Message sent",
+    "sentUser": "Thanks! Your ticket number is #{{id}}. We'll reply here and by email.",
+    "sentGuest": "Thanks! Your ticket number is #{{id}}. We've emailed you a private link to follow and reply to it.",
+    "viewTicket": "View your ticket",
+    "myTickets": "My support tickets",
+    "new": "New ticket",
+    "none": "You haven't contacted support yet.",
+    "notFound": "This ticket doesn't exist, or the link is wrong.",
+    "fromStaff": "TZed support",
+    "reply": "Reply",
+    "sendReply": "Send reply",
+    "close": "Close ticket",
+    "closed": "This ticket is closed.",
+    "status": {
+      "OPEN": "Open",
+      "ANSWERED": "Answered",
+      "CLOSED": "Closed"
+    }
+  },
+  "report": {
+    "open": {
+      "LISTING": "Report this listing",
+      "USER": "Report this seller",
+      "MESSAGE": "Report"
+    },
+    "why": "What's wrong?",
+    "details": "Details (optional unless you choose Other)",
+    "send": "Send report",
+    "thanks": "Thanks. Our team will review it.",
+    "reason": {
+      "SCAM": "Scam or fraud",
+      "PROHIBITED_ITEM": "Prohibited item",
+      "WRONG_CATEGORY": "Wrong category",
+      "OFFENSIVE": "Offensive or abusive",
+      "OTHER": "Other"
+    }
   }
 }

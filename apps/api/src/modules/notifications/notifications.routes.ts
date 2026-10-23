@@ -4,6 +4,7 @@ import { prisma } from '../../db.js';
 import { idParam } from '../../lib/params.js';
 import { currentUser, requireAuth } from '../../middleware/auth.js';
 import { totalUnread } from '../messaging/messaging.service.js';
+import { openReportCount } from '../reports/reports.service.js';
 
 // Mounted at the API root, so sign-in is required per route (not router-wide).
 export const notificationsRouter = Router();
@@ -53,14 +54,15 @@ notificationsRouter.post('/notifications/:id/read', requireAuth, async (req, res
 /** Header badges in one request (polled by the web app). */
 notificationsRouter.get('/me/counts', requireAuth, async (req, res) => {
   const user = currentUser(req);
-  const [notifications, messages, ordersToAct, reviewQueue] = await Promise.all([
+  const [notifications, messages, ordersToAct, reviewQueue, openReports] = await Promise.all([
     prisma.notification.count({ where: { userId: user.id, readAt: null } }),
     totalUnread(user.id),
     prisma.order.count({ where: { sellerId: user.id, status: 'PLACED' } }),
     user.role === 'ADMIN'
       ? prisma.listing.count({ where: { status: 'PENDING_REVIEW' } })
       : Promise.resolve(0),
+    user.role === 'ADMIN' ? openReportCount() : Promise.resolve(0),
   ]);
-  const body: CountsResponse = { notifications, messages, ordersToAct, reviewQueue };
+  const body: CountsResponse = { notifications, messages, ordersToAct, reviewQueue, openReports };
   res.set('Cache-Control', 'no-store').json(body);
 });

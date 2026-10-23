@@ -11,7 +11,11 @@ const summary: ConversationSummary = {
   listing: { id: 7, title: 'Samsung Galaxy A15', price: 380000, currency: 'TZS', coverImage: null },
   role: 'buyer',
   otherParty: 'Amina Electronics',
-  lastMessage: { body: 'Yes, still available!', mine: false, createdAt: new Date().toISOString() },
+  lastMessage: {
+    body: 'Yes, still available!',
+    mine: false,
+    createdAt: new Date().toISOString(),
+  },
   unread: 1,
   lastMessageAt: new Date().toISOString(),
 };
@@ -91,8 +95,20 @@ describe('Header badges and notifications', () => {
 describe('Messages page', () => {
   it('lists conversations and sends a reply with Enter', async () => {
     let messages: ConversationResponse['messages'] = [
-      { id: 1, body: 'Is it still available?', mine: true, createdAt: new Date().toISOString() },
-      { id: 2, body: 'Yes, still available!', mine: false, createdAt: new Date().toISOString() },
+      {
+        id: 1,
+        body: 'Is it still available?',
+        mine: true,
+        removed: false,
+        createdAt: new Date().toISOString(),
+      },
+      {
+        id: 2,
+        body: 'Yes, still available!',
+        mine: false,
+        removed: false,
+        createdAt: new Date().toISOString(),
+      },
     ];
     let sent: unknown;
     mockApi(
@@ -108,6 +124,7 @@ describe('Messages page', () => {
               id: 3,
               body: 'Great, I will order now.',
               mine: true,
+              removed: false,
               createdAt: new Date().toISOString(),
             },
           ];
@@ -186,6 +203,7 @@ describe('Ask the seller', () => {
                 id: 1,
                 body: 'Can you send to Lusaka?',
                 mine: true,
+                removed: false,
                 createdAt: new Date().toISOString(),
               },
             ]),
@@ -198,6 +216,7 @@ describe('Ask the seller', () => {
               id: 1,
               body: 'Can you send to Lusaka?',
               mine: true,
+              removed: false,
               createdAt: new Date().toISOString(),
             },
           ]),

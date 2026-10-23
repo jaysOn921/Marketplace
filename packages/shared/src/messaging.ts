@@ -22,8 +22,10 @@ export const sendMessageSchema = z.object({ body });
 
 export interface MessageDto {
   id: number;
+  /** Empty when removed by an admin. */
   body: string;
   mine: boolean;
+  removed: boolean;
   createdAt: string;
 }
 
@@ -83,4 +85,6 @@ export interface CountsResponse {
   ordersToAct: number;
   /** Listings waiting for review (admins only, otherwise 0). */
   reviewQueue: number;
+  /** Reported items waiting for a decision (admins only, otherwise 0). */
+  openReports: number;
 }

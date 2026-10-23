@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router';
 import { Alert } from '../../components/Form';
+import { ReportButton } from '../../components/ReportButton';
 import { apiErrors } from '../../lib/forms';
 import { useConversation, useConversations, useSendMessage } from '../../lib/messaging';
 import { timeAgo } from '../../lib/time';
@@ -140,11 +141,18 @@ function Thread({ id }: { id: number }) {
             <div
               className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm ${m.mine ? 'rounded-br-sm bg-brand-700 text-white' : 'rounded-bl-sm border border-stone-200 bg-white'}`}
             >
-              <p className="whitespace-pre-line break-words">{m.body}</p>
+              {m.removed ? (
+                <p className="italic opacity-70">{t('messages.removed')}</p>
+              ) : (
+                <p className="whitespace-pre-line break-words">{m.body}</p>
+              )}
               <p className={`mt-0.5 text-[11px] ${m.mine ? 'text-brand-100' : 'text-stone-400'}`}>
                 <span className="sr-only">{m.mine ? t('messages.you') : c.otherParty}, </span>
                 {timeAgo(m.createdAt, i18n.language)}
               </p>
+              {!m.mine && !m.removed && (
+                <ReportButton targetType="MESSAGE" targetId={m.id} className="mt-1" />
+              )}
             </div>
           </div>
         ))}

@@ -4,7 +4,12 @@ import { RequireAdmin } from './components/RequireAdmin';
 import { RequireAuth } from './components/RequireAuth';
 import { AccountPage } from './pages/account/AccountPage';
 import { MyListingsPage } from './pages/account/MyListingsPage';
+import { ReportsPage } from './pages/admin/ReportsPage';
 import { ReviewQueuePage } from './pages/admin/ReviewQueuePage';
+import { ContactPage } from './pages/help/ContactPage';
+import { HelpArticlePage } from './pages/help/HelpArticlePage';
+import { TicketPage } from './pages/support/TicketPage';
+import { TicketsPage } from './pages/support/TicketsPage';
 import { SellerProfilePage } from './pages/account/SellerProfilePage';
 import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage';
 import { LoginPage } from './pages/auth/LoginPage';
@@ -33,6 +38,25 @@ export function App() {
         <Route index element={<HomePage />} />
         <Route path="search" element={<SearchPage />} />
         <Route path="help" element={<HelpPage />} />
+        <Route path="help/contact" element={<ContactPage />} />
+        <Route path="help/:slug" element={<HelpArticlePage />} />
+        <Route path="support/tickets/:id" element={<TicketPage />} />
+        <Route
+          path="support/tickets"
+          element={
+            <RequireAuth>
+              <TicketsPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="admin/reports"
+          element={
+            <RequireAdmin>
+              <ReportsPage />
+            </RequireAdmin>
+          }
+        />
         <Route path="converter" element={<ConverterPage />} />
         <Route path="terms" element={<LegalPage kind="terms" />} />
         <Route path="privacy" element={<LegalPage kind="privacy" />} />

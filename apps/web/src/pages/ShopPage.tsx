@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams, useSearchParams } from 'react-router';
 import { ListingGrid } from '../components/ListingCard';
+import { ReportButton } from '../components/ReportButton';
 import { RatingSummary } from '../components/Stars';
 import { toApiQuery, useSearch, useShop } from '../lib/search';
 import { ShopReviews } from './ShopReviews';
@@ -67,6 +68,7 @@ export function ShopPage() {
           </div>
         </div>
         {shop.bio && <p className="mt-4 whitespace-pre-line text-stone-700">{shop.bio}</p>}
+        <ReportButton targetType="USER" targetId={shop.userId} className="mt-3" />
       </header>
 
       <form role="search" onSubmit={onSearch} className="flex max-w-md">

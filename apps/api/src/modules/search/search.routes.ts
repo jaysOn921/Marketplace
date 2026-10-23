@@ -29,6 +29,7 @@ searchRouter.get('/shops/:slug', async (req, res) => {
   });
   const body: ShopResponse = {
     shop: {
+      userId: profile.userId,
       shopName: profile.shopName,
       slug: profile.slug,
       bio: profile.bio,

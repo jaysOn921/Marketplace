@@ -80,7 +80,7 @@ export function toConversationSummary(
       role === 'buyer' ? (c.seller.sellerProfile?.shopName ?? c.seller.name) : c.buyer.name,
     lastMessage: last
       ? {
-          body: last.body.slice(0, 140),
+          body: last.removedAt ? 'Message removed' : last.body.slice(0, 140),
           mine: last.senderId === userId,
           createdAt: last.createdAt.toISOString(),
         }
@@ -238,7 +238,8 @@ export async function readConversation(user: AuthUser, id: number, before?: numb
     .reverse()
     .map((m) => ({
       id: m.id,
-      body: m.body,
+      body: m.removedAt ? '' : m.body,
+      removed: m.removedAt !== null,
       mine: m.senderId === user.id,
       createdAt: m.createdAt.toISOString(),
     }));

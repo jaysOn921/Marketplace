@@ -36,3 +36,22 @@ export function createRateLimits() {
 }
 
 export type RateLimits = ReturnType<typeof createRateLimits>;
+
+/** Per-user (or per-IP for guests) limit; disabled when `enabled` is false (tests). */
+export function userLimiter(
+  enabled: boolean,
+  windowMinutes: number,
+  limit: number,
+  message: string,
+) {
+  if (!enabled) return (_req: unknown, _res: unknown, next: () => void) => next();
+  return rateLimit({
+    windowMs: windowMinutes * 60_000,
+    limit,
+    standardHeaders: 'draft-8',
+    legacyHeaders: false,
+    keyGenerator: (req) => (req.user ? `u${req.user.id}` : ipKeyGenerator(req.ip ?? '')),
+    handler: (_req, res) =>
+      res.status(429).json({ error: { code: 'RATE_LIMITED', message } } satisfies ApiError),
+  });
+}
