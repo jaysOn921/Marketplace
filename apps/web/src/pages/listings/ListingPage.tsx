@@ -102,8 +102,23 @@ export function ListingPage() {
     <div className="space-y-6">
       <OwnerBanner listing={listing} />
       <nav className="text-sm text-stone-500" aria-label={t('listing.breadcrumb')}>
-        {listing.category.parent && <span>{listing.category.parent.name} › </span>}
-        <span>{listing.category.name}</span>
+        {listing.category.parent && (
+          <>
+            <Link
+              to={`/search?category=${listing.category.parent.slug}`}
+              className="hover:text-brand-700 hover:underline"
+            >
+              {listing.category.parent.name}
+            </Link>
+            {' › '}
+          </>
+        )}
+        <Link
+          to={`/search?category=${listing.category.slug}`}
+          className="hover:text-brand-700 hover:underline"
+        >
+          {listing.category.name}
+        </Link>
       </nav>
 
       <div className="grid gap-8 lg:grid-cols-[3fr_2fr]">
@@ -165,7 +180,16 @@ export function ListingPage() {
 
           <section className="rounded-xl border border-stone-200 bg-white p-4">
             <h2 className="text-sm font-medium text-stone-500">{t('listing.seller')}</h2>
-            <p className="mt-1 font-semibold">{listing.seller.shopName}</p>
+            {listing.seller.slug ? (
+              <Link
+                to={`/shop/${listing.seller.slug}`}
+                className="mt-1 block font-semibold text-brand-800 hover:underline"
+              >
+                {listing.seller.shopName}
+              </Link>
+            ) : (
+              <p className="mt-1 font-semibold">{listing.seller.shopName}</p>
+            )}
             <p className="text-sm text-stone-600">
               <span aria-hidden="true">{FLAG[listing.seller.countryCode]} </span>
               {[listing.seller.town, listing.seller.regionName].filter(Boolean).join(', ')}

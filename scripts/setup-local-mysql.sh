@@ -50,4 +50,7 @@ GRANT ALL PRIVILEGES ON \`prisma\\_migrate\\_shadow\\_db\\_%\`.* TO '${DB_USER}'
 FLUSH PRIVILEGES;
 SQL
 
+# After an abrupt stop, recent rows can be missing from full-text search; rebuild to be safe.
+"$(dirname "$0")/rebuild-search-index.sh" "${DB_NAME}" "${DB_TEST_NAME}"
+
 echo "==> MySQL ready: mysql://${DB_USER}:***@127.0.0.1:3306/${DB_NAME}"

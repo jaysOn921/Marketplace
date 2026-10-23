@@ -18,9 +18,11 @@ describe('App shell', () => {
 
   it('submits a search and shows the query on the search page', async () => {
     renderApp('/');
-    const [input] = screen.getAllByRole('searchbox');
+    const [input] = screen.getAllByRole('combobox', { name: 'Search listings' });
     await userEvent.type(input!, 'iphone{enter}');
-    expect(screen.getByRole('heading', { name: /results for “iphone”/i })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: /results for “iphone”/i }),
+    ).toBeInTheDocument();
   });
 
   it('has a help centre page linked from the footer', () => {

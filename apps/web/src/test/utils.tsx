@@ -17,7 +17,7 @@ export function renderApp(path = '/') {
   );
 }
 
-type Handler = (body: unknown, init: RequestInit) => { status?: number; body?: unknown };
+type Handler = (body: unknown, init: RequestInit, url: URL) => { status?: number; body?: unknown };
 
 export const sampleUser: SessionUser = {
   id: 1,
@@ -84,7 +84,7 @@ export function mockApi(
         status: 404,
       });
     const body = typeof init.body === 'string' ? JSON.parse(init.body) : undefined;
-    const result = handler(body, init);
+    const result = handler(body, init, new URL(String(input), 'http://localhost'));
     const status = result.status ?? 200;
     return new Response(status === 204 ? null : JSON.stringify(result.body ?? {}), {
       status,

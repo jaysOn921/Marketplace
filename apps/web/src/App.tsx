@@ -20,6 +20,7 @@ import { ListingPage } from './pages/listings/ListingPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { SearchPage } from './pages/SearchPage';
 import { SellPage } from './pages/SellPage';
+import { ShopPage } from './pages/ShopPage';
 
 export function App() {
   return (
@@ -55,6 +56,7 @@ export function App() {
           }
         />
         <Route path="sell" element={<SellPage />} />
+        <Route path="shop/:slug" element={<ShopPage />} />
         <Route path="listings/:id" element={<ListingPage />} />
         <Route
           path="listings/new"

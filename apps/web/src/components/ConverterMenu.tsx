@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { CurrencyConverter } from './CurrencyConverter';
+import { DisplayCurrencySelect } from './DisplayCurrencySelect';
 
 /** Header button that opens the currency converter on any page. */
 export function ConverterMenu() {
@@ -54,6 +55,7 @@ export function ConverterMenu() {
             </button>
           </div>
           <CurrencyConverter compact />
+          <DisplayCurrencySelect className="mt-4 border-t border-stone-100 pt-3" />
           <Link
             to="/converter"
             onClick={() => setOpen(false)}

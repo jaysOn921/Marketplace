@@ -24,5 +24,10 @@ export default tseslint.config(
     plugins: { 'react-hooks': reactHooks },
     rules: reactHooks.configs.recommended.rules,
   },
+  {
+    // Browser automation scripts run some code inside the page (page.evaluate).
+    files: ['tests/e2e/**/*.mjs', 'scripts/**/*.mjs'],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
+  },
   prettier,
 );

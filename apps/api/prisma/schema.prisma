@@ -236,6 +236,8 @@ model Listing {
   @@index([status, countryId, categoryId])
   @@index([status, submittedAt])
   @@index([sellerId, status])
+  @@index([status, publishedAt]) // newest-first browsing
+  @@index([status, currency, price]) // price filters
   @@fulltext([title, description])
   @@map("listings")
 }

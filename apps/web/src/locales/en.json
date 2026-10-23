@@ -22,7 +22,59 @@
     "label": "Search listings",
     "title": "Search results",
     "resultsFor": "Results for “{{q}}”",
-    "comingSoon": "Search is being built. Listings will appear here soon."
+    "browseAll": "All listings",
+    "inCategory": "“{{q}}” in {{category}}",
+    "count_one": "{{count}} listing",
+    "count_other": "{{count}} listings",
+    "sortLabel": "Sort by",
+    "sort": {
+      "relevance": "Best match",
+      "newest": "Newest",
+      "price_asc": "Price: low to high",
+      "price_desc": "Price: high to low"
+    },
+    "anyMatch": "No listings matched all of “{{q}}”, so here are listings that match some of the words.",
+    "error": "Search isn't working right now. Please try again.",
+    "pagination": "Pages",
+    "prev": "Previous",
+    "next": "Next",
+    "empty": {
+      "title": "No listings match these filters",
+      "titleQuery": "No listings found for “{{q}}”",
+      "tipSpelling": "Check the spelling or try a more general word.",
+      "tipFilters": "Clear the filters",
+      "tipBrowse": "Browse all listings"
+    },
+    "chips": {
+      "from": "Sellers in {{country}}",
+      "remove": "Remove filter: {{label}}",
+      "clearAll": "Clear all"
+    },
+    "suggest": {
+      "label": "Suggestions",
+      "searchFor": "Search for “{{q}}”",
+      "category": "Category"
+    },
+    "filters": {
+      "title": "Filters",
+      "toggle": "Filters ({{count}})",
+      "category": "Category",
+      "allCategories": "All categories",
+      "allIn": "All {{name}}",
+      "availableIn": "Available to",
+      "anywhere": "Buyers anywhere",
+      "buyersIn": "Buyers in {{country}}",
+      "sellerCountry": "Seller is in",
+      "bothCountries": "Tanzania or Zambia",
+      "price": "Price",
+      "priceCurrency": "Price currency",
+      "min": "Min",
+      "max": "Max",
+      "minLabel": "Minimum price in {{currency}}",
+      "maxLabel": "Maximum price in {{currency}}",
+      "applyPrice": "Apply price",
+      "priceHint": "Listings in the other currency are compared using today's rate."
+    }
   },
   "home": {
     "heroTitle": "Buy and sell across Tanzania and Zambia",
@@ -35,7 +87,11 @@
     "how2Title": "Prices in your currency",
     "how2Body": "See approximate prices in TSh or K wherever the seller is.",
     "how3Title": "Talk to the seller",
-    "how3Body": "Message sellers, agree on delivery, and pay on collection or by mobile money."
+    "how3Body": "Message sellers, agree on delivery, and pay on collection or by mobile money.",
+    "categories": "Browse categories",
+    "crossBorder": "From {{from}}, available in {{to}}",
+    "latest": "Latest listings",
+    "seeAll": "See all"
   },
   "help": {
     "title": "Help centre",
@@ -404,5 +460,23 @@
         "details": "Please add more details: condition, size and what's included."
       }
     }
+  },
+  "card": {
+    "shipsTo": "Ships to {{flag}}"
+  },
+  "currencyPref": {
+    "label": "Show approximate prices in",
+    "BOTH": "Both",
+    "TZS": "TSh",
+    "ZMW": "K"
+  },
+  "shop": {
+    "notFound": "Shop not found",
+    "liveCount_one": "{{count}} live listing",
+    "liveCount_other": "{{count}} live listings",
+    "searchLabel": "Search {{shop}}",
+    "searchPlaceholder": "Search this shop…",
+    "empty": "This shop has no live listings right now.",
+    "noResults": "No listings in this shop match your search."
   }
 }

@@ -2,7 +2,6 @@
 // Usage: node scripts/screenshot.mjs [baseUrl] [path ...]
 //   e.g. node scripts/screenshot.mjs http://localhost:4100 / /search?q=phone /help
 // Uses the pre-installed Chromium (PLAYWRIGHT_BROWSERS_PATH) or CHROMIUM_PATH.
-/* global document, window -- used inside page.evaluate() */
 import { existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium } from 'playwright-core';
