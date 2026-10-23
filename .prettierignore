@@ -1,0 +1,7 @@
+node_modules
+dist
+coverage
+backups
+tests/artifacts
+package-lock.json
+PLAN.md

@@ -1,0 +1,52 @@
+{
+  "brand": {
+    "name": "TZed",
+    "tagline": "Buy and sell across Tanzania and Zambia"
+  },
+  "nav": {
+    "browse": "Browse",
+    "sell": "Sell",
+    "help": "Help",
+    "signIn": "Sign in",
+    "menu": "Menu"
+  },
+  "search": {
+    "placeholder": "Search for phones, furniture, clothes…",
+    "button": "Search",
+    "label": "Search listings",
+    "title": "Search results",
+    "resultsFor": "Results for “{{q}}”",
+    "comingSoon": "Search is being built. Listings will appear here soon."
+  },
+  "home": {
+    "heroTitle": "Buy and sell across Tanzania and Zambia",
+    "heroBody": "Find great deals from sellers in both countries, with prices shown in shillings and kwacha.",
+    "ctaBrowse": "Start browsing",
+    "ctaSell": "Sell an item",
+    "howTitle": "How TZed works",
+    "how1Title": "Every listing is checked",
+    "how1Body": "Our team reviews each listing before it goes live.",
+    "how2Title": "Prices in your currency",
+    "how2Body": "See approximate prices in TSh or K wherever the seller is.",
+    "how3Title": "Talk to the seller",
+    "how3Body": "Message sellers, agree on delivery, and pay on collection or by mobile money."
+  },
+  "help": {
+    "title": "Help centre",
+    "intro": "Answers to common questions, and a way to contact our support team.",
+    "comingSoon": "The full help centre with searchable articles and support tickets is on its way.",
+    "contact": "Need help now? Email support@tzed.example"
+  },
+  "footer": {
+    "help": "Help centre",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "countries": "Serving Tanzania 🇹🇿 and Zambia 🇿🇲",
+    "rights": "© {{year}} TZed"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page you're looking for doesn't exist or has moved.",
+    "home": "Go to the home page"
+  }
+}

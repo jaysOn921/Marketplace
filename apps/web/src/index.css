@@ -1,0 +1,20 @@
+@import 'tailwindcss';
+
+/* Placeholder brand palette: green shared by both flags, amber accent. */
+@theme {
+  --color-brand-50: #ecfdf5;
+  --color-brand-100: #d1fae5;
+  --color-brand-600: #059669;
+  --color-brand-700: #047857;
+  --color-brand-800: #065f46;
+  --color-accent-400: #fbbf24;
+  --color-accent-500: #f59e0b;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  @apply bg-stone-50 text-stone-900 antialiased;
+}

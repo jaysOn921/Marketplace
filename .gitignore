@@ -1,0 +1,21 @@
+node_modules/
+dist/
+coverage/
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+
+# Uploaded images in dev
+uploads/
+
+# Database dumps live in backups/ but are not committed
+backups/*
+!backups/.gitkeep
+
+# Test artifacts (Playwright reports, screenshots, logs)
+tests/artifacts/*
+!tests/artifacts/.gitkeep
+playwright-report/
+test-results/
