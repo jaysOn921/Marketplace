@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { describe, expect, it } from 'vitest';
 import { createApp } from './app.js';
+import { redactUrl } from './logger.js';
 
 const app = createApp();
 
@@ -30,5 +31,12 @@ describe('API skeleton', () => {
     const res = await request(app).get('/api/v1/health');
     expect(res.headers['x-content-type-options']).toBe('nosniff');
     expect(res.headers['x-powered-by']).toBeUndefined();
+  });
+
+  it('keeps private link tokens out of logged URLs', () => {
+    expect(redactUrl('/api/v1/support/tickets/4?token=abc123&x=1')).toBe(
+      '/api/v1/support/tickets/4?token=[Redacted]&x=1',
+    );
+    expect(redactUrl('/api/v1/search?q=token')).toBe('/api/v1/search?q=token');
   });
 });

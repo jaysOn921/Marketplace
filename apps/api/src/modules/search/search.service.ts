@@ -24,9 +24,9 @@ async function currentRate(): Promise<ExchangeRateInfo | null> {
 }
 
 function textCondition(text: TextQuery, mode: MatchMode): Prisma.Sql {
-  const likes = text.short.map(
-    (w) => Prisma.sql`(l.title LIKE ${`%${w}%`} OR l.description LIKE ${`%${w}%`})`,
-  );
+  // Short words are matched in titles only: scanning descriptions is slow (it reads every
+  // row) and a two-letter substring there mostly matches inside unrelated words.
+  const likes = text.short.map((w) => Prisma.sql`l.title LIKE ${`%${w}%`}`);
   const match = text.long.length
     ? [
         Prisma.sql`MATCH(l.title, l.description) AGAINST (${booleanExpression(text.long, mode)} IN BOOLEAN MODE)`,
@@ -97,24 +97,23 @@ async function countWhere(where: Prisma.Sql) {
 }
 
 export async function searchListings(query: SearchQuery): Promise<SearchResponse> {
-  const rate = await currentRate();
   const text = parseTextQuery(query.q);
-
-  // Category: a parent category includes all of its subcategories.
-  const category = query.category
-    ? await prisma.category.findFirst({
-        where: { slug: query.category, isActive: true },
-        include: {
-          parent: true,
-          children: { where: { isActive: true }, orderBy: { sortOrder: 'asc' } },
-        },
-      })
-    : null;
-  const countries = await prisma.country.findMany();
+  const [rate, category, countries, seller] = await Promise.all([
+    currentRate(),
+    // Category: a parent category includes all of its subcategories.
+    query.category
+      ? prisma.category.findFirst({
+          where: { slug: query.category, isActive: true },
+          include: {
+            parent: true,
+            children: { where: { isActive: true }, orderBy: { sortOrder: 'asc' } },
+          },
+        })
+      : null,
+    prisma.country.findMany(),
+    query.seller ? prisma.sellerProfile.findUnique({ where: { slug: query.seller } }) : null,
+  ]);
   const countryId = (code?: string) => countries.find((c) => c.code === code)?.id ?? -1;
-  const seller = query.seller
-    ? await prisma.sellerProfile.findUnique({ where: { slug: query.seller } })
-    : null;
 
   const rest: Prisma.Sql[] = [];
   if (query.availableIn) {
@@ -167,11 +166,16 @@ export async function searchListings(query: SearchQuery): Promise<SearchResponse
   }[sort];
 
   const offset = (query.page - 1) * query.pageSize;
-  const idRows = total
-    ? await prisma.$queryRaw<{ id: number }[]>`
-        SELECT l.id FROM listings l WHERE ${whereOf(filters)}
-        ORDER BY ${orderBy} LIMIT ${query.pageSize} OFFSET ${offset}`
-    : [];
+  // The page of results and the filter counts don't depend on each other.
+  const [idRows, categoryCounts, countryCounts] = await Promise.all([
+    total
+      ? prisma.$queryRaw<{ id: number }[]>`
+          SELECT l.id FROM listings l WHERE ${whereOf(filters)}
+          ORDER BY ${orderBy} LIMIT ${query.pageSize} OFFSET ${offset}`
+      : [],
+    categoryFacets(filters, category),
+    countryFacets(filters, countries),
+  ]);
   const ids = idRows.map((r) => r.id);
   const rows = ids.length
     ? await prisma.listing.findMany({ where: { id: { in: ids } }, include: listingSummaryInclude })
@@ -202,10 +206,7 @@ export async function searchListings(query: SearchQuery): Promise<SearchResponse
           children: category.children.map((c) => ({ slug: c.slug, name: c.name })),
         }
       : null,
-    facets: {
-      categories: await categoryFacets(filters, category),
-      countries: await countryFacets(filters, countries),
-    },
+    facets: { categories: categoryCounts, countries: countryCounts },
   };
 }
 

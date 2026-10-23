@@ -42,7 +42,7 @@ function ConversationList({
                 <p className={`truncate text-sm ${c.unread ? 'font-semibold' : 'font-medium'}`}>
                   {c.otherParty}
                 </p>
-                <span className="shrink-0 text-xs text-stone-400">
+                <span className="shrink-0 text-xs text-stone-500">
                   {timeAgo(c.lastMessageAt, i18n.language)}
                 </span>
               </div>
@@ -134,7 +134,7 @@ function Thread({ id }: { id: number }) {
 
       <div className="min-h-0 flex-1 space-y-2 overflow-y-auto bg-stone-50 p-3" aria-live="polite">
         {data.hasMore && (
-          <p className="text-center text-xs text-stone-400">{t('messages.older')}</p>
+          <p className="text-center text-xs text-stone-500">{t('messages.older')}</p>
         )}
         {data.messages.map((m) => (
           <div key={m.id} className={`flex ${m.mine ? 'justify-end' : 'justify-start'}`}>
@@ -146,7 +146,7 @@ function Thread({ id }: { id: number }) {
               ) : (
                 <p className="whitespace-pre-line break-words">{m.body}</p>
               )}
-              <p className={`mt-0.5 text-[11px] ${m.mine ? 'text-brand-100' : 'text-stone-400'}`}>
+              <p className={`mt-0.5 text-[11px] ${m.mine ? 'text-brand-100' : 'text-stone-500'}`}>
                 <span className="sr-only">{m.mine ? t('messages.you') : c.otherParty}, </span>
                 {timeAgo(m.createdAt, i18n.language)}
               </p>
@@ -188,7 +188,7 @@ function Thread({ id }: { id: number }) {
               {t('messages.send')}
             </button>
           </div>
-          <p className="mt-1 text-xs text-stone-400">{t('messages.safety')}</p>
+          <p className="mt-1 text-xs text-stone-500">{t('messages.safety')}</p>
         </form>
       ) : (
         <p className="border-t border-stone-200 p-3 text-sm text-stone-600">

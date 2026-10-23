@@ -9,6 +9,9 @@
   --color-brand-800: #065f46;
   --color-accent-400: #fbbf24;
   --color-accent-500: #f59e0b;
+  /* Darker ambers for text and outlines on white (3:1 for large text and icons, 4.5:1 for body text). */
+  --color-accent-600: #d97706;
+  --color-accent-700: #b45309;
 }
 
 html {

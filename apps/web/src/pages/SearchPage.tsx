@@ -115,7 +115,7 @@ function PriceFilter({
           onChange={(e) => setMin(e.target.value)}
           className="w-full min-w-0 rounded-lg border border-stone-300 px-2.5 py-1.5 text-sm"
         />
-        <span className="text-stone-400">–</span>
+        <span className="text-stone-500">–</span>
         <input
           inputMode="numeric"
           placeholder={t('search.filters.max')}
@@ -184,7 +184,7 @@ function Filters({
                 onChange={() => update({ category: c.slug })}
               >
                 <span>{c.name}</span>
-                <span className="text-stone-400">{count(facets.categories, c.slug) ?? ''}</span>
+                <span className="text-stone-500">{count(facets.categories, c.slug) ?? ''}</span>
               </Radio>
             ))}
           </>
@@ -205,7 +205,7 @@ function Filters({
                 onChange={() => update({ category: c.slug })}
               >
                 <span>{c.name}</span>
-                <span className="text-stone-400">{count(facets.categories, c.slug) ?? 0}</span>
+                <span className="text-stone-500">{count(facets.categories, c.slug) ?? 0}</span>
               </Radio>
             ))}
           </>
@@ -252,7 +252,7 @@ function Filters({
             <span>
               {FLAG[c]} {t(`countries.${c}`)}
             </span>
-            <span className="text-stone-400">{count(facets.countries, c) ?? 0}</span>
+            <span className="text-stone-500">{count(facets.countries, c) ?? 0}</span>
           </Radio>
         ))}
       </FilterGroup>
@@ -398,7 +398,7 @@ function Pagination({
       </button>
       {pages.map((p, i) => (
         <span key={p} className="flex items-center gap-1.5">
-          {i > 0 && p - pages[i - 1]! > 1 && <span className="text-stone-400">…</span>}
+          {i > 0 && p - pages[i - 1]! > 1 && <span className="text-stone-500">…</span>}
           <button
             type="button"
             onClick={() => go(p)}

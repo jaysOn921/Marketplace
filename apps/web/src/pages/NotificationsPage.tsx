@@ -52,7 +52,7 @@ export function NotificationsPage() {
                       {n.body}
                     </span>
                   )}
-                  <span className="block text-xs text-stone-400">
+                  <span className="block text-xs text-stone-500">
                     {!n.read && <span className="sr-only">{t('notifications.unread')}, </span>}
                     {timeAgo(n.createdAt, i18n.language)}
                   </span>

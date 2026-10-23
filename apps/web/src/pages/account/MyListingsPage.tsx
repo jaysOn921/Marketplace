@@ -55,7 +55,7 @@ export function MyListingsPage() {
               }`}
             >
               {s === 'ALL' ? t('myListings.all') : t(`listingStatus.${s}`)}{' '}
-              <span className="text-stone-400">({count})</span>
+              <span className="text-stone-500">({count})</span>
             </button>
           );
         })}
@@ -78,7 +78,7 @@ export function MyListingsPage() {
                   className="h-16 w-16 shrink-0 rounded-lg object-cover"
                 />
               ) : (
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-stone-100 text-xs text-stone-400">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-stone-100 text-xs text-stone-500">
                   {t('myListings.noPhoto')}
                 </div>
               )}

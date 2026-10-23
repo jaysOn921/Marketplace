@@ -45,9 +45,14 @@ function ReviewCard({ item }: { item: ReviewQueueItem }) {
 
       {item.images.length > 0 && (
         <ul className="mt-3 flex gap-2 overflow-x-auto pb-1">
-          {item.images.map((img) => (
+          {item.images.map((img, i) => (
             <li key={img.id} className="shrink-0">
-              <a href={img.url} target="_blank" rel="noreferrer">
+              <a
+                href={img.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={t('admin.review.openPhoto', { n: i + 1 })}
+              >
                 <img src={img.thumbUrl} alt="" className="h-24 w-24 rounded-lg object-cover" />
               </a>
             </li>

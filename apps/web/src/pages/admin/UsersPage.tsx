@@ -35,7 +35,7 @@ function UserRow({ u }: { u: AdminUserRow }) {
           <p className="text-xs text-stone-500">
             {u.shopName && (
               <>
-                <Link to={`/shop/${u.shopSlug}`} className="text-brand-700 hover:underline">
+                <Link to={`/shop/${u.shopSlug}`} className="text-brand-700 underline">
                   {u.shopName}
                 </Link>{' '}
                 ·{' '}

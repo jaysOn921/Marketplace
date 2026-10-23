@@ -24,7 +24,7 @@ export function ListingCard({ listing }: { listing: ListingSummary }) {
               className="h-full w-full object-cover"
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-sm text-stone-400">
+            <div className="flex h-full items-center justify-center text-sm text-stone-500">
               {t('listing.noPhotos')}
             </div>
           )}

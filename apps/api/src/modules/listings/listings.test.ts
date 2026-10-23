@@ -1,5 +1,6 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { crc32, deflateSync } from 'node:zlib';
 import sharp from 'sharp';
 import request from 'supertest';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -68,6 +69,28 @@ async function liveListing(client: Client, regionId: number) {
     data: { status: 'ACTIVE', publishedAt: new Date() },
   });
   return id;
+}
+
+/** A PNG that claims the given size but holds only a few bytes of pixel data. */
+function pngHeader(width: number, height: number) {
+  const chunk = (type: string, data: Buffer) => {
+    const body = Buffer.concat([Buffer.from(type), data]);
+    const out = Buffer.alloc(body.length + 8);
+    out.writeUInt32BE(data.length, 0);
+    body.copy(out, 4);
+    out.writeUInt32BE(crc32(body), body.length + 4);
+    return out;
+  };
+  const ihdr = Buffer.alloc(13);
+  ihdr.writeUInt32BE(width, 0);
+  ihdr.writeUInt32BE(height, 4);
+  ihdr.set([8, 2, 0, 0, 0], 8); // 8-bit RGB
+  return Buffer.concat([
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+    chunk('IHDR', ihdr),
+    chunk('IDAT', deflateSync(Buffer.alloc(64))),
+    chunk('IEND', Buffer.alloc(0)),
+  ]);
 }
 
 beforeEach(async () => {
@@ -200,6 +223,17 @@ describe('photos', () => {
     const fake = await uploadPhoto(client, id, Buffer.from('<?php echo "hi"; ?>'));
     expect(fake.status).toBe(400);
 
+    // A tiny file whose header claims 20000 × 20000 pixels ("decompression bomb").
+    const bomb = await uploadPhoto(client, id, pngHeader(20_000, 20_000));
+    expect(bomb.status).toBe(400);
+    expect(bomb.body.error.message).toMatch(/too large/);
+    // A real JPEG cut short.
+    const jpeg = await sharp(await testImage(400, 300))
+      .jpeg()
+      .toBuffer();
+    const broken = await uploadPhoto(client, id, jpeg.subarray(0, jpeg.length / 2));
+    expect(broken.status).toBe(400);
+
     for (let i = 0; i < 8; i++)
       expect((await uploadPhoto(client, id, await testImage(100, 100))).status).toBe(201);
     const ninth = await uploadPhoto(client, id, await testImage(100, 100));
@@ -294,6 +328,35 @@ describe('review workflow (seller side)', () => {
     expect((await client.delete(`/listings/${id}`)).status).toBe(204);
     expect(await prisma.listing.count({ where: { id } })).toBe(0);
     expect(existsSync(join(config.UPLOAD_DIR, 'listings', String(id)))).toBe(false);
+  });
+
+  it('keeps a listing that was ordered, hidden, so the order history still works', async () => {
+    const { client, region } = await sellerClient();
+    const id = await liveListing(client, region.id);
+    const buyer = await signIn((await createUser({ countryCode: 'TZ' })).email);
+    const orderId = (
+      await buyer.post('/orders', { listingId: id, quantity: 1, deliveryMethod: 'PICKUP' })
+    ).body.order.id;
+
+    expect((await client.delete(`/listings/${id}`)).status).toBe(204);
+    expect((await prisma.listing.findUniqueOrThrow({ where: { id } })).status).toBe('REMOVED');
+    expect((await request(app).get(`/api/v1/listings/${id}`)).status).toBe(404);
+    expect(existsSync(join(config.UPLOAD_DIR, 'listings', String(id)))).toBe(true);
+    const order = await buyer.get(`/orders/${orderId}`);
+    expect(order.status).toBe(200);
+    expect(order.body.order.title).toBe('Samsung Galaxy A15');
+  });
+
+  it("won't remove the only photo of a submitted listing or apply an out-of-date photo order", async () => {
+    const { client, region } = await sellerClient();
+    const id = await liveListing(client, region.id);
+    const [only] = (await client.get(`/listings/${id}`)).body.listing.images;
+    expect((await client.delete(`/listings/${id}/images/${only.id}`)).status).toBe(400);
+    expect(
+      (await client.put(`/listings/${id}/images/order`, { imageIds: [only.id, only.id + 999] }))
+        .status,
+    ).toBe(400);
+    expect((await client.delete(`/listings/${id}/images/${only.id + 999}`)).status).toBe(404);
   });
 
   it("lists the seller's own listings with counts per status", async () => {

@@ -39,7 +39,7 @@ export function HelpPage() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder={t('help.searchPlaceholder')}
-            className="min-w-0 flex-1 rounded-l-lg px-3 py-2 text-sm text-stone-900"
+            className="min-w-0 flex-1 rounded-l-lg bg-white px-3 py-2 text-sm text-stone-900"
           />
           <button
             type="submit"
@@ -68,7 +68,7 @@ export function HelpPage() {
               aria-pressed={topic === tp}
               className={`rounded-full border px-3 py-1 text-sm ${topic === tp ? 'border-brand-700 bg-brand-50 text-brand-800' : 'border-stone-300 bg-white'}`}
             >
-              {t(`help.topic.${tp}`)} <span className="text-stone-400">({counts[tp]})</span>
+              {t(`help.topic.${tp}`)} <span className="text-stone-500">({counts[tp]})</span>
             </button>
           ))}
         </nav>

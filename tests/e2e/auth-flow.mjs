@@ -34,7 +34,7 @@ await p.screenshot({ path: 'tests/artifacts/phase2-account-mobile.png', fullPage
 
 await p.waitForTimeout(300);
 const dir = 'tests/artifacts/outbox/';
-const file = readdirSync(dir).find((f) => f.includes(email));
+const file = readdirSync(dir).find((f) => f.includes(email) && f.endsWith('.txt'));
 const link = /http:\/\/\S+verify-email\?token=\S+/.exec(readFileSync(dir + file, 'utf8'))[0];
 await p.goto(link);
 await p.getByText('Thanks, your email is confirmed.').waitFor();

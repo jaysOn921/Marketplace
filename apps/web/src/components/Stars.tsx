@@ -2,6 +2,30 @@ import type { SellerRating } from '@tzed/shared';
 import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 
+/**
+ * One star as an SVG. The filled star has a dark amber outline and the empty one a grey
+ * outline, so both stand out from the background (3:1, WCAG non-text contrast).
+ */
+function StarIcon({
+  filled,
+  className = 'h-[1em] w-[1em]',
+}: {
+  filled: boolean;
+  className?: string;
+}) {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      aria-hidden="true"
+      className={`inline-block align-[-0.125em] ${filled ? 'fill-accent-500 stroke-accent-700' : 'fill-none stroke-stone-500'} ${className}`}
+      strokeWidth="1.25"
+      strokeLinejoin="round"
+    >
+      <path d="M10 1.8l2.47 5.18 5.68.7-4.18 3.93 1.07 5.63L10 14.48l-5.04 2.76 1.07-5.63L1.85 7.68l5.68-.7z" />
+    </svg>
+  );
+}
+
 /** Five stars filled to `value` (halves rounded to the nearest star). */
 export function Stars({ value, size = 'sm' }: { value: number; size?: 'sm' | 'md' }) {
   const { t } = useTranslation();
@@ -12,12 +36,9 @@ export function Stars({ value, size = 'sm' }: { value: number; size?: 'sm' | 'md
       aria-label={t('reviews.outOf5', { value })}
       className={size === 'md' ? 'text-xl' : 'text-sm'}
     >
-      <span aria-hidden="true" className="text-accent-500">
-        {'★'.repeat(full)}
-      </span>
-      <span aria-hidden="true" className="text-stone-300">
-        {'★'.repeat(5 - full)}
-      </span>
+      {[1, 2, 3, 4, 5].map((n) => (
+        <StarIcon key={n} filled={n <= full} />
+      ))}
     </span>
   );
 }
@@ -40,7 +61,7 @@ export function RatingSummary({
         aria-label={t('reviews.summary', { average: rating.average, count: rating.count })}
       >
         <span aria-hidden="true">
-          <span className="text-accent-500">★</span> {rating.average.toFixed(1)} ({rating.count})
+          <StarIcon filled /> {rating.average.toFixed(1)} ({rating.count})
         </span>
       </span>
     );
@@ -83,12 +104,10 @@ export function StarInput({
               onChange={() => onChange(n)}
               className="sr-only"
             />
-            <span
-              aria-hidden="true"
-              className={n <= value ? 'text-accent-500' : 'text-stone-300 hover:text-accent-400'}
-            >
-              ★
-            </span>
+            <StarIcon
+              filled={n <= value}
+              className="h-8 w-8 transition-transform hover:scale-110"
+            />
             <span className="sr-only">{t('reviews.starOption', { count: n })}</span>
           </label>
         ))}

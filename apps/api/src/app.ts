@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import { pinoHttp } from 'pino-http';
 import { API_PREFIX } from '@tzed/shared';
 import { config } from './config.js';
-import { logger } from './logger.js';
+import { logger, redactUrl } from './logger.js';
 import { loadUser } from './middleware/auth.js';
 import { csrfProtection } from './middleware/csrf.js';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.js';
@@ -43,7 +43,14 @@ export function createApp(options: AppOptions = {}) {
   app.use(helmet());
   app.use(express.json({ limit: '1mb' }));
   if (!config.isTest) {
-    app.use(pinoHttp({ logger }));
+    app.use(
+      pinoHttp({
+        logger,
+        serializers: {
+          req: (req: { url: string }) => Object.assign(req, { url: redactUrl(req.url) }),
+        },
+      }),
+    );
   }
 
   // Uploaded photos. File names are random and never change, so they can be cached for long.

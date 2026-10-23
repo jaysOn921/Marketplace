@@ -130,7 +130,7 @@ function NotificationBell() {
                         {n.body && (
                           <span className="line-clamp-2 block text-stone-600">{n.body}</span>
                         )}
-                        <span className="block text-xs text-stone-400">
+                        <span className="block text-xs text-stone-500">
                           {timeAgo(n.createdAt, i18n.language)}
                         </span>
                       </span>

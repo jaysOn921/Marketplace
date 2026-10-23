@@ -25,9 +25,11 @@ export function Field({ label, error, hint, children }: FieldProps) {
   const describedBy = [error && `${id}-error`, hint && `${id}-hint`].filter(Boolean).join(' ');
   return (
     <div>
-      <label htmlFor={id} className="mb-1 block text-sm font-medium text-stone-800">
-        {label}
-      </label>
+      {label && (
+        <label htmlFor={id} className="mb-1 block text-sm font-medium text-stone-800">
+          {label}
+        </label>
+      )}
       {children({
         id,
         'aria-invalid': Boolean(error),

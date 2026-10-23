@@ -139,12 +139,12 @@ export function SearchBar({ className = '' }: { className?: string }) {
               onMouseEnter={() => setActive(i)}
               className={`flex cursor-pointer items-center gap-2 px-3 py-2 text-sm ${i === active ? 'bg-brand-50' : ''}`}
             >
-              <span aria-hidden="true" className="w-4 text-stone-400">
+              <span aria-hidden="true" className="w-4 text-stone-500">
                 {o.kind === 'search' ? '🔍' : o.kind === 'category' ? '📂' : '•'}
               </span>
               <span className="truncate">{o.label}</span>
               {o.kind === 'category' && (
-                <span className="ml-auto text-xs text-stone-400">
+                <span className="ml-auto text-xs text-stone-500">
                   {t('search.suggest.category')}
                 </span>
               )}

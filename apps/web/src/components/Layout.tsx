@@ -19,7 +19,7 @@ function Logo() {
         TZ
       </span>
       <span className="text-xl font-bold tracking-tight text-brand-800">
-        TZ<span className="text-accent-500">ed</span>
+        TZ<span className="text-accent-600">ed</span>
       </span>
     </Link>
   );

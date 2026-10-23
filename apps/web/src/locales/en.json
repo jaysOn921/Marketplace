@@ -480,7 +480,8 @@
         "category": "Please move this listing to the right category.",
         "price": "The price looks wrong. Please check it's in your own currency.",
         "details": "Please add more details: condition, size and what's included."
-      }
+      },
+      "openPhoto": "Open photo {{n}} full size (new tab)"
     },
     "reports": {
       "title": "Reports",

@@ -21,7 +21,7 @@ function Gallery({ listing }: { listing: ListingDetail }) {
 
   if (!current) {
     return (
-      <div className="flex aspect-[4/3] items-center justify-center rounded-xl bg-stone-100 text-stone-400">
+      <div className="flex aspect-[4/3] items-center justify-center rounded-xl bg-stone-100 text-stone-500">
         {t('listing.noPhotos')}
       </div>
     );

@@ -132,7 +132,7 @@ export function RegisterPage() {
 
         <Field label="" error={err('consent')}>
           {(a11y) => (
-            <span className="flex items-start gap-2 text-sm text-stone-700">
+            <label htmlFor={a11y.id} className="flex items-start gap-2 text-sm text-stone-700">
               <input
                 {...a11y}
                 type="checkbox"
@@ -151,7 +151,7 @@ export function RegisterPage() {
                 </Link>
                 .
               </span>
-            </span>
+            </label>
           )}
         </Field>
 

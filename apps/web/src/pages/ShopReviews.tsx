@@ -53,7 +53,7 @@ export function ShopReviews({ slug }: { slug: string }) {
                   <span className="font-medium">
                     {r.reviewerName} <span aria-hidden="true">{FLAG[r.reviewerCountry]}</span>
                   </span>
-                  <span className="text-stone-400">
+                  <span className="text-stone-500">
                     {new Date(r.createdAt).toLocaleDateString(i18n.language, {
                       dateStyle: 'medium',
                     })}

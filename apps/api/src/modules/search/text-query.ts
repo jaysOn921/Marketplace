@@ -2,7 +2,7 @@
  * Turns what a user typed into safe pieces for MySQL full-text search.
  *
  * - InnoDB full-text ignores words shorter than 3 characters (innodb_ft_min_token_size),
- *   so short words like "tv" or "4k" are matched with LIKE instead.
+ *   so short words like "tv" or "4k" are matched with LIKE on titles instead.
  * - InnoDB's default stopwords ("the", "for", "with"…) never match in boolean mode, so
  *   requiring them would return nothing; they are dropped.
  * - Everything except letters and digits is removed, so users can't inject boolean
