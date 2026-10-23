@@ -269,3 +269,9 @@ Defaults I'm assuming. Correct any of them:
 1. **You review this plan** and approve it or request changes (I'll revise and re-confirm).
 2. On approval, start **Phase 0 (Scaffolding)** on branch `claude/blissful-goldberg-fs0v88`, then work through the phases in order, pushing after each.
 3. After each phase, a short check-in: what was built, how to try it, and anything that needs your input.
+
+**Status (23 Oct 2026):** phases 0–11 are built and pushed. Before launch:
+- **Hosting:** choose where to host (see Constraints) and check PDPC and Data Protection Commissioner registration.
+- **Deploy:** follow `docs/deploy.md`.
+- **Exchange rate:** set today's rate in Admin → Exchange rate.
+- **Help centre:** review the help articles and the prohibited-items policy.

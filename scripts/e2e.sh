@@ -5,7 +5,7 @@
 # Usage: scripts/e2e.sh [test names…]   e.g. scripts/e2e.sh journey a11y
 # Needs local MySQL with the dev seed, and no SMTP_URL (emails are read from the dev outbox).
 set -uo pipefail
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/.." || exit 1
 
 BASE="${BASE_URL:-http://localhost:5173}"
 TESTS=("$@")

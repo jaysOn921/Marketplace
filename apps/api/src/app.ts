@@ -1,4 +1,5 @@
 import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import express, { Router } from 'express';
 import session from 'express-session';
@@ -105,8 +106,20 @@ export function createApp(options: AppOptions = {}) {
   // In production the API also serves the built React app (single origin).
   const webDist = fileURLToPath(new URL('../../web/dist', import.meta.url));
   if (config.isProduction && existsSync(webDist)) {
+    // Vite's build files have a content hash in their name, so they never change.
+    app.use(
+      '/assets',
+      express.static(join(webDist, 'assets'), {
+        maxAge: '1y',
+        immutable: true,
+        fallthrough: false,
+      }),
+    );
     app.use(express.static(webDist, { index: false, maxAge: '1h' }));
-    app.get('/{*path}', (_req, res) => res.sendFile('index.html', { root: webDist }));
+    // index.html is always revalidated, so a new release reaches people straight away.
+    app.get('/{*path}', (_req, res) =>
+      res.set('Cache-Control', 'no-cache').sendFile('index.html', { root: webDist }),
+    );
   }
 
   app.use(notFoundHandler);

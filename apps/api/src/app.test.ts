@@ -39,4 +39,16 @@ describe('API skeleton', () => {
     );
     expect(redactUrl('/api/v1/search?q=token')).toBe('/api/v1/search?q=token');
   });
+
+  it('keeps the status of Express errors: missing photo files and oversized bodies', async () => {
+    const missing = await request(app).get('/uploads/listings/1/does-not-exist-full.webp');
+    expect(missing.status).toBe(404);
+    expect(missing.body.error.code).toBe('NOT_FOUND');
+    const big = await request(app)
+      .post('/api/v1/health')
+      .set('Content-Type', 'application/json')
+      .send(JSON.stringify({ text: 'x'.repeat(1_100_000) }));
+    expect(big.status).toBe(413);
+    expect(big.body.error.code).toBe('TOO_LARGE');
+  });
 });

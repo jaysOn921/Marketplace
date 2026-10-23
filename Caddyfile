@@ -1,0 +1,19 @@
+# Caddy gets and renews the HTTPS certificate for $DOMAIN automatically
+# (the domain's DNS must point at this server, with ports 80 and 443 open).
+{$DOMAIN} {
+	encode zstd gzip
+	# Photos are up to 10 MB each, 8 per upload; leave some room.
+	request_body {
+		max_size 90MB
+	}
+	reverse_proxy app:4000
+	log {
+		output stdout
+		format console
+	}
+}
+
+# Send www. to the main domain.
+www.{$DOMAIN} {
+	redir https://{$DOMAIN}{uri} permanent
+}

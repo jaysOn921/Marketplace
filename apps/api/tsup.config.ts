@@ -1,7 +1,8 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  entry: ['src/server.ts'],
+  // The seed is built too, so production containers can create reference data and the admin.
+  entry: { server: 'src/server.ts', seed: 'prisma/seed.ts' },
   format: ['esm'],
   target: 'node22',
   platform: 'node',

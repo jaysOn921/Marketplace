@@ -49,6 +49,18 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
   ) {
     status = 400;
     body = { error: { code: 'BAD_JSON', message: 'Request body is not valid JSON.' } };
+  } else if (clientErrorStatus(err)) {
+    // Express's own errors (a missing static file, a request body over the size limit…)
+    // carry an HTTP status; keep it rather than reporting a server error.
+    status = clientErrorStatus(err)!;
+    body = {
+      error:
+        status === 404
+          ? { code: 'NOT_FOUND', message: 'Not found.' }
+          : status === 413
+            ? { code: 'TOO_LARGE', message: 'The request is too large.' }
+            : { code: 'BAD_REQUEST', message: 'The request could not be handled.' },
+    };
   }
 
   if (status >= 500) {
@@ -57,3 +69,11 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
 
   res.status(status).json(body);
 };
+
+/** The 4xx status of an error raised by Express or its middleware, if it has one. */
+function clientErrorStatus(err: unknown): number | undefined {
+  const status =
+    (err as { status?: unknown; statusCode?: unknown } | null)?.status ??
+    (err as { statusCode?: unknown } | null)?.statusCode;
+  return typeof status === 'number' && status >= 400 && status < 500 ? status : undefined;
+}

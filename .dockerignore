@@ -1,0 +1,13 @@
+# Keep the build context small and free of secrets.
+.git
+**/node_modules
+**/dist
+**/coverage
+.env
+.env.*
+uploads
+backups
+tests
+playwright-report
+test-results
+*.log

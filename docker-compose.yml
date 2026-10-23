@@ -1,0 +1,71 @@
+# Production stack: Caddy (HTTPS) → app (API + web) → MySQL.
+# Setup and day-to-day commands: docs/deploy.md
+#   cp .env.production.example .env   # then fill it in
+#   docker compose up -d --build
+services:
+  mysql:
+    image: mysql:8.0.46
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: tzed
+      MYSQL_USER: tzed
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Set MYSQL_PASSWORD in .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env}
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_0900_ai_ci']
+    volumes:
+      - mysql-data:/var/lib/mysql
+    # Not published: only the app can reach the database.
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'MYSQL_PWD="$$MYSQL_ROOT_PASSWORD" mysqladmin ping -h 127.0.0.1 -uroot --silent',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  app:
+    build: .
+    image: tzed-app
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      APP_URL: ${APP_URL:?Set APP_URL in .env, e.g. https://tzed.example.com}
+      DATABASE_URL: mysql://tzed:${MYSQL_PASSWORD}@mysql:3306/tzed
+      SESSION_SECRET: ${SESSION_SECRET:?Set SESSION_SECRET in .env}
+      SMTP_URL: ${SMTP_URL:?Set SMTP_URL in .env}
+      MAIL_FROM: ${MAIL_FROM:-TZed <no-reply@tzed.local>}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-}
+    volumes:
+      - uploads:/data/uploads
+    logging:
+      driver: json-file
+      options: { max-size: '20m', max-file: '5' }
+
+  caddy:
+    image: caddy:2.11.7
+    restart: unless-stopped
+    depends_on: [app]
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    environment:
+      DOMAIN: ${DOMAIN:?Set DOMAIN in .env, e.g. tzed.example.com}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  mysql-data:
+  uploads:
+  caddy-data:
+  caddy-config:
