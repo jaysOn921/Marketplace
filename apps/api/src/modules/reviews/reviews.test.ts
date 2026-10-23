@@ -5,7 +5,13 @@ import { createApp } from '../../app.js';
 import { prisma } from '../../db.js';
 import { testClient } from '../../test/client.js';
 import { resetDb } from '../../test/db.js';
-import { createListing, createSeller, createUser, TEST_PASSWORD } from '../../test/factories.js';
+import {
+  auditActions,
+  createListing,
+  createSeller,
+  createUser,
+  TEST_PASSWORD,
+} from '../../test/factories.js';
 
 const app = createApp();
 
@@ -145,5 +151,78 @@ describe('reviews', () => {
     });
     const reviews = await request(app).get(`/api/v1/shops/${slug}/reviews`);
     expect(reviews.body.reviews[0].reviewerName).toBe('Deleted user');
+  });
+});
+
+describe('hiding reviews', () => {
+  it('lets an admin hide a review from the shop and rating, then show it again', async () => {
+    const first = await completedOrder('Natasha Phiri');
+    await first.sellerClient.post(`/orders/${first.id}/complete`);
+    await first.buyerClient.post(`/orders/${first.id}/review`, {
+      rating: 1,
+      comment: 'Call me on 0977…',
+    });
+    // A second, visible review for the same seller.
+    const buyer2 = await signIn((await createUser({ countryCode: 'ZM' })).email);
+    const id2 = (
+      await buyer2.post('/orders', {
+        listingId: first.listing.id,
+        quantity: 1,
+        deliveryMethod: 'CROSS_BORDER',
+      })
+    ).body.order.id;
+    await first.sellerClient.post(`/orders/${id2}/accept`);
+    await first.sellerClient.post(`/orders/${id2}/complete`);
+    await buyer2.post(`/orders/${id2}/review`, { rating: 5 });
+
+    const a = await createUser({ role: 'ADMIN' });
+    const admin = await signIn(a.email);
+    expect((await first.buyerClient.get('/admin/reviews')).status).toBe(403);
+    const list = await admin.get('/admin/reviews?rating=1');
+    expect(list.body.total).toBe(1);
+    const reviewId = list.body.rows[0].id;
+    expect(list.body.rows[0]).toMatchObject({ orderId: first.id, hiddenAt: null });
+
+    expect((await admin.post(`/admin/reviews/${reviewId}/hide`, { reason: 'x' })).status).toBe(400);
+    expect(
+      (await admin.post(`/admin/reviews/${reviewId}/hide`, { reason: 'Shares a phone number' }))
+        .status,
+    ).toBe(200);
+    expect(
+      (await admin.post(`/admin/reviews/${reviewId}/hide`, { reason: 'Shares a phone number' }))
+        .status,
+    ).toBe(409);
+
+    const shop = (await request(app).get(`/api/v1/shops/${first.slug}/reviews`)).body;
+    expect(shop.reviews).toHaveLength(1);
+    expect(shop.rating).toEqual({ average: 5, count: 1 });
+    expect(shop.breakdown[1]).toBe(0);
+    expect((await first.buyerClient.get(`/orders/${first.id}`)).body.order.review).toMatchObject({
+      rating: 1,
+      hidden: true,
+    });
+    expect((await admin.get('/admin/reviews?visibility=hidden')).body.rows[0]).toMatchObject({
+      id: reviewId,
+      hiddenReason: 'Shares a phone number',
+    });
+    expect(
+      (
+        await prisma.notification.findFirstOrThrow({
+          where: { userId: first.buyer.id, type: 'review.hidden' },
+        })
+      ).body,
+    ).toContain('Reason: Shares a phone number');
+
+    await admin.post(`/admin/reviews/${reviewId}/unhide`, { reason: 'Seller asked to keep it' });
+    expect((await request(app).get(`/api/v1/shops/${first.slug}/reviews`)).body.rating).toEqual({
+      average: 3,
+      count: 2,
+    });
+    expect(
+      (await admin.post(`/admin/reviews/${reviewId}/unhide`, { reason: 'again' })).status,
+    ).toBe(409);
+    expect(await auditActions(a.id)).toEqual(
+      expect.arrayContaining(['review.hide', 'review.unhide']),
+    );
   });
 });

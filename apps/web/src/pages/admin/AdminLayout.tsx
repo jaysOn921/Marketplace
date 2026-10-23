@@ -13,6 +13,7 @@ export function AdminLayout() {
     { to: '/admin/tickets', label: t('admin.nav.tickets') },
     { to: '/admin/users', label: t('admin.nav.users') },
     { to: '/admin/listings', label: t('admin.nav.listings') },
+    { to: '/admin/reviews', label: t('admin.nav.reviews') },
     { to: '/admin/rates', label: t('admin.nav.rates') },
     { to: '/admin/categories', label: t('admin.nav.categories') },
     { to: '/admin/help', label: t('admin.nav.help') },

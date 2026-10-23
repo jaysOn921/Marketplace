@@ -5,6 +5,7 @@ import { RequireAuth } from './components/RequireAuth';
 import { AccountPage } from './pages/account/AccountPage';
 import { MyListingsPage } from './pages/account/MyListingsPage';
 import { AdminListingsPage } from './pages/admin/AdminListingsPage';
+import { AdminReviewsPage } from './pages/admin/AdminReviewsPage';
 import { AdminLayout } from './pages/admin/AdminLayout';
 import { AdminTicketPage, AdminTicketsPage } from './pages/admin/AdminTicketsPage';
 import { AuditPage } from './pages/admin/AuditPage';
@@ -161,6 +162,7 @@ export function App() {
           <Route path="tickets/:id" element={<AdminTicketPage />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="listings" element={<AdminListingsPage />} />
+          <Route path="reviews" element={<AdminReviewsPage />} />
           <Route path="rates" element={<RatesPage />} />
           <Route path="categories" element={<CategoriesPage />} />
           <Route path="help" element={<FaqAdminPage />} />

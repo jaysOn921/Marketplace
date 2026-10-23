@@ -34,7 +34,7 @@ export async function seedReferenceData(db: PrismaClient | Prisma.TransactionCli
         baseCurrency: SEED_RATE.base,
         quoteCurrency: SEED_RATE.quote,
         rate: SEED_RATE.rate,
-        note: 'Starting rate from seed. Update it in the admin panel before launch.',
+        note: 'Starting rate from seed (Xe mid-market, 29 Jul 2026). Check it in the admin panel before launch.',
       },
     });
   }

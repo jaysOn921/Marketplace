@@ -12,13 +12,13 @@ import { notify } from '../notifications/notifications.service.js';
 
 const PAGE = 10;
 
-/** Average rating (1 decimal) and count for each seller, in one query. */
+/** Average rating (1 decimal) and count for each seller, in one query. Hidden reviews don't count. */
 export async function sellerRatings(sellerIds: number[]): Promise<Map<number, SellerRating>> {
   const ids = [...new Set(sellerIds)];
   if (!ids.length) return new Map();
   const rows = await prisma.review.groupBy({
     by: ['sellerId'],
-    where: { sellerId: { in: ids } },
+    where: { sellerId: { in: ids }, hiddenAt: null },
     _avg: { rating: true },
     _count: true,
   });
@@ -77,7 +77,7 @@ export async function createReview(user: AuthUser, orderId: number, input: unkno
 export async function listSellerReviews(slug: string, page: number): Promise<ReviewsResponse> {
   const profile = await prisma.sellerProfile.findUnique({ where: { slug } });
   if (!profile) throw AppError.notFound('Shop not found.');
-  const where = { sellerId: profile.userId };
+  const where = { sellerId: profile.userId, hiddenAt: null };
   const [rows, total, grouped, rating] = await Promise.all([
     prisma.review.findMany({
       where,

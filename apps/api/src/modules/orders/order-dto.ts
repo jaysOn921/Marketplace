@@ -96,6 +96,7 @@ export function toOrderDetail(
           rating: order.review.rating,
           comment: order.review.comment,
           createdAt: order.review.createdAt.toISOString(),
+          hidden: order.review.hiddenAt !== null,
         }
       : null,
     canReview: viewerId === order.buyerId && order.status === 'COMPLETED' && !order.review,

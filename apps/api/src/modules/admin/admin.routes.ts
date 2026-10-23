@@ -47,6 +47,16 @@ adminRouter.post('/listings/:id/restore', async (req, res) => {
   });
 });
 
+adminRouter.get('/reviews', async (req, res) => res.json(await admin.listReviews(req.query)));
+adminRouter.post('/reviews/:id/hide', async (req, res) => {
+  await admin.setReviewHidden(currentUser(req), idParam(req.params.id), true, req.body, req);
+  res.json({ ok: true });
+});
+adminRouter.post('/reviews/:id/unhide', async (req, res) => {
+  await admin.setReviewHidden(currentUser(req), idParam(req.params.id), false, req.body, req);
+  res.json({ ok: true });
+});
+
 adminRouter.get('/tickets', async (req, res) => res.json(await admin.listTickets(req.query)));
 adminRouter.post('/tickets/:id/reply', async (req, res) => {
   await admin.replyToTicket(currentUser(req), idParam(req.params.id), req.body, req);

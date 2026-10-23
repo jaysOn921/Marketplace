@@ -93,6 +93,23 @@ export interface AdminListingRow {
   updatedAt: string;
 }
 
+export interface AdminReviewRow {
+  id: number;
+  orderId: number;
+  rating: number;
+  comment: string | null;
+  reviewerId: number;
+  reviewerName: string;
+  sellerId: number;
+  /** Shop name, or the seller's name if they have no shop profile. */
+  sellerName: string;
+  shopSlug: string | null;
+  listingTitle: string;
+  createdAt: string;
+  hiddenAt: string | null;
+  hiddenReason: string | null;
+}
+
 export interface AdminTicketRow {
   id: number;
   subject: string;

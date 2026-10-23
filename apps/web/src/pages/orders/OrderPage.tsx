@@ -11,7 +11,7 @@ import { ReviewSection } from './ReviewSection';
 
 const FLAG = { TZ: '🇹🇿', ZM: '🇿🇲' } as const;
 
-/** The saved rate the way people quote it, "K 1 = TSh 105", whichever way the order converted. */
+/** The saved rate the way people quote it, "K 1 = TSh 140.30", whichever way the order converted. */
 function rateLabel(order: OrderDetail) {
   const tshPerKwacha = order.currency === 'ZMW' ? order.fxRate : 1 / order.fxRate;
   return `K 1 = TSh ${tshPerKwacha.toLocaleString('en-US', { maximumFractionDigits: 2 })}`;

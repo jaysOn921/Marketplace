@@ -380,18 +380,21 @@ model OrderEvent {
 }
 
 model Review {
-  id         Int      @id @default(autoincrement())
-  orderId    Int      @unique
-  reviewerId Int
-  sellerId   Int
-  rating     Int      @db.TinyInt
-  comment    String?  @db.VarChar(1000)
-  createdAt  DateTime @default(now())
-  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  reviewer   User     @relation("ReviewsWritten", fields: [reviewerId], references: [id])
-  seller     User     @relation("ReviewsReceived", fields: [sellerId], references: [id])
+  id           Int       @id @default(autoincrement())
+  orderId      Int       @unique
+  reviewerId   Int
+  sellerId     Int
+  rating       Int       @db.TinyInt
+  comment      String?   @db.VarChar(1000)
+  createdAt    DateTime  @default(now())
+  /// Set when an admin hides the review: it stays stored but drops out of shop pages and ratings.
+  hiddenAt     DateTime?
+  hiddenReason String?   @db.VarChar(500)
+  order        Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  reviewer     User      @relation("ReviewsWritten", fields: [reviewerId], references: [id])
+  seller       User      @relation("ReviewsReceived", fields: [sellerId], references: [id])
 
-  @@index([sellerId, createdAt])
+  @@index([sellerId, hiddenAt, createdAt])
   @@map("reviews")
 }
 

@@ -171,4 +171,48 @@ describe('Admin area', () => {
       expect(sent).toEqual({ body: 'Yes, many sellers in Mbeya do.', close: true }),
     );
   });
+
+  it('hides a seller review with a reason, then offers to show it again', async () => {
+    let sent: unknown;
+    let hidden = false;
+    const row = () => ({
+      id: 4,
+      orderId: 31,
+      rating: 1,
+      comment: 'Call me on 0977 000 000 instead',
+      reviewerId: 9,
+      reviewerName: 'Peter Chanda',
+      sellerId: 2,
+      sellerName: 'Kariakoo Electronics',
+      shopSlug: 'kariakoo-electronics',
+      listingTitle: 'Samsung Galaxy A15',
+      createdAt: '2026-10-01T00:00:00.000Z',
+      hiddenAt: hidden ? '2026-10-02T00:00:00.000Z' : null,
+      hiddenReason: hidden ? 'Shares a phone number' : null,
+    });
+    mockApi(
+      {
+        'GET /me/counts': () => ({ body: counts }),
+        'GET /admin/reviews': () => ({ body: { rows: [row()], total: 1, page: 1, pageCount: 1 } }),
+        'POST /admin/reviews/4/hide': (body) => {
+          sent = body;
+          hidden = true;
+          return { body: { ok: true } };
+        },
+      },
+      { user: admin },
+    );
+    renderApp('/admin/reviews');
+    expect(await screen.findByText('Peter Chanda → Kariakoo Electronics')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Hide' }));
+    const form = screen.getByRole('form', { name: 'Hide' });
+    await userEvent.type(
+      within(form).getByPlaceholderText('Reason (shown to the person)'),
+      'Shares a phone number',
+    );
+    await userEvent.click(within(form).getByRole('button', { name: 'Hide' }));
+    await waitFor(() => expect(sent).toEqual({ reason: 'Shares a phone number' }));
+    expect(await screen.findByRole('button', { name: 'Show again' })).toBeInTheDocument();
+    expect(screen.getByText(/: Shares a phone number/)).toBeInTheDocument();
+  });
 });

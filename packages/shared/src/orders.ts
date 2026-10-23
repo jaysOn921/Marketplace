@@ -146,7 +146,8 @@ export interface OrderDetail extends OrderSummary {
   sellerTown: string;
   events: OrderEventDto[];
   /** The buyer's review of this order, once given. */
-  review: { rating: number; comment: string | null; createdAt: string } | null;
+  /** `hidden` is true when the TZed team has taken the review off the shop page. */
+  review: { rating: number; comment: string | null; createdAt: string; hidden: boolean } | null;
   /** True for the buyer of a completed order that hasn't been reviewed yet. */
   canReview: boolean;
   /** The buyer–seller conversation about this listing, if one exists. */

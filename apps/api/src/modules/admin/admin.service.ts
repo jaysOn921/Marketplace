@@ -10,6 +10,7 @@ import {
   type AdminCategoryRow,
   type AdminFaqRow,
   type AdminListingRow,
+  type AdminReviewRow,
   type AdminStats,
   type AdminTicketRow,
   type AdminUserRow,
@@ -324,6 +325,120 @@ export async function setListingRemoved(
     email: true,
   });
   return to;
+}
+
+// ─── Reviews ─────────────────────────────────────────────────────────────────
+
+export async function listReviews(query: Record<string, unknown>): Promise<Paged<AdminReviewRow>> {
+  const page = pageOf(query.page);
+  const q = text(query.q);
+  const rating = Number(query.rating);
+  const where: Prisma.ReviewWhereInput = {
+    ...(q
+      ? {
+          OR: [
+            { comment: { contains: q } },
+            { reviewer: { email: { contains: q } } },
+            { reviewer: { name: { contains: q } } },
+            { seller: { email: { contains: q } } },
+            { seller: { sellerProfile: { shopName: { contains: q } } } },
+            ...(Number(q) ? [{ orderId: Number(q) }] : []),
+          ],
+        }
+      : {}),
+    ...(query.visibility === 'hidden'
+      ? { hiddenAt: { not: null } }
+      : query.visibility === 'visible'
+        ? { hiddenAt: null }
+        : {}),
+    ...(rating >= 1 && rating <= 5 ? { rating } : {}),
+    ...(Number(query.sellerId) ? { sellerId: Number(query.sellerId) } : {}),
+  };
+  const [rows, total] = await Promise.all([
+    prisma.review.findMany({
+      where,
+      include: {
+        reviewer: true,
+        seller: { include: { sellerProfile: true } },
+        order: { include: { items: { take: 1 } } },
+      },
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * PAGE,
+      take: PAGE,
+    }),
+    prisma.review.count({ where }),
+  ]);
+  return paged(
+    rows.map((r) => ({
+      id: r.id,
+      orderId: r.orderId,
+      rating: r.rating,
+      comment: r.comment,
+      reviewerId: r.reviewerId,
+      reviewerName: r.reviewer.name,
+      sellerId: r.sellerId,
+      sellerName: r.seller.sellerProfile?.shopName ?? r.seller.name,
+      shopSlug: r.seller.sellerProfile?.slug ?? null,
+      listingTitle: r.order.items[0]?.titleSnapshot ?? '',
+      createdAt: r.createdAt.toISOString(),
+      hiddenAt: r.hiddenAt?.toISOString() ?? null,
+      hiddenReason: r.hiddenReason,
+    })),
+    total,
+    page,
+  );
+}
+
+/** Hide a review from the shop page and rating, or show it again. The reviewer is told why. */
+export async function setReviewHidden(
+  admin: AuthUser,
+  id: number,
+  hide: boolean,
+  input: unknown,
+  req: Request,
+) {
+  const { reason } = adminReasonSchema.parse(input);
+  const review = await prisma.review.findUnique({
+    where: { id },
+    include: { order: { include: { items: { take: 1 } } } },
+  });
+  if (!review) throw AppError.notFound('Review not found.');
+  if (hide && review.hiddenAt) throw AppError.conflict('This review is already hidden.');
+  if (!hide && !review.hiddenAt) throw AppError.conflict('This review is not hidden.');
+
+  await prisma.$transaction(async (tx) => {
+    await tx.review.update({
+      where: { id },
+      data: hide
+        ? { hiddenAt: new Date(), hiddenReason: reason }
+        : { hiddenAt: null, hiddenReason: null },
+    });
+    await recordAudit(
+      {
+        action: hide ? 'review.hide' : 'review.unhide',
+        targetType: 'review',
+        targetId: id,
+        before: {
+          hidden: Boolean(review.hiddenAt),
+          rating: review.rating,
+          comment: review.comment,
+        },
+        after: { hidden: hide, reason },
+        req,
+      },
+      tx,
+    );
+  });
+  const title = review.order.items[0]?.titleSnapshot ?? `order #${review.orderId}`;
+  await notify(review.reviewerId, {
+    type: hide ? 'review.hidden' : 'review.unhidden',
+    title: hide ? 'Your review was hidden' : 'Your review is visible again',
+    body: hide
+      ? `Your review for “${title}” was hidden from the shop page by the TZed team. Reason: ${reason}`
+      : `Your review for “${title}” is back on the shop page. Note from the TZed team: ${reason}`,
+    link: `/orders/${review.orderId}`,
+    email: hide,
+  });
 }
 
 // ─── Support tickets ─────────────────────────────────────────────────────────

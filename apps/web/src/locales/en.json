@@ -522,6 +522,7 @@
       "tickets": "Support tickets",
       "users": "Users",
       "listings": "Listings",
+      "reviews": "Seller reviews",
       "rates": "Exchange rate",
       "categories": "Categories",
       "help": "Help articles",
@@ -621,6 +622,22 @@
       "to": "To",
       "security": "Include security events",
       "system": "System"
+    },
+    "reviews": {
+      "search": "Comment, name or order #",
+      "visibility": "Visibility",
+      "all": "All reviews",
+      "visible": "Visible",
+      "hidden": "Hidden",
+      "anyRating": "Any rating",
+      "hide": "Hide",
+      "unhide": "Show again",
+      "hiddenBadge": "Hidden",
+      "hiddenBecause": "Hidden {{date}}: {{reason}}",
+      "byFor": "{{reviewer}} → {{seller}}",
+      "order": "Order #{{id}}",
+      "intro": "Hidden reviews stay stored but leave the shop page and the seller's rating. The reviewer is told why.",
+      "rating": "Rating"
     }
   },
   "card": {
@@ -826,7 +843,8 @@
     "commentPlaceholder": "e.g. how the item matched the description, delivery, communication",
     "submit": "Submit review",
     "breakdown": "Ratings breakdown",
-    "bought": "Bought: {{title}}"
+    "bought": "Bought: {{title}}",
+    "hiddenNote": "The TZed team has hidden this review from the shop page, so it doesn't count towards the seller's rating."
   },
   "support": {
     "contactTitle": "Contact support",

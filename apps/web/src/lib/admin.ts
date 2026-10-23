@@ -3,6 +3,7 @@ import type {
   AdminCategoryRow,
   AdminFaqRow,
   AdminListingRow,
+  AdminReviewRow,
   AdminStats,
   AdminTicketRow,
   AdminUserRow,
@@ -33,6 +34,8 @@ export const useAdminUsers = (p: Record<string, string | undefined>) =>
   useAdminList<Paged<AdminUserRow>>('users', p);
 export const useAdminListings = (p: Record<string, string | undefined>) =>
   useAdminList<Paged<AdminListingRow>>('listings', p);
+export const useAdminReviews = (p: Record<string, string | undefined>) =>
+  useAdminList<Paged<AdminReviewRow>>('reviews', p);
 export const useAdminTickets = (p: Record<string, string | undefined>) =>
   useAdminList<Paged<AdminTicketRow>>('tickets', p);
 export const useAuditLog = (p: Record<string, string | undefined>) =>
@@ -77,6 +80,9 @@ export function useAdminAction<I>(send: (input: I) => Promise<unknown>) {
         'help-article',
         'search',
         'listing',
+        'reviews',
+        'shop',
+        'order',
       ]) {
         void qc.invalidateQueries({ queryKey: [key] });
       }

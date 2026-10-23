@@ -63,8 +63,15 @@ export const COUNTRIES = [
   },
 ] as const;
 
-/** Placeholder starting rate. An admin must set the real rate before launch. */
-export const SEED_RATE = { base: 'ZMW', quote: 'TZS', rate: '105.00000000' } as const;
+/**
+ * Starting rate: Xe mid-market, 29 Jul 2026 (1 ZMW ≈ 140.30 TZS). Admins keep it current in
+ * Admin → Exchange rate. Tests use a round 105 so expected amounts stay easy to check.
+ */
+export const SEED_RATE = {
+  base: 'ZMW',
+  quote: 'TZS',
+  rate: process.env.NODE_ENV === 'test' ? '105.00000000' : '140.30000000',
+} as const;
 
 export const CATEGORIES: {
   name: string;
