@@ -12,7 +12,9 @@
     "converter": "Converter",
     "account": "My account",
     "sellerProfile": "Seller profile",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "myListings": "My listings",
+    "review": "Review listings"
   },
   "search": {
     "placeholder": "Search for phones, furniture, clothes…",
@@ -240,6 +242,167 @@
           "body": "You can download all your data or delete your account at any time from My account. After deletion, past orders and messages remain for the other party's records, shown as \"Deleted user\". These rights follow Tanzania's Personal Data Protection Act 2022 and Zambia's Data Protection Act 2021."
         }
       ]
+    }
+  },
+  "condition": {
+    "NEW": "New",
+    "LIKE_NEW": "Like new",
+    "GOOD": "Good",
+    "FAIR": "Fair",
+    "FOR_PARTS": "For parts / not working"
+  },
+  "listingStatus": {
+    "DRAFT": "Draft",
+    "PENDING_REVIEW": "Waiting for review",
+    "ACTIVE": "Live",
+    "REJECTED": "Needs changes",
+    "SOLD": "Sold",
+    "REMOVED": "Removed"
+  },
+  "sell": {
+    "title": "Sell on TZed",
+    "intro": "Reach buyers in Tanzania and Zambia. It takes three quick steps before your first listing.",
+    "step1": "Create a free account",
+    "step2": "Confirm your email address",
+    "step3": "Set up your seller profile",
+    "verifyFirst": "Please confirm your email address first: check your inbox for our link, or resend it from My account.",
+    "profileFirst": "Set up your seller profile before listing items."
+  },
+  "photos": {
+    "title": "Photos",
+    "intro": "Add clear photos of the actual item. The first photo is the cover. Photos are checked as part of the review.",
+    "count": "{{count}} of {{max}}",
+    "add": "Add photos",
+    "uploading": "Uploading…",
+    "cover": "Cover",
+    "alt": "Photo {{n}}",
+    "moveLeft": "Move photo {{n}} earlier",
+    "moveRight": "Move photo {{n}} later",
+    "remove": "Remove photo {{n}}",
+    "tooMany": "You can add up to {{max}} photos ({{room}} more).",
+    "tooBig": "{{name}} is larger than 10 MB."
+  },
+  "listingForm": {
+    "newTitle": "List an item",
+    "newIntro": "Fill in the details, then add photos and submit it for review.",
+    "details": "Item details",
+    "createDraft": "Save and add photos",
+    "created": "Draft saved. Now add at least one photo, then submit it for review.",
+    "liveWarning": "This listing is live. Changing the title, description, price, category or adding photos sends it back for review, and it's hidden until approved. Quantity, location and delivery changes don't.",
+    "sentForReview": "Your changes were sent for review. The listing is hidden until an admin approves it.",
+    "fields": {
+      "title": "Title",
+      "category": "Category",
+      "condition": "Condition",
+      "price": "Price ({{currency}})",
+      "quantity": "Quantity available",
+      "description": "Description",
+      "deliveryNotes": "Delivery notes (optional)"
+    },
+    "hints": {
+      "title": "Brand, model and key detail, e.g. \"Samsung Galaxy A15, 128GB\".",
+      "price": "In your currency ({{symbol}}). Buyers in the other country also see an approximate converted price.",
+      "priceConverted": "{{price}} ≈ {{converted}} for buyers in the other country.",
+      "description": "Condition details, size, colour, what's included, any faults.",
+      "deliveryNotes": "e.g. delivery cost, how long it takes, bus company or border crossing."
+    },
+    "delivery": {
+      "title": "How can the buyer get it?",
+      "pickup": "Buyer collects from me",
+      "local": "I can deliver locally",
+      "crossBorder": "Also sell to buyers in {{country}}: I can send it across the border",
+      "crossBorderHint": "Your listing will appear for buyers in both countries."
+    },
+    "status": {
+      "title": "Status",
+      "view": "View listing",
+      "reason": "Reason:",
+      "submit": "Submit for review",
+      "resubmit": "Resubmit for review",
+      "markSold": "Mark as sold",
+      "markAvailable": "Mark as available again",
+      "delete": "Delete listing",
+      "confirmDelete": "Delete this listing?",
+      "deleteYes": "Yes, delete",
+      "needPhoto": "Add at least one photo to submit.",
+      "explain": {
+        "DRAFT": "Only you can see this draft. Submit it when it's ready.",
+        "PENDING_REVIEW": "An admin is checking this listing. You'll be notified when it's approved.",
+        "ACTIVE": "Your listing is live and visible to buyers.",
+        "REJECTED": "An admin asked for changes. Fix the listing and resubmit it.",
+        "SOLD": "Marked as sold. Buyers can still view it.",
+        "REMOVED": "This listing was removed."
+      }
+    }
+  },
+  "listing": {
+    "convert": "Convert",
+    "notFound": "This listing isn't available",
+    "notYours": "This isn't your listing.",
+    "noPhotos": "No photos yet",
+    "photoOf": "{{title}}, photo {{n}} of {{total}}",
+    "edit": "Edit listing",
+    "breadcrumb": "Category",
+    "available": "Available",
+    "location": "Location",
+    "posted": "Posted",
+    "seller": "Seller",
+    "memberSince": "On TZed since {{date}}",
+    "description": "Description",
+    "delivery": {
+      "title": "Delivery",
+      "pickup": "Collect from the seller in {{town}}",
+      "local": "Local delivery by the seller",
+      "crossBorder": "Can be sent to {{country}}"
+    },
+    "crossBorder": {
+      "title": "Available to buyers in {{a}} and {{b}}",
+      "customs": "Import duties and customs are agreed between you and the seller. TZed doesn't handle customs. Ask the seller about delivery cost and time before ordering."
+    }
+  },
+  "myListings": {
+    "title": "My listings",
+    "new": "List an item",
+    "filter": "Filter by status",
+    "all": "All",
+    "empty": "You haven't listed anything yet.",
+    "emptyTab": "No listings here.",
+    "noPhoto": "No photo",
+    "updated": "{{date}}"
+  },
+  "admin": {
+    "notAllowed": "This page is for TZed admins.",
+    "review": {
+      "title": "Review listings",
+      "intro": "Check each listing before it goes live. Oldest first.",
+      "empty": "Nothing to review. All caught up! 🎉",
+      "approve": "Approve",
+      "reject": "Reject…",
+      "sendRejection": "Reject listing",
+      "reasonLabel": "Reason (shown to the seller)",
+      "edited": "Edited: was live before",
+      "crossBorder": "sells to both countries",
+      "submitted": "Submitted",
+      "history": "History ({{count}})",
+      "decision": {
+        "SUBMITTED": "Submitted",
+        "APPROVED": "Approved",
+        "REJECTED": "Rejected"
+      },
+      "reasonShort": {
+        "prohibited": "Prohibited item",
+        "photos": "Photos",
+        "category": "Wrong category",
+        "price": "Price",
+        "details": "Missing details"
+      },
+      "reasons": {
+        "prohibited": "This item isn't allowed on TZed (see Items you cannot sell in the Help centre).",
+        "photos": "Please add clear photos of the actual item, not stock images.",
+        "category": "Please move this listing to the right category.",
+        "price": "The price looks wrong. Please check it's in your own currency.",
+        "details": "Please add more details: condition, size and what's included."
+      }
     }
   }
 }

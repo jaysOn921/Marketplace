@@ -2,6 +2,8 @@
 // Run: npm run db:seed --workspace @tzed/api
 import { PrismaClient, type Prisma } from '@prisma/client';
 import argon2 from 'argon2';
+import sharp from 'sharp';
+import { processAndStoreImage } from '../src/modules/media/images.js';
 import { CATEGORIES, COUNTRIES, FAQ_ARTICLES, SEED_RATE } from './seed-data.js';
 
 const prisma = new PrismaClient();
@@ -252,6 +254,29 @@ const DEMO_BUYERS = [
   { email: 'buyer.tz@demo.tzed.local', name: 'Baraka Said', country: 'TZ' },
 ] as const;
 
+const PLACEHOLDER_COLOURS = ['#047857', '#0e7490', '#7c3aed', '#b45309', '#be123c', '#4d7c0f'];
+
+/** A simple placeholder "photo" for demo listings: the title on a coloured background. */
+function placeholderPhoto(title: string, index: number) {
+  const colour = PLACEHOLDER_COLOURS[index % PLACEHOLDER_COLOURS.length];
+  const words = title.replace(/[&<>"]/g, '').split(' ');
+  const lines: string[] = [''];
+  for (const w of words) {
+    if ((lines.at(-1)! + ' ' + w).trim().length > 22) lines.push(w);
+    else lines[lines.length - 1] = (lines.at(-1)! + ' ' + w).trim();
+  }
+  const text = lines
+    .slice(0, 4)
+    .map((l, i) => `<tspan x="600" dy="${i === 0 ? 0 : 80}">${l}</tspan>`)
+    .join('');
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900">
+    <rect width="1200" height="900" fill="${colour}"/>
+    <text x="600" y="${450 - (Math.min(lines.length, 4) - 1) * 40}" font-family="sans-serif" font-size="64" font-weight="700" fill="#fff" text-anchor="middle">${text}</text>
+    <text x="600" y="840" font-family="sans-serif" font-size="32" fill="#ffffffaa" text-anchor="middle">TZed demo photo</text>
+  </svg>`;
+  return sharp(Buffer.from(svg)).png().toBuffer();
+}
+
 async function seedDemoData() {
   const passwordHash = await argon2.hash('demo-password');
   const countries = await prisma.country.findMany({ include: { regions: true } });
@@ -299,10 +324,10 @@ async function seedDemoData() {
 
     if (await prisma.listing.count({ where: { sellerId: user.id } })) continue;
 
-    for (const l of s.listings) {
+    for (const [index, l] of s.listings.entries()) {
       const status = l.status ?? 'ACTIVE';
       const submittedAt = new Date();
-      await prisma.listing.create({
+      const created = await prisma.listing.create({
         data: {
           sellerId: user.id,
           categoryId: categories[l.category]!,
@@ -345,9 +370,16 @@ async function seedDemoData() {
           },
         },
       });
+      const photo = await processAndStoreImage(
+        await placeholderPhoto(l.title, index),
+        `listings/${created.id}`,
+      );
+      await prisma.listingImage.create({ data: { listingId: created.id, ...photo } });
     }
   }
-  console.log('Demo data: sellers, buyers and listings (password: demo-password)');
+  console.log(
+    'Demo data: sellers, buyers and listings with placeholder photos (password: demo-password)',
+  );
 }
 
 async function main() {

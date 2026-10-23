@@ -1,5 +1,6 @@
 import type { ErrorRequestHandler, RequestHandler } from 'express';
 import type { ApiError } from '@tzed/shared';
+import { MulterError } from 'multer';
 import { ZodError } from 'zod';
 import { AppError } from '../lib/errors.js';
 import { logger } from '../logger.js';
@@ -32,6 +33,15 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
         details: { fields },
       },
     };
+  } else if (err instanceof MulterError) {
+    status = 400;
+    const message =
+      err.code === 'LIMIT_FILE_SIZE'
+        ? 'Each photo must be 10 MB or smaller.'
+        : err.code === 'LIMIT_FILE_COUNT' || err.code === 'LIMIT_UNEXPECTED_FILE'
+          ? 'Too many photos. A listing can have at most 8.'
+          : 'The upload could not be read. Please try again.';
+    body = { error: { code: 'UPLOAD_ERROR', message } };
   } else if (
     err instanceof SyntaxError &&
     'type' in err &&

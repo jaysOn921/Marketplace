@@ -15,6 +15,9 @@ import { authRouter } from './modules/auth/auth.routes.js';
 import { PrismaSessionStore, SESSION_COOKIE } from './modules/auth/session-store.js';
 import { geoRouter } from './modules/geo/geo.routes.js';
 import { healthRouter } from './modules/health/health.routes.js';
+import { listingsRouter } from './modules/listings/listings.routes.js';
+import { UPLOADS_URL_PREFIX } from './modules/media/storage.js';
+import { moderationRouter } from './modules/moderation/moderation.routes.js';
 import { usersRouter } from './modules/users/users.routes.js';
 
 export interface AppOptions {
@@ -33,6 +36,17 @@ export function createApp(options: AppOptions = {}) {
   if (!config.isTest) {
     app.use(pinoHttp({ logger }));
   }
+
+  // Uploaded photos. File names are random and never change, so they can be cached for long.
+  app.use(
+    UPLOADS_URL_PREFIX,
+    express.static(config.UPLOAD_DIR, {
+      index: false,
+      maxAge: '30d',
+      immutable: true,
+      fallthrough: false,
+    }),
+  );
 
   const api = Router();
   api.use(
@@ -58,6 +72,8 @@ export function createApp(options: AppOptions = {}) {
   api.use(geoRouter);
   api.use('/auth', authRouter(rateLimit ? createRateLimits() : null));
   api.use('/me', usersRouter);
+  api.use(listingsRouter);
+  api.use('/admin/listings', moderationRouter);
   api.use(notFoundHandler);
   app.use(API_PREFIX, api);
 

@@ -88,7 +88,11 @@ export function Layout() {
               ...(user
                 ? [
                     { to: '/account', label: t('nav.account') },
+                    { to: '/account/listings', label: t('nav.myListings') },
                     { to: '/account/seller', label: t('nav.sellerProfile') },
+                    ...(user.role === 'ADMIN'
+                      ? [{ to: '/admin/review', label: t('nav.review') }]
+                      : []),
                   ]
                 : [{ to: '/login', label: t('nav.signIn') }]),
             ].map((l) => (

@@ -7,9 +7,16 @@ export default function setup() {
   if (!/_test(\?|$)/.test(url)) {
     throw new Error(`Refusing to run tests: DATABASE_URL must point at a *_test database (${url})`);
   }
-  execFileSync('npx', ['prisma', 'migrate', 'deploy'], {
-    cwd: fileURLToPath(new URL('../..', import.meta.url)),
-    env: process.env,
-    stdio: 'pipe',
-  });
+  try {
+    execFileSync('npx', ['prisma', 'migrate', 'deploy'], {
+      cwd: fileURLToPath(new URL('../..', import.meta.url)),
+      env: process.env,
+      stdio: 'pipe',
+    });
+  } catch (err) {
+    const output = String((err as { stderr?: Buffer }).stderr ?? err);
+    throw new Error(
+      `Could not migrate the test database. Is MySQL running? (scripts/setup-local-mysql.sh)\n${output}`,
+    );
+  }
 }

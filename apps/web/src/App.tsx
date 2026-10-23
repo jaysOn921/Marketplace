@@ -1,7 +1,10 @@
 import { Route, Routes } from 'react-router';
 import { Layout } from './components/Layout';
+import { RequireAdmin } from './components/RequireAdmin';
 import { RequireAuth } from './components/RequireAuth';
 import { AccountPage } from './pages/account/AccountPage';
+import { MyListingsPage } from './pages/account/MyListingsPage';
+import { ReviewQueuePage } from './pages/admin/ReviewQueuePage';
 import { SellerProfilePage } from './pages/account/SellerProfilePage';
 import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage';
 import { LoginPage } from './pages/auth/LoginPage';
@@ -12,8 +15,11 @@ import { ConverterPage } from './pages/ConverterPage';
 import { HelpPage } from './pages/HelpPage';
 import { HomePage } from './pages/HomePage';
 import { LegalPage } from './pages/LegalPage';
+import { EditListingPage, NewListingPage } from './pages/listings/ListingFormPage';
+import { ListingPage } from './pages/listings/ListingPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { SearchPage } from './pages/SearchPage';
+import { SellPage } from './pages/SellPage';
 
 export function App() {
   return (
@@ -46,6 +52,40 @@ export function App() {
             <RequireAuth>
               <SellerProfilePage />
             </RequireAuth>
+          }
+        />
+        <Route path="sell" element={<SellPage />} />
+        <Route path="listings/:id" element={<ListingPage />} />
+        <Route
+          path="listings/new"
+          element={
+            <RequireAuth>
+              <NewListingPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="listings/:id/edit"
+          element={
+            <RequireAuth>
+              <EditListingPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="account/listings"
+          element={
+            <RequireAuth>
+              <MyListingsPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="admin/review"
+          element={
+            <RequireAdmin>
+              <ReviewQueuePage />
+            </RequireAdmin>
           }
         />
         <Route path="*" element={<NotFoundPage />} />

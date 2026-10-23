@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, useNavigate } from 'react-router';
 import { useLogout, useMe } from '../lib/auth';
+import { useReviewCount } from '../lib/listings';
 
 /** "Sign in" when signed out; the user's name with an account menu when signed in. */
 export function UserMenu() {
   const { t } = useTranslation();
   const { data: user, isPending } = useMe();
+  const { data: pending } = useReviewCount(user?.role === 'ADMIN');
   const logout = useLogout();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -66,12 +68,35 @@ export function UserMenu() {
           </Link>
           <Link
             role="menuitem"
+            to="/account/listings"
+            className={item}
+            onClick={() => setOpen(false)}
+          >
+            {t('nav.myListings')}
+          </Link>
+          <Link
+            role="menuitem"
             to="/account/seller"
             className={item}
             onClick={() => setOpen(false)}
           >
             {t('nav.sellerProfile')}
           </Link>
+          {user.role === 'ADMIN' && (
+            <Link
+              role="menuitem"
+              to="/admin/review"
+              className={`${item} flex justify-between`}
+              onClick={() => setOpen(false)}
+            >
+              {t('nav.review')}
+              {Boolean(pending) && (
+                <span className="rounded-full bg-amber-100 px-2 text-xs font-semibold leading-5 text-amber-900">
+                  {pending}
+                </span>
+              )}
+            </Link>
+          )}
           <button
             role="menuitem"
             type="button"

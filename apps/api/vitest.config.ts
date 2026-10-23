@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
 // API tests run against a real MySQL test database (never the dev database).
@@ -17,6 +18,7 @@ export default defineConfig({
       NODE_ENV: 'test',
       LOG_LEVEL: 'silent',
       DATABASE_URL: testDatabaseUrl,
+      UPLOAD_DIR: fileURLToPath(new URL('../../tests/artifacts/uploads-test/', import.meta.url)),
     },
   },
 });

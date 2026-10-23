@@ -17,6 +17,8 @@ const envSchema = z.object({
   // e.g. smtps://user:pass@smtp.example.com:465 — unset in dev: emails go to tests/artifacts/outbox/
   SMTP_URL: z.string().optional(),
   MAIL_FROM: z.string().default('TZed <no-reply@tzed.local>'),
+  // Where uploaded images are stored (local disk driver). Defaults to <repo>/uploads.
+  UPLOAD_DIR: z.string().optional(),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
 });
 
@@ -46,6 +48,8 @@ if (!parsed.success) {
 
 export const config = {
   ...parsed.data,
+  UPLOAD_DIR:
+    parsed.data.UPLOAD_DIR ?? fileURLToPath(new URL('../../../uploads/', import.meta.url)),
   isProduction: parsed.data.NODE_ENV === 'production',
   isTest: parsed.data.NODE_ENV === 'test',
   version: process.env.npm_package_version ?? '0.1.0',
