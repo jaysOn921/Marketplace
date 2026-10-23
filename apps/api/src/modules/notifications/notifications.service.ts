@@ -1,22 +1,24 @@
 import { APP_NAME } from '@tzed/shared';
-import { config } from '../../config.js';
 import { prisma } from '../../db.js';
+import { renderEmail } from '../../lib/email-layout.js';
 import { sendMailInBackground } from '../../lib/mailer.js';
 
 export interface NotificationInput {
-  type: string; // e.g. listing.approved
+  type: string; // e.g. listing.approved, order.placed, message.new
   title: string;
   body?: string;
-  /** App path, e.g. /listings/12 */
+  /** App path, e.g. /orders/12 */
   link?: string;
   /** Also send an email. */
   email?: boolean;
+  /** Button text in the email (defaults to "Open TZed"). */
+  actionLabel?: string;
 }
 
-/** Stores an in-app notification (and optionally emails it). The inbox UI arrives in Phase 6. */
+/** Stores an in-app notification (shown under the bell) and optionally emails it. */
 export async function notify(userId: number, n: NotificationInput) {
   const user = await prisma.user.findUnique({ where: { id: userId } });
-  if (!user || user.status === 'DELETED') return;
+  if (!user || user.status !== 'ACTIVE') return;
 
   await prisma.notification.create({
     data: { userId, type: n.type, title: n.title, body: n.body ?? null, link: n.link ?? null },
@@ -26,7 +28,11 @@ export async function notify(userId: number, n: NotificationInput) {
     sendMailInBackground({
       to: user.email,
       subject: `${n.title} — ${APP_NAME}`,
-      text: `Hi ${user.name},\n\n${n.body ?? n.title}\n\n${n.link ? `${config.APP_URL}${n.link}\n\n` : ''}— The ${APP_NAME} team`,
+      ...renderEmail({
+        name: user.name,
+        paragraphs: [n.body ?? n.title],
+        action: n.link ? { label: n.actionLabel ?? `Open ${APP_NAME}`, path: n.link } : undefined,
+      }),
     });
   }
 }

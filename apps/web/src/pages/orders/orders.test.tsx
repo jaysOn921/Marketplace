@@ -67,8 +67,9 @@ function orderDetail(overrides: Partial<OrderDetail> = {}): OrderDetail {
     deliveryNotes: 'Bus via Tunduma',
     buyerNote: null,
     cancelReason: null,
-    buyer: { name: 'Natasha Phiri', countryCode: 'ZM', phone: null },
+    buyer: { id: 5, name: 'Natasha Phiri', countryCode: 'ZM', phone: null },
     seller: {
+      id: 4,
       name: 'Amina M',
       countryCode: 'TZ',
       phone: null,
@@ -79,6 +80,7 @@ function orderDetail(overrides: Partial<OrderDetail> = {}): OrderDetail {
     events: [{ type: 'placed', note: null, actor: 'buyer', createdAt: '2026-10-23T10:00:00.000Z' }],
     actions: ['cancel'],
     acceptedAt: null,
+    conversationId: null,
     buyerPaidAt: null,
     receivedAt: null,
     completedAt: null,

@@ -98,6 +98,7 @@ export const orderActionSchema = z.object({
 // ─── DTOs ────────────────────────────────────────────────────────────────────
 
 export interface OrderParty {
+  id: number;
   name: string;
   countryCode: CountryCode;
   /** Shown only once the seller has accepted the order. */
@@ -144,6 +145,8 @@ export interface OrderDetail extends OrderSummary {
   seller: OrderParty;
   sellerTown: string;
   events: OrderEventDto[];
+  /** The buyer–seller conversation about this listing, if one exists. */
+  conversationId: number | null;
   actions: OrderAction[];
   acceptedAt: string | null;
   buyerPaidAt: string | null;

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router';
 import { ConverterMenu } from './ConverterMenu';
+import { HeaderIcons } from './HeaderIcons';
 import { SearchBar } from './SearchBar';
 import { UserMenu } from './UserMenu';
 import { useLogout, useMe } from '../lib/auth';
@@ -54,7 +55,10 @@ export function Layout() {
             <UserMenu />
           </nav>
           <div className="ml-auto md:ml-0">
-            <ConverterMenu />
+            <div className="flex items-center gap-1">
+              <HeaderIcons />
+              <ConverterMenu />
+            </div>
           </div>
           <button
             type="button"
@@ -89,6 +93,7 @@ export function Layout() {
                 ? [
                     { to: '/account', label: t('nav.account') },
                     { to: '/orders', label: t('nav.orders') },
+                    { to: '/messages', label: t('header.messages') },
                     { to: '/account/listings', label: t('nav.myListings') },
                     { to: '/account/seller', label: t('nav.sellerProfile') },
                     ...(user.role === 'ADMIN'

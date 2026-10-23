@@ -2,15 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, useNavigate } from 'react-router';
 import { useLogout, useMe } from '../lib/auth';
-import { useReviewCount } from '../lib/listings';
-import { useOrdersNeedingAction } from '../lib/orders';
+import { useCounts } from '../lib/messaging';
 
 /** "Sign in" when signed out; the user's name with an account menu when signed in. */
 export function UserMenu() {
   const { t } = useTranslation();
   const { data: user, isPending } = useMe();
-  const { data: pending } = useReviewCount(user?.role === 'ADMIN');
-  const { data: newOrders } = useOrdersNeedingAction(Boolean(user?.sellerProfile));
+  const { data: counts } = useCounts();
+  const pending = counts?.reviewQueue;
+  const newOrders = counts?.ordersToAct;
   const logout = useLogout();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);

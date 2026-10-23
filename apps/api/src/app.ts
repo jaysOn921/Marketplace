@@ -17,7 +17,9 @@ import { geoRouter } from './modules/geo/geo.routes.js';
 import { healthRouter } from './modules/health/health.routes.js';
 import { listingsRouter } from './modules/listings/listings.routes.js';
 import { UPLOADS_URL_PREFIX } from './modules/media/storage.js';
+import { messagingRouter } from './modules/messaging/messaging.routes.js';
 import { moderationRouter } from './modules/moderation/moderation.routes.js';
+import { notificationsRouter } from './modules/notifications/notifications.routes.js';
 import { ordersRouter } from './modules/orders/orders.routes.js';
 import { searchRouter } from './modules/search/search.routes.js';
 import { usersRouter } from './modules/users/users.routes.js';
@@ -73,10 +75,12 @@ export function createApp(options: AppOptions = {}) {
   api.use('/health', healthRouter);
   api.use(geoRouter);
   api.use('/auth', authRouter(rateLimit ? createRateLimits() : null));
+  api.use(notificationsRouter); // includes /me/counts, so it comes before the /me router
   api.use('/me', usersRouter);
   api.use(listingsRouter);
   api.use(searchRouter);
   api.use('/orders', ordersRouter);
+  api.use('/conversations', messagingRouter(rateLimit));
   api.use('/admin/listings', moderationRouter);
   api.use(notFoundHandler);
   app.use(API_PREFIX, api);

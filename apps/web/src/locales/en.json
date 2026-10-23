@@ -538,7 +538,7 @@
     "seller": "Seller",
     "buyer": "Buyer",
     "phone": "Phone:",
-    "noPhone": "No phone number shared. Contact them through TZed messages (coming soon).",
+    "noPhone": "No phone number shared. Use TZed messages to stay in touch.",
     "contactAfterAccept": "Contact details are shared once the seller accepts the order.",
     "timeline": "Timeline",
     "safety": "Pay only after the seller accepts, and check the item before paying when you can. Something wrong?",
@@ -602,6 +602,40 @@
     "receivedNotice": {
       "buyer": "You confirmed you received the item on {{date}}. The seller will now complete the order.",
       "seller": "The buyer confirmed they received the item on {{date}}. You can mark the order completed."
-    }
+    },
+    "messageSeller": "Message the seller",
+    "messageBuyer": "Message the buyer"
+  },
+  "header": {
+    "messages": "Messages",
+    "messagesUnread": "Messages, {{count}} unread",
+    "notifications": "Notifications",
+    "notificationsUnread": "Notifications, {{count}} unread"
+  },
+  "notifications": {
+    "markAll": "Mark all as read",
+    "empty": "No notifications yet.",
+    "seeAll": "See all notifications",
+    "unread": "Unread"
+  },
+  "messages": {
+    "title": "Messages",
+    "inbox": "Conversations",
+    "empty": "No messages yet. Ask a seller a question from any listing.",
+    "choose": "Choose a conversation.",
+    "notFound": "This conversation doesn't exist or isn't yours.",
+    "back": "Back to conversations",
+    "viewOrder": "View order",
+    "older": "Older messages aren't shown.",
+    "you": "You",
+    "unreadCount": "{{count}} unread",
+    "write": "Write a message",
+    "placeholder": "Write a message… (Enter to send, Shift+Enter for a new line)",
+    "send": "Send",
+    "safety": "Keep payments to agreed orders. Never share passwords or PINs.",
+    "cannotReply": "This person's account is no longer active, so you can't reply.",
+    "ask": "Ask the seller a question",
+    "askLabel": "Message {{shop}}",
+    "askPlaceholder": "e.g. Is it still available? Can you send it to Lusaka?"
   }
 }

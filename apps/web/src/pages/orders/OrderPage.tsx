@@ -1,10 +1,11 @@
 import { formatMoney, type OrderAction, type OrderDetail } from '@tzed/shared';
 import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams, useSearchParams } from 'react-router';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router';
 import { Alert } from '../../components/Form';
 import { OrderStatusBadge, PaymentBadge } from '../../components/OrderStatusBadge';
 import { apiErrors } from '../../lib/forms';
+import { useStartConversation } from '../../lib/messaging';
 import { useOrder, useOrderAction } from '../../lib/orders';
 
 const FLAG = { TZ: '🇹🇿', ZM: '🇿🇲' } as const;
@@ -113,6 +114,73 @@ function Actions({ order }: { order: OrderDetail }) {
   );
 }
 
+function MessageLink({ order }: { order: OrderDetail }) {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const start = useStartConversation();
+  const [writing, setWriting] = useState(false);
+  const [body, setBody] = useState('');
+  const label = t(order.role === 'buyer' ? 'order.messageSeller' : 'order.messageBuyer');
+  if (order.conversationId) {
+    return (
+      <Link
+        to={`/messages/${order.conversationId}`}
+        className="mt-3 inline-block rounded-lg border border-stone-300 px-3 py-1.5 font-medium hover:bg-stone-50"
+      >
+        {label}
+      </Link>
+    );
+  }
+  if (!writing) {
+    return (
+      <button
+        type="button"
+        onClick={() => setWriting(true)}
+        className="mt-3 rounded-lg border border-stone-300 px-3 py-1.5 font-medium hover:bg-stone-50"
+      >
+        {label}
+      </button>
+    );
+  }
+  return (
+    <form
+      className="mt-3 space-y-2"
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (!body.trim()) return;
+        start.mutate(
+          {
+            listingId: order.listingId,
+            body: body.trim(),
+            ...(order.role === 'seller' ? { buyerId: order.buyer.id } : {}),
+          },
+          { onSuccess: (d) => navigate(`/messages/${d.conversation.id}`) },
+        );
+      }}
+    >
+      <label htmlFor="order-message" className="sr-only">
+        {label}
+      </label>
+      <textarea
+        id="order-message"
+        rows={2}
+        value={body}
+        onChange={(e) => setBody(e.target.value)}
+        className="block w-full rounded-lg border border-stone-300 px-3 py-2"
+        autoFocus
+      />
+      {start.isError && <Alert>{apiErrors(start.error).message}</Alert>}
+      <button
+        type="submit"
+        disabled={!body.trim() || start.isPending}
+        className="rounded-lg bg-brand-700 px-3 py-1.5 font-medium text-white disabled:opacity-50"
+      >
+        {t('messages.send')}
+      </button>
+    </form>
+  );
+}
+
 function Contact({ order }: { order: OrderDetail }) {
   const { t } = useTranslation();
   const other = order.role === 'buyer' ? order.seller : order.buyer;
@@ -150,6 +218,7 @@ function Contact({ order }: { order: OrderDetail }) {
       ) : (
         <p className="mt-1 text-stone-600">{t('order.contactAfterAccept')}</p>
       )}
+      <MessageLink order={order} />
     </section>
   );
 }

@@ -113,16 +113,6 @@ export function useReviewQueue() {
   });
 }
 
-export function useReviewCount(enabled: boolean) {
-  return useQuery({
-    queryKey: ['review-queue', 'count'],
-    queryFn: () => api<{ count: number }>('/admin/listings/review-queue/count'),
-    select: (d) => d.count,
-    enabled,
-    refetchInterval: 60_000,
-  });
-}
-
 export function useModerate() {
   const qc = useQueryClient();
   return useMutation({

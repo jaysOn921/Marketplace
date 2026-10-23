@@ -8,6 +8,8 @@ export interface MailMessage {
   to: string;
   subject: string;
   text: string;
+  /** Optional HTML version (see lib/email-layout.ts). */
+  html?: string;
 }
 
 /** Emails "sent" during tests, for assertions. */
@@ -32,6 +34,8 @@ export async function sendMail(message: MailMessage): Promise<void> {
   mkdirSync(outboxDir, { recursive: true });
   const file = `${outboxDir}${Date.now()}-${message.to.replace(/[^a-z0-9@.]/gi, '_')}.txt`;
   writeFileSync(file, `To: ${message.to}\nSubject: ${message.subject}\n\n${message.text}\n`);
+  // The HTML version too, to preview the email layout in a browser.
+  if (message.html) writeFileSync(file.replace(/\.txt$/, '.html'), message.html);
   logger.info({ to: message.to, subject: message.subject, file }, 'Email written to outbox (dev)');
 }
 

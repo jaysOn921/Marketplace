@@ -62,6 +62,7 @@ function toParty(p: PartyRow, showPhone: boolean, asSeller: boolean): OrderParty
   const phoneAllowed =
     !asSeller || sp?.contactPreference === 'PHONE' || sp?.contactPreference === 'BOTH';
   return {
+    id: p.id,
     name: p.name,
     countryCode: p.country.code as CountryCode,
     phone: showPhone && phoneAllowed ? p.phone : null,
@@ -69,7 +70,11 @@ function toParty(p: PartyRow, showPhone: boolean, asSeller: boolean): OrderParty
   };
 }
 
-export function toOrderDetail(order: OrderRow, viewerId: number): OrderDetail {
+export function toOrderDetail(
+  order: OrderRow,
+  viewerId: number,
+  conversationId: number | null = null,
+): OrderDetail {
   const summary = toOrderSummary(order, viewerId);
   const item = order.items[0]!;
   const showPhone = CONTACT_VISIBLE.has(order.status);
@@ -84,6 +89,7 @@ export function toOrderDetail(order: OrderRow, viewerId: number): OrderDetail {
     buyer: toParty(order.buyer, showPhone, false),
     seller: toParty(order.seller, showPhone, true),
     sellerTown: item.listing.town,
+    conversationId,
     events: order.events.map((e) => ({
       type: e.type,
       note: e.note,

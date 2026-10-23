@@ -17,17 +17,6 @@ export function useOrders(role: 'buying' | 'selling', status?: OrderStatus) {
   });
 }
 
-/** Orders waiting for the signed-in seller (for the menu badge). */
-export function useOrdersNeedingAction(enabled: boolean) {
-  return useQuery({
-    queryKey: ['orders', 'selling', 'all'],
-    queryFn: () => api<OrdersResponse>('/orders?role=selling'),
-    select: (d) => d.needsAction,
-    enabled,
-    refetchInterval: 60_000,
-  });
-}
-
 export function useOrder(id: number) {
   return useQuery({
     queryKey: orderKey(id),

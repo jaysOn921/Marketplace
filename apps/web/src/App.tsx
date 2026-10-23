@@ -17,7 +17,9 @@ import { HomePage } from './pages/HomePage';
 import { LegalPage } from './pages/LegalPage';
 import { EditListingPage, NewListingPage } from './pages/listings/ListingFormPage';
 import { ListingPage } from './pages/listings/ListingPage';
+import { MessagesPage } from './pages/messages/MessagesPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { NotificationsPage } from './pages/NotificationsPage';
 import { OrderPage } from './pages/orders/OrderPage';
 import { OrdersPage } from './pages/orders/OrdersPage';
 import { SearchPage } from './pages/SearchPage';
@@ -105,6 +107,25 @@ export function App() {
           element={
             <RequireAuth>
               <OrderPage />
+            </RequireAuth>
+          }
+        />
+        {['messages', 'messages/:id'].map((path) => (
+          <Route
+            key={path}
+            path={path}
+            element={
+              <RequireAuth>
+                <MessagesPage />
+              </RequireAuth>
+            }
+          />
+        ))}
+        <Route
+          path="notifications"
+          element={
+            <RequireAuth>
+              <NotificationsPage />
             </RequireAuth>
           }
         />
