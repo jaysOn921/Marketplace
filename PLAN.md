@@ -26,6 +26,7 @@ Status: **Draft, awaiting approval.** No implementation code will be written unt
 
 - **Each listing is priced in its seller's currency.** The original price is always shown.
 - **Buyers also see an approximate price in their own currency**, e.g. `TSh 250,000 (≈ K 2,480)`. This uses an exchange rate that an **admin updates manually** (no paid FX API; the date of the last update is shown). A header toggle lets anyone switch the display currency.
+- **Two-way currency converter** for clarity on both sides. Zambians can convert kwacha → shillings and shillings → kwacha, and Tanzanians can do the same. Type an amount into either box (TZS or ZMW) and the other box updates instantly. A swap button flips the direction. The current rate is shown both ways (`1 ZMW = X TZS`, `1,000 TZS = Y ZMW`) with the date it was last updated, plus a note that the result is approximate. The converter is reachable from the site header on every page, as a full `/converter` page, and as a "Convert" button on each listing that opens it pre-filled with that listing's price.
 - An order stores the price in the listing's currency, plus the exchange rate and converted amount at the moment the order is placed. A later rate change doesn't alter past orders.
 - Countries are a database table, not hard-coded, so a third country can be added later.
 
@@ -41,6 +42,7 @@ Status: **Draft, awaiting approval.** No implementation code will be written unt
 | Accounts | Register/login (email + password), country choice at sign-up, email verification, password reset, profile, seller profile (shop name, location, contact preference), account deletion and data export |
 | Listings | Create/edit/delete, categories, condition, price in the seller's currency, quantity, location, sell-to countries, delivery options, up to 8 images. Statuses: draft / **pending review** / active / rejected / sold / removed |
 | **Listing approval** | Admin review queue (oldest first), approve or reject with a reason, the seller is notified, the seller can fix a rejected listing and resubmit it. Only *active* listings appear in search |
+| **Currency converter** | Two-way TZS ⇄ ZMW converter: in the header on every page, on a `/converter` page, and pre-filled from a listing's price. Uses the same admin-set rate as listing prices, so the converter and listed prices always agree. Works for guests too, no sign-in needed |
 | **Search** | Keyword full-text search plus filters (country, available in my country, category, price range in the buyer's display currency, condition, location) and sort (newest, price, relevance), paginated. Category browsing and a seller's shop page |
 | Orders | "Buy now" per listing with quantity and a chosen delivery option. Lifecycle: placed → accepted → ready/shipped → completed, or declined/cancelled. Offline payment flag set by the seller. Order history for both sides. Stock is reserved when an order is placed |
 | Messaging | Buyer–seller conversation per listing, with unread counts. Polling-based (no websockets in v1) |
@@ -125,7 +127,7 @@ flowchart LR
 | Module | Responsibility |
 |---|---|
 | `auth` / `users` | Registration, login/logout, sessions, email verification, password reset, profiles and seller profiles, user country, roles (user/admin), consent records, account deletion and export |
-| `geo` | Countries, regions/provinces, currencies, admin-managed exchange rates, money formatting and conversion helpers (shared with the frontend) |
+| `geo` | Countries, regions/provinces, currencies, admin-managed exchange rates, the public `GET /rates` endpoint behind the converter, money formatting and conversion helpers (shared with the frontend, so the converter runs instantly in the browser) |
 | `listings` | CRUD for listings, categories and condition, sell-to countries, delivery options, listing status and stock, ownership checks |
 | `moderation` | Listing review workflow: submit for review, approve, reject with reason, resubmit, and send edited listings back for review |
 | `media` | Image upload, validation (type/size), resizing to thumbnail and full size with `sharp`, storage behind a small driver interface (local disk now, S3-compatible later) |
@@ -168,7 +170,7 @@ erDiagram
 
 Key fields and rules:
 - **Country**: code (`TZ`/`ZM`), name, currency_code (`TZS`/`ZMW`), currency minor units (0 for TZS, 2 for ZMW), phone prefix. Each **Region** belongs to a country.
-- **ExchangeRate**: from_currency, to_currency, rate, set_by (admin), effective_at. The newest row is the current rate, and the full history is kept.
+- **ExchangeRate**: base_currency (`ZMW`), quote_currency (`TZS`), rate (how many TZS one ZMW buys), set_by (admin), effective_at. Only **one** rate is stored per pair, and the reverse direction is calculated from it (1 ÷ rate). This way TZS→ZMW and ZMW→TZS can never disagree. The newest row is the current rate, and the full history is kept.
 - **User**: email (unique), password_hash, name, phone (optional), country_id, role (`user`/`admin`), status (`active`/`suspended`/`deleted`), email_verified_at, consent_at.
 - **Listing**: seller_id, category_id, title, description, price (DECIMAL), currency (the seller's), condition, quantity, country_id, region_id, town, delivery options, status (`draft`/`pending_review`/`active`/`rejected`/`sold`/`removed`), with a `FULLTEXT(title, description)` index. **ListingShipTo** holds the countries a listing sells to.
 - **ListingReviewEvent**: listing_id, admin_id, decision (`submitted`/`approved`/`rejected`), reason, timestamp. This is the full approval history of each listing.
@@ -218,9 +220,9 @@ Each phase ends with working, tested code committed and pushed. The foundational
 | # | Phase | What gets built | Depends on | Size |
 |---|---|---|---|---|
 | 0 | **Scaffolding** | npm workspaces, TS config, ESLint/Prettier, Express app skeleton (health route, error handler, logging), Vite React app skeleton with routing, TZed layout and i18n setup, shared package, `.env.example`, local MySQL setup script in `scripts/`, Docker Compose for dev, CI workflow | — | S |
-| 1 | **Data layer** | Full Prisma schema for all v1 entities, first migration, FULLTEXT indexes, shared `money` helper with tests, seed script (TZ and ZM countries, 31 regions plus 10 provinces, a starting TZS↔ZMW rate, categories, admin user, demo sellers in both countries, demo listings, FAQ articles), test-DB reset helper | 0 | M |
+| 1 | **Data layer** | Full Prisma schema for all v1 entities, first migration, FULLTEXT indexes, shared `money` helper (formatting, rounding, two-way conversion) with tests, public `GET /api/v1/rates` endpoint, **currency converter** (header widget, `/converter` page, two-way inputs, swap button, rate and last-updated date), seed script (TZ and ZM countries, 31 regions plus 10 provinces, a starting TZS↔ZMW rate, categories, admin user, demo sellers in both countries, demo listings, FAQ articles), test-DB reset helper | 0 | M |
 | 2 | **Auth, accounts & audit core** | Register/login/logout with country, sessions, CSRF, email verification, password reset, profile and seller-profile pages, role guard middleware, rate limiting, consent, account deletion and export. Also the **audit module** (`audit.record()` plus security events), because every later admin feature writes to it | 1 | M |
-| 3 | **Listings, media & approval** | Listing CRUD API and forms (price in the seller's currency, sell-to countries, delivery options), image upload/resize/storage, categories, listing detail page with converted price and cross-border notice, "My listings" dashboard with status and rejection reasons. **Review workflow**: submit, admin review queue page, approve/reject with reason, resubmit, edits sent back for review, every decision audit-logged | 2 | L |
+| 3 | **Listings, media & approval** | Listing CRUD API and forms (price in the seller's currency, sell-to countries, delivery options), image upload/resize/storage, categories, listing detail page with converted price, a "Convert" button that opens the converter pre-filled, and cross-border notice, "My listings" dashboard with status and rejection reasons. **Review workflow**: submit, admin review queue page, approve/reject with reason, resubmit, edits sent back for review, every decision audit-logged | 2 | L |
 | 4 | **Search & browse** | Search API (FULLTEXT plus country, available-in-my-country, category and condition filters, price range and sort in the buyer's display currency, pagination), home/category pages, search page with filter UI, URL-synced query state, currency toggle, seller shop page | 3 | M |
 | 5 | **Orders** | Buy-now flow with delivery option, exchange-rate snapshot, stock reservation (transactional), order state machine with per-role transitions, mark paid offline, buyer and seller order pages, notification hooks | 3 | M |
 | 6 | **Messaging & notifications** | Conversations and messages API, inbox UI with polling, unread badges, notifications module (in-app list and email templates) wired to listing-review, order and message events | 5 | M |
@@ -244,7 +246,7 @@ Testing is not saved for the end. Every phase adds API integration tests for its
 
 Confirmed:
 - ✅ Countries: Tanzania and Zambia, buyers and sellers in both, with cross-border selling (mainly TZ → ZM)
-- ✅ Currencies: TZS and ZMW
+- ✅ Currencies: TZS and ZMW, with a two-way converter available to everyone
 - ✅ Admin approval is required before a listing goes live
 - ✅ Reports and audit log are both in v1
 - ✅ TypeScript, Docker hosting, brand name **TZed**
