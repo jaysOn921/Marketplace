@@ -8,7 +8,7 @@ describe('API skeleton', () => {
   it('GET /api/v1/health returns ok', async () => {
     const res = await request(app).get('/api/v1/health');
     expect(res.status).toBe(200);
-    expect(res.body).toMatchObject({ status: 'ok', app: 'TZed' });
+    expect(res.body).toMatchObject({ status: 'ok', app: 'TZed', db: 'ok' });
   });
 
   it('returns a JSON 404 for unknown API routes', async () => {

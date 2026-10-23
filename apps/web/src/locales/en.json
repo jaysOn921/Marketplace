@@ -8,7 +8,8 @@
     "sell": "Sell",
     "help": "Help",
     "signIn": "Sign in",
-    "menu": "Menu"
+    "menu": "Menu",
+    "converter": "Converter"
   },
   "search": {
     "placeholder": "Search for phones, furniture, clothes…",
@@ -42,11 +43,30 @@
     "terms": "Terms",
     "privacy": "Privacy",
     "countries": "Serving Tanzania 🇹🇿 and Zambia 🇿🇲",
-    "rights": "© {{year}} TZed"
+    "rights": "© {{year}} TZed",
+    "converter": "Currency converter"
   },
   "notFound": {
     "title": "Page not found",
     "body": "The page you're looking for doesn't exist or has moved.",
     "home": "Go to the home page"
+  },
+  "converter": {
+    "title": "Currency converter",
+    "intro": "Convert between Zambian kwacha and Tanzanian shillings. Type an amount in either box and the other updates instantly.",
+    "open": "Open currency converter",
+    "close": "Close converter",
+    "fullPage": "Open full converter",
+    "swap": "Swap currencies",
+    "currency": {
+      "TZS": "Tanzanian shilling",
+      "ZMW": "Zambian kwacha"
+    },
+    "loading": "Loading the latest rate…",
+    "unavailable": "The exchange rate isn't available right now. Please try again later.",
+    "updated": "Rate updated {{date}}.",
+    "approximate": "Converted amounts are approximate.",
+    "quickTitle": "{{from}} → {{to}}",
+    "disclaimer": "TZed sets this rate and updates it regularly. Converted prices are a guide. The price you agree with a seller is in the seller's currency."
   }
 }

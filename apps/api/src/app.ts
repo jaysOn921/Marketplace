@@ -7,6 +7,7 @@ import { API_PREFIX } from '@tzed/shared';
 import { config } from './config.js';
 import { logger } from './logger.js';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.js';
+import { geoRouter } from './modules/geo/geo.routes.js';
 import { healthRouter } from './modules/health/health.routes.js';
 
 export function createApp() {
@@ -22,6 +23,7 @@ export function createApp() {
 
   const api = Router();
   api.use('/health', healthRouter);
+  api.use(geoRouter);
   api.use(notFoundHandler);
   app.use(API_PREFIX, api);
 

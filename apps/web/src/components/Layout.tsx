@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, Outlet } from 'react-router';
+import { ConverterMenu } from './ConverterMenu';
 import { SearchBar } from './SearchBar';
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -27,6 +28,7 @@ export function Layout() {
   const links = [
     { to: '/search', label: t('nav.browse') },
     { to: '/sell', label: t('nav.sell') },
+    { to: '/converter', label: t('nav.converter') },
     { to: '/help', label: t('nav.help') },
   ];
 
@@ -37,11 +39,13 @@ export function Layout() {
           <Logo />
           <SearchBar className="hidden md:flex" />
           <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
-            {links.map((l) => (
-              <NavLink key={l.to} to={l.to} className={navLinkClass}>
-                {l.label}
-              </NavLink>
-            ))}
+            {links
+              .filter((l) => l.to !== '/converter')
+              .map((l) => (
+                <NavLink key={l.to} to={l.to} className={navLinkClass}>
+                  {l.label}
+                </NavLink>
+              ))}
             <NavLink
               to="/login"
               className="ml-2 whitespace-nowrap rounded-md border border-brand-700 px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50"
@@ -49,9 +53,12 @@ export function Layout() {
               {t('nav.signIn')}
             </NavLink>
           </nav>
+          <div className="ml-auto md:ml-0">
+            <ConverterMenu />
+          </div>
           <button
             type="button"
-            className="ml-auto rounded-md p-2 text-stone-700 hover:bg-stone-100 md:hidden"
+            className="rounded-md p-2 text-stone-700 hover:bg-stone-100 md:hidden"
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
             onClick={() => setMenuOpen((o) => !o)}
@@ -100,6 +107,9 @@ export function Layout() {
           <nav className="flex gap-4" aria-label="Footer">
             <Link to="/help" className="hover:text-brand-700">
               {t('footer.help')}
+            </Link>
+            <Link to="/converter" className="hover:text-brand-700">
+              {t('footer.converter')}
             </Link>
             <Link to="/terms" className="hover:text-brand-700">
               {t('footer.terms')}

@@ -8,10 +8,19 @@
     "build": "tsup",
     "start": "node dist/server.js",
     "typecheck": "tsc -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "postinstall": "prisma generate",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:reset": "prisma migrate reset --force",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.3",
     "@tzed/shared": "^0.0.0",
+    "argon2": "^0.44.0",
     "express": "^5.3.0",
     "helmet": "^8.3.0",
     "pino": "^9.14.0",
@@ -21,6 +30,7 @@
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/supertest": "^6.0.3",
+    "prisma": "^6.19.3",
     "supertest": "^7.3.1",
     "tsup": "^8.5.1",
     "tsx": "^4.23.15"

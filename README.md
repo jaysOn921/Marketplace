@@ -20,8 +20,15 @@ cp .env.example .env          # then adjust if needed
 scripts/setup-local-mysql.sh                      # Ubuntu/Debian, installs MySQL if missing
 docker compose -f docker-compose.dev.yml up -d    # or with Docker
 
+npm run db:migrate -w @tzed/api   # create tables
+npm run db:seed -w @tzed/api      # countries, regions, rate, categories, help + demo data
+
 npm run dev                   # API on :4000, web on http://localhost:5173
 ```
+
+Demo logins after seeding (development only): `admin@tzed.local` / `admin-dev-password`, and the demo sellers and buyers (e.g. `amina@demo.tzed.local`, `buyer.zm@demo.tzed.local`) with password `demo-password`.
+
+API tests run against a separate `tzed_test` database (`TEST_DATABASE_URL`), migrated automatically, never the dev database.
 
 ## Scripts
 

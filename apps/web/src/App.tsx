@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router';
 import { Layout } from './components/Layout';
+import { ConverterPage } from './pages/ConverterPage';
 import { HelpPage } from './pages/HelpPage';
 import { HomePage } from './pages/HomePage';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -12,6 +13,7 @@ export function App() {
         <Route index element={<HomePage />} />
         <Route path="search" element={<SearchPage />} />
         <Route path="help" element={<HelpPage />} />
+        <Route path="converter" element={<ConverterPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

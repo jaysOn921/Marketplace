@@ -1,0 +1,538 @@
+// TZed database schema (MySQL 8). Tables are snake_case plurals; columns stay camelCase.
+// Change the schema, then run: npm run db:migrate -- --name <change>
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Geography & currency ────────────────────────────────────────────────────
+
+model Country {
+  id                 Int             @id @default(autoincrement())
+  code               String          @unique @db.Char(2) // TZ, ZM
+  name               String          @db.VarChar(64)
+  currencyCode       String          @unique @db.Char(3) // TZS, ZMW
+  currencyMinorUnits Int             @db.TinyInt // 0 for TZS, 2 for ZMW
+  phonePrefix        String          @db.VarChar(5) // +255, +260
+  regions            Region[]
+  users              User[]
+  listings           Listing[]
+  shipTo             ListingShipTo[]
+
+  @@map("countries")
+}
+
+/// Tanzanian regions and Zambian provinces.
+model Region {
+  id             Int             @id @default(autoincrement())
+  countryId      Int
+  name           String          @db.VarChar(64)
+  country        Country         @relation(fields: [countryId], references: [id])
+  listings       Listing[]
+  sellerProfiles SellerProfile[]
+
+  @@unique([countryId, name])
+  @@map("regions")
+}
+
+/// One rate per currency pair: 1 unit of baseCurrency = `rate` units of quoteCurrency.
+/// The reverse direction is always derived (1 / rate), so both directions agree.
+/// The newest row per pair is the current rate; older rows are the history.
+model ExchangeRate {
+  id            Int      @id @default(autoincrement())
+  baseCurrency  String   @db.Char(3) // ZMW
+  quoteCurrency String   @db.Char(3) // TZS
+  rate          Decimal  @db.Decimal(18, 8)
+  note          String?  @db.VarChar(255)
+  setById       Int?
+  setBy         User?    @relation("RatesSet", fields: [setById], references: [id], onDelete: SetNull)
+  effectiveAt   DateTime @default(now())
+
+  @@index([baseCurrency, quoteCurrency, effectiveAt])
+  @@map("exchange_rates")
+}
+
+// ─── Users & auth ────────────────────────────────────────────────────────────
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+model User {
+  id              Int        @id @default(autoincrement())
+  email           String     @unique @db.VarChar(191)
+  passwordHash    String     @db.VarChar(255)
+  name            String     @db.VarChar(100)
+  phone           String?    @db.VarChar(20)
+  countryId       Int
+  role            Role       @default(USER)
+  status          UserStatus @default(ACTIVE)
+  emailVerifiedAt DateTime?
+  consentAt       DateTime?
+  lastLoginAt     DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  country               Country              @relation(fields: [countryId], references: [id])
+  sellerProfile         SellerProfile?
+  authTokens            AuthToken[]
+  listings              Listing[]
+  listingReviewActions  ListingReviewEvent[]
+  ordersAsBuyer         Order[]              @relation("BuyerOrders")
+  ordersAsSeller        Order[]              @relation("SellerOrders")
+  reviewsWritten        Review[]             @relation("ReviewsWritten")
+  reviewsReceived       Review[]             @relation("ReviewsReceived")
+  conversationsAsBuyer  Conversation[]       @relation("BuyerConversations")
+  conversationsAsSeller Conversation[]       @relation("SellerConversations")
+  messages              Message[]
+  notifications         Notification[]
+  supportTickets        SupportTicket[]
+  ticketMessages        TicketMessage[]
+  reportsFiled          Report[]             @relation("ReportsFiled")
+  reportsResolved       Report[]             @relation("ReportsResolved")
+  auditLogs             AuditLog[]
+  ratesSet              ExchangeRate[]       @relation("RatesSet")
+
+  @@index([countryId])
+  @@index([status])
+  @@map("users")
+}
+
+enum ContactPreference {
+  MESSAGES
+  PHONE
+  BOTH
+}
+
+model SellerProfile {
+  userId            Int               @id
+  shopName          String            @db.VarChar(80)
+  slug              String            @unique @db.VarChar(100)
+  bio               String?           @db.Text
+  regionId          Int?
+  town              String?           @db.VarChar(80)
+  contactPreference ContactPreference @default(MESSAGES)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  region            Region?           @relation(fields: [regionId], references: [id])
+
+  @@map("seller_profiles")
+}
+
+enum AuthTokenType {
+  EMAIL_VERIFY
+  PASSWORD_RESET
+}
+
+/// Single-use tokens for email verification and password reset. Only a hash is stored.
+model AuthToken {
+  id        Int           @id @default(autoincrement())
+  userId    Int
+  type      AuthTokenType
+  tokenHash String        @unique @db.Char(64)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime      @default(now())
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
+  @@map("auth_tokens")
+}
+
+/// express-session store table (see the auth module).
+model Session {
+  id      String @id @db.VarChar(128)
+  expires Int    @db.UnsignedInt
+  data    String @db.MediumText
+
+  @@index([expires])
+  @@map("sessions")
+}
+
+// ─── Catalogue ───────────────────────────────────────────────────────────────
+
+model Category {
+  id        Int        @id @default(autoincrement())
+  parentId  Int?
+  name      String     @db.VarChar(80)
+  slug      String     @unique @db.VarChar(100)
+  sortOrder Int        @default(0)
+  isActive  Boolean    @default(true)
+  parent    Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children  Category[] @relation("CategoryTree")
+  listings  Listing[]
+
+  @@index([parentId])
+  @@map("categories")
+}
+
+enum ListingCondition {
+  NEW
+  LIKE_NEW
+  GOOD
+  FAIR
+  FOR_PARTS
+}
+
+enum ListingStatus {
+  DRAFT
+  PENDING_REVIEW
+  ACTIVE
+  REJECTED
+  SOLD
+  REMOVED
+}
+
+model Listing {
+  id                  Int              @id @default(autoincrement())
+  sellerId            Int
+  categoryId          Int
+  title               String           @db.VarChar(120)
+  description         String           @db.Text
+  price               Decimal          @db.Decimal(14, 2)
+  currency            String           @db.Char(3) // always the seller's country currency
+  condition           ListingCondition
+  quantity            Int              @default(1)
+  countryId           Int
+  regionId            Int
+  town                String           @db.VarChar(80)
+  deliveryPickup      Boolean          @default(true)
+  deliveryLocal       Boolean          @default(false)
+  deliveryCrossBorder Boolean          @default(false)
+  deliveryNotes       String?          @db.VarChar(500)
+  status              ListingStatus    @default(DRAFT)
+  rejectionReason     String?          @db.VarChar(500)
+  submittedAt         DateTime?
+  publishedAt         DateTime?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  seller        User                 @relation(fields: [sellerId], references: [id])
+  category      Category             @relation(fields: [categoryId], references: [id])
+  country       Country              @relation(fields: [countryId], references: [id])
+  region        Region               @relation(fields: [regionId], references: [id])
+  images        ListingImage[]
+  shipTo        ListingShipTo[]
+  reviewEvents  ListingReviewEvent[]
+  orderItems    OrderItem[]
+  conversations Conversation[]
+
+  @@index([status, countryId, categoryId])
+  @@index([status, submittedAt])
+  @@index([sellerId, status])
+  @@fulltext([title, description])
+  @@map("listings")
+}
+
+model ListingImage {
+  id         Int      @id @default(autoincrement())
+  listingId  Int
+  storageKey String   @db.VarChar(255)
+  width      Int
+  height     Int
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  listing    Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([listingId, sortOrder])
+  @@map("listing_images")
+}
+
+/// Countries a listing is available to (always includes the seller's own country).
+model ListingShipTo {
+  listingId Int
+  countryId Int
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  country   Country @relation(fields: [countryId], references: [id])
+
+  @@id([listingId, countryId])
+  @@index([countryId])
+  @@map("listing_ship_to")
+}
+
+enum ReviewDecision {
+  SUBMITTED
+  APPROVED
+  REJECTED
+}
+
+/// Approval history of each listing (who submitted, who approved/rejected, why).
+model ListingReviewEvent {
+  id        Int            @id @default(autoincrement())
+  listingId Int
+  actorId   Int?
+  decision  ReviewDecision
+  reason    String?        @db.VarChar(500)
+  createdAt DateTime       @default(now())
+  listing   Listing        @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  actor     User?          @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([listingId, createdAt])
+  @@map("listing_review_events")
+}
+
+// ─── Orders & reviews ────────────────────────────────────────────────────────
+
+enum OrderStatus {
+  PLACED
+  ACCEPTED
+  READY // ready for collection, or sent
+  COMPLETED
+  DECLINED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID_OFFLINE
+}
+
+enum DeliveryMethod {
+  PICKUP
+  LOCAL
+  CROSS_BORDER
+}
+
+model Order {
+  id             Int            @id @default(autoincrement())
+  buyerId        Int
+  sellerId       Int
+  status         OrderStatus    @default(PLACED)
+  currency       String         @db.Char(3) // listing currency
+  total          Decimal        @db.Decimal(14, 2)
+  buyerCurrency  String         @db.Char(3) // snapshot at order time
+  fxRate         Decimal        @db.Decimal(18, 8) // currency -> buyerCurrency
+  buyerTotal     Decimal        @db.Decimal(14, 2)
+  paymentStatus  PaymentStatus  @default(UNPAID)
+  deliveryMethod DeliveryMethod
+  deliveryNotes  String?        @db.VarChar(500)
+  buyerNote      String?        @db.VarChar(500)
+  cancelReason   String?        @db.VarChar(500)
+  acceptedAt     DateTime?
+  completedAt    DateTime?
+  cancelledAt    DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  buyer  User        @relation("BuyerOrders", fields: [buyerId], references: [id])
+  seller User        @relation("SellerOrders", fields: [sellerId], references: [id])
+  items  OrderItem[]
+  review Review?
+
+  @@index([buyerId, createdAt])
+  @@index([sellerId, status])
+  @@map("orders")
+}
+
+model OrderItem {
+  id            Int     @id @default(autoincrement())
+  orderId       Int
+  listingId     Int
+  titleSnapshot String  @db.VarChar(120)
+  unitPrice     Decimal @db.Decimal(14, 2)
+  quantity      Int
+  lineTotal     Decimal @db.Decimal(14, 2)
+  order         Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  listing       Listing @relation(fields: [listingId], references: [id])
+
+  @@index([orderId])
+  @@index([listingId])
+  @@map("order_items")
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  orderId    Int      @unique
+  reviewerId Int
+  sellerId   Int
+  rating     Int      @db.TinyInt
+  comment    String?  @db.VarChar(1000)
+  createdAt  DateTime @default(now())
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  reviewer   User     @relation("ReviewsWritten", fields: [reviewerId], references: [id])
+  seller     User     @relation("ReviewsReceived", fields: [sellerId], references: [id])
+
+  @@index([sellerId, createdAt])
+  @@map("reviews")
+}
+
+// ─── Messaging & notifications ───────────────────────────────────────────────
+
+model Conversation {
+  id               Int       @id @default(autoincrement())
+  listingId        Int
+  buyerId          Int
+  sellerId         Int
+  lastMessageAt    DateTime  @default(now())
+  buyerLastReadAt  DateTime?
+  sellerLastReadAt DateTime?
+  createdAt        DateTime  @default(now())
+  listing          Listing   @relation(fields: [listingId], references: [id])
+  buyer            User      @relation("BuyerConversations", fields: [buyerId], references: [id])
+  seller           User      @relation("SellerConversations", fields: [sellerId], references: [id])
+  messages         Message[]
+
+  @@unique([listingId, buyerId])
+  @@index([buyerId, lastMessageAt])
+  @@index([sellerId, lastMessageAt])
+  @@map("conversations")
+}
+
+model Message {
+  id             Int          @id @default(autoincrement())
+  conversationId Int
+  senderId       Int
+  body           String       @db.Text
+  createdAt      DateTime     @default(now())
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         User         @relation(fields: [senderId], references: [id])
+
+  @@index([conversationId, createdAt])
+  @@map("messages")
+}
+
+model Notification {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  type      String    @db.VarChar(64) // e.g. listing.approved, order.placed
+  title     String    @db.VarChar(200)
+  body      String?   @db.VarChar(1000)
+  link      String?   @db.VarChar(255)
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt])
+  @@index([userId, createdAt])
+  @@map("notifications")
+}
+
+// ─── Help, support & reports ─────────────────────────────────────────────────
+
+model FaqArticle {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique @db.VarChar(120)
+  title       String   @db.VarChar(200)
+  body        String   @db.Text
+  topic       String   @db.VarChar(64) // e.g. buying, selling, payments, safety
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([topic, sortOrder])
+  @@fulltext([title, body])
+  @@map("faq_articles")
+}
+
+enum TicketStatus {
+  OPEN
+  ANSWERED
+  CLOSED
+}
+
+model SupportTicket {
+  id        Int             @id @default(autoincrement())
+  userId    Int?
+  email     String          @db.VarChar(191) // so guests can contact support too
+  name      String          @db.VarChar(100)
+  subject   String          @db.VarChar(200)
+  status    TicketStatus    @default(OPEN)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  user      User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  messages  TicketMessage[]
+
+  @@index([status, updatedAt])
+  @@index([userId])
+  @@map("support_tickets")
+}
+
+model TicketMessage {
+  id        Int           @id @default(autoincrement())
+  ticketId  Int
+  authorId  Int?
+  isStaff   Boolean       @default(false)
+  body      String        @db.Text
+  createdAt DateTime      @default(now())
+  ticket    SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author    User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([ticketId, createdAt])
+  @@map("ticket_messages")
+}
+
+enum ReportTargetType {
+  LISTING
+  USER
+  MESSAGE
+}
+
+enum ReportReason {
+  SCAM
+  PROHIBITED_ITEM
+  WRONG_CATEGORY
+  OFFENSIVE
+  OTHER
+}
+
+enum ReportStatus {
+  OPEN
+  ACTIONED
+  DISMISSED
+}
+
+model Report {
+  id             Int              @id @default(autoincrement())
+  reporterId     Int
+  targetType     ReportTargetType
+  targetId       Int
+  reason         ReportReason
+  details        String?          @db.VarChar(1000)
+  status         ReportStatus     @default(OPEN)
+  resolvedById   Int?
+  resolutionNote String?          @db.VarChar(1000)
+  resolvedAt     DateTime?
+  createdAt      DateTime         @default(now())
+  reporter       User             @relation("ReportsFiled", fields: [reporterId], references: [id])
+  resolvedBy     User?            @relation("ReportsResolved", fields: [resolvedById], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([targetType, targetId])
+  @@index([reporterId])
+  @@map("reports")
+}
+
+/// Append-only log of admin and security events. Never updated or deleted by the app.
+model AuditLog {
+  id         Int      @id @default(autoincrement())
+  actorId    Int?
+  action     String   @db.VarChar(64) // e.g. listing.approve, user.suspend, fx.update
+  targetType String?  @db.VarChar(32)
+  targetId   Int?
+  before     Json?
+  after      Json?
+  ip         String?  @db.VarChar(45)
+  userAgent  String?  @db.VarChar(255)
+  createdAt  DateTime @default(now())
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([actorId, createdAt])
+  @@index([action, createdAt])
+  @@index([targetType, targetId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
