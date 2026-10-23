@@ -65,7 +65,7 @@ Then:
 1. Open `https://<your domain>` and sign in as the admin.
 2. Go to **Account** and change the admin password.
 3. Delete `SEED_ADMIN_PASSWORD` from `.env`.
-4. Go to **Admin → Exchange rate** and set today's ZMW→TZS rate. The seed starts at 1 ZMW = 140.30 TZS, which was the mid-market rate on 29 Jul 2026.
+4. Go to **Admin → Exchange rate** and set today's ZMW→TZS rate. The seed starts at 1 ZMW = 131.04 TZS, the rate on 23 Oct 2026.
 5. Go to **Admin → Help articles** and check the help centre and the prohibited-items policy before launch.
 6. Run the read-only check from any computer with this repo:
 

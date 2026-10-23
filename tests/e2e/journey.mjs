@@ -88,8 +88,8 @@ await seller.goto(base + '/sell');
 await seller.getByLabel('Title').fill(title);
 await seller.getByLabel('Category').selectOption({ label: 'Phones & tablets' });
 await seller.getByLabel('Condition').selectOption({ label: 'New' });
-await seller.getByLabel('Price (TZS)').fill('140,300');
-await seller.getByText(/TSh 140,300 ≈ K/).waitFor();
+await seller.getByLabel('Price (TZS)').fill('131,040');
+await seller.getByText(/TSh 131,040 ≈ K/).waitFor();
 await seller.getByLabel('Quantity available').fill('3');
 await seller
   .getByLabel('Description')
@@ -102,7 +102,7 @@ await seller.locator('input[type=file]').setInputFiles(photo);
 await seller.getByText('Cover').waitFor();
 await seller.getByRole('button', { name: 'Submit for review' }).click();
 await seller.getByText('Waiting for review').first().waitFor();
-step(`seller listed #${listingId} at TSh 140,300 with a photo and submitted it`);
+step(`seller listed #${listingId} at TSh 131,040 with a photo and submitted it`);
 
 // ── 2. Admin approves ───────────────────────────────────────────────────────
 const admin = await newPage();
@@ -124,7 +124,7 @@ await register(buyer, { country: 'Zambia', name: 'Chanda Journey', email: buyerE
 await buyer.goto(`${base}/search?q=${encodeURIComponent(`kitenge bundle ${run}`)}`);
 const result = buyer.getByRole('link', { name: new RegExp(title) }).first();
 await result.waitFor();
-// Zambian buyers see kwacha first; the rate is K 1 = TSh 140.30 or whatever the admin set.
+// Zambian buyers see kwacha first; the rate is K 1 = TSh 131.04 or whatever the admin set.
 await buyer
   .locator('main')
   .getByText(/K [\d,.]+/)
