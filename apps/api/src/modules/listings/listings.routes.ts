@@ -12,6 +12,7 @@ import { prisma } from '../../db.js';
 import { idParam } from '../../lib/params.js';
 import { currentUser, requireAuth } from '../../middleware/auth.js';
 import { listingSummaryInclude, toListingDetail, toListingSummary } from './listing-dto.js';
+import { sellerRating } from '../reviews/reviews.service.js';
 import * as listings from './listings.service.js';
 
 export const listingsRouter = Router();
@@ -68,7 +69,9 @@ listingsRouter.post('/listings', requireAuth, async (req, res) => {
 
 listingsRouter.get('/listings/:id', async (req, res) => {
   const listing = await listings.getVisibleListing(idParam(req.params.id), req);
-  const body: ListingResponse = { listing: toListingDetail(listing, req.user) };
+  const body: ListingResponse = {
+    listing: toListingDetail(listing, req.user, await sellerRating(listing.sellerId)),
+  };
   res.set('Cache-Control', 'no-store').json(body);
 });
 

@@ -2,7 +2,9 @@ import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams, useSearchParams } from 'react-router';
 import { ListingGrid } from '../components/ListingCard';
+import { RatingSummary } from '../components/Stars';
 import { toApiQuery, useSearch, useShop } from '../lib/search';
+import { ShopReviews } from './ShopReviews';
 
 const FLAG = { TZ: '🇹🇿', ZM: '🇿🇲' } as const;
 
@@ -45,6 +47,9 @@ export function ShopPage() {
           </span>
           <div className="min-w-0">
             <h1 className="text-2xl font-semibold">{shop.shopName}</h1>
+            <a href="#reviews" className="block hover:underline">
+              <RatingSummary rating={shop.rating} />
+            </a>
             <p className="text-sm text-stone-600">
               <span aria-hidden="true">{FLAG[shop.countryCode]} </span>
               {[shop.town, shop.regionName, t(`countries.${shop.countryCode}`)]
@@ -91,6 +96,7 @@ export function ShopPage() {
           <p className="text-stone-600">{t(params.get('q') ? 'shop.noResults' : 'shop.empty')}</p>
         )
       )}
+      <ShopReviews slug={shop.slug} />
     </div>
   );
 }

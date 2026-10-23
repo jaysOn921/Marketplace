@@ -637,5 +637,33 @@
     "ask": "Ask the seller a question",
     "askLabel": "Message {{shop}}",
     "askPlaceholder": "e.g. Is it still available? Can you send it to Lusaka?"
+  },
+  "reviews": {
+    "title": "Reviews",
+    "outOf5": "{{value}} out of 5 stars",
+    "none": "No reviews yet",
+    "noneYet": "No reviews yet. Reviews appear after completed orders.",
+    "summary": "Rated {{average}} out of 5 from {{count}} reviews",
+    "count_one": "({{count}} review)",
+    "count_other": "({{count}} reviews)",
+    "yourRating": "Your rating",
+    "starOption_one": "{{count}} star",
+    "starOption_other": "{{count}} stars",
+    "label": {
+      "1": "Poor",
+      "2": "Fair",
+      "3": "Good",
+      "4": "Very good",
+      "5": "Excellent"
+    },
+    "yours": "Your review",
+    "buyersReview": "The buyer's review",
+    "rateSeller": "How was your experience with {{seller}}?",
+    "rateIntro": "Your review helps other buyers in Tanzania and Zambia. You can review each order once.",
+    "comment": "Comment (optional)",
+    "commentPlaceholder": "e.g. how the item matched the description, delivery, communication",
+    "submit": "Submit review",
+    "breakdown": "Ratings breakdown",
+    "bought": "Bought: {{title}}"
   }
 }

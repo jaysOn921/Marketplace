@@ -1,5 +1,6 @@
 import type { Prisma } from '@prisma/client';
 import type {
+  SellerRating,
   CountryCode,
   CurrencyCode,
   ListingDetail,
@@ -61,6 +62,7 @@ export function toListingSummary(l: SummaryRow): ListingSummary {
 export function toListingDetail(
   l: DetailRow,
   viewer?: { id: number; role: string },
+  sellerRating: SellerRating | null = null,
 ): ListingDetail {
   const isOwner = viewer?.id === l.sellerId;
   const canSeeModeration = isOwner || viewer?.role === 'ADMIN';
@@ -90,6 +92,7 @@ export function toListingDetail(
       regionName: sp?.region?.name ?? null,
       countryCode: l.seller.country.code as CountryCode,
       memberSince: l.seller.createdAt.toISOString(),
+      rating: sellerRating,
     },
     rejectionReason: canSeeModeration ? l.rejectionReason : null,
     submittedAt: canSeeModeration ? (l.submittedAt?.toISOString() ?? null) : null,

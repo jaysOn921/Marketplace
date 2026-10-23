@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { searchQuerySchema, type ShopResponse, type SuggestResponse } from '@tzed/shared';
 import { prisma } from '../../db.js';
 import { AppError } from '../../lib/errors.js';
+import { sellerRating } from '../reviews/reviews.service.js';
 import { searchListings, suggest } from './search.service.js';
 
 export const searchRouter = Router();
@@ -36,6 +37,7 @@ searchRouter.get('/shops/:slug', async (req, res) => {
       countryCode: profile.user.country.code as 'TZ' | 'ZM',
       memberSince: profile.user.createdAt.toISOString(),
       activeListings,
+      rating: await sellerRating(profile.userId),
     },
   };
   res.json(body);

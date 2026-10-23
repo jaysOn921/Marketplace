@@ -10,6 +10,7 @@ import {
 } from '@tzed/shared';
 import { prisma } from '../../db.js';
 import { getCurrentRates } from '../geo/geo.service.js';
+import { sellerRatings } from '../reviews/reviews.service.js';
 import { listingSummaryInclude, toListingSummary } from '../listings/listing-dto.js';
 import { booleanExpression, parseTextQuery, type TextQuery } from './text-query.js';
 
@@ -176,9 +177,15 @@ export async function searchListings(query: SearchQuery): Promise<SearchResponse
     ? await prisma.listing.findMany({ where: { id: { in: ids } }, include: listingSummaryInclude })
     : [];
   const byId = new Map(rows.map((r) => [r.id, r]));
+  const ratings = await sellerRatings(rows.map((r) => r.sellerId));
 
   return {
-    results: ids.flatMap((id) => (byId.has(id) ? [toListingSummary(byId.get(id)!)] : [])),
+    results: ids.flatMap((id) => {
+      const row = byId.get(id);
+      return row
+        ? [{ ...toListingSummary(row), sellerRating: ratings.get(row.sellerId) ?? null }]
+        : [];
+    }),
     total,
     page: query.page,
     pageSize: query.pageSize,

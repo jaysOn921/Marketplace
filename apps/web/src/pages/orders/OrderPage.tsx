@@ -7,6 +7,7 @@ import { OrderStatusBadge, PaymentBadge } from '../../components/OrderStatusBadg
 import { apiErrors } from '../../lib/forms';
 import { useStartConversation } from '../../lib/messaging';
 import { useOrder, useOrderAction } from '../../lib/orders';
+import { ReviewSection } from './ReviewSection';
 
 const FLAG = { TZ: '🇹🇿', ZM: '🇿🇲' } as const;
 
@@ -276,6 +277,7 @@ export function OrderPage() {
       )}
 
       <Actions order={order} />
+      <ReviewSection order={order} />
 
       <section className="flex gap-4 rounded-xl border border-stone-200 bg-white p-4">
         {order.coverImage && (

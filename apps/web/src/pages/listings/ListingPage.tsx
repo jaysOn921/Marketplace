@@ -6,6 +6,7 @@ import { AskSeller } from '../../components/AskSeller';
 import { BuyBox } from '../../components/BuyBox';
 import { Alert } from '../../components/Form';
 import { Price } from '../../components/Price';
+import { RatingSummary } from '../../components/Stars';
 import { StatusBadge } from '../../components/StatusBadge';
 import { useListing } from '../../lib/listings';
 
@@ -194,6 +195,11 @@ export function ListingPage() {
               </Link>
             ) : (
               <p className="mt-1 font-semibold">{listing.seller.shopName}</p>
+            )}
+            {listing.seller.slug && (
+              <Link to={`/shop/${listing.seller.slug}#reviews`} className="block hover:underline">
+                <RatingSummary rating={listing.seller.rating} />
+              </Link>
             )}
             <p className="text-sm text-stone-600">
               <span aria-hidden="true">{FLAG[listing.seller.countryCode]} </span>

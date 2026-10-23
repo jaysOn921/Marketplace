@@ -7,3 +7,4 @@ export * from './listings.js';
 export * from './search.js';
 export * from './orders.js';
 export * from './messaging.js';
+export * from './reviews.js';

@@ -20,6 +20,7 @@ export const orderInclude = {
     },
   },
   events: { orderBy: [{ createdAt: 'asc' }, { id: 'asc' }] },
+  review: true,
 } satisfies Prisma.OrderInclude;
 
 type OrderRow = Prisma.OrderGetPayload<{ include: typeof orderInclude }>;
@@ -90,6 +91,14 @@ export function toOrderDetail(
     seller: toParty(order.seller, showPhone, true),
     sellerTown: item.listing.town,
     conversationId,
+    review: order.review
+      ? {
+          rating: order.review.rating,
+          comment: order.review.comment,
+          createdAt: order.review.createdAt.toISOString(),
+        }
+      : null,
+    canReview: viewerId === order.buyerId && order.status === 'COMPLETED' && !order.review,
     events: order.events.map((e) => ({
       type: e.type,
       note: e.note,

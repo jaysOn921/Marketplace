@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { CountryCode, CurrencyCode } from './constants.js';
+import type { SellerRating } from './reviews.js';
 
 export const LISTING_CONDITIONS = ['NEW', 'LIKE_NEW', 'GOOD', 'FAIR', 'FOR_PARTS'] as const;
 export type ListingCondition = (typeof LISTING_CONDITIONS)[number];
@@ -123,6 +124,8 @@ export interface ListingSummary {
   coverImage: ListingImageDto | null;
   createdAt: string;
   publishedAt: string | null;
+  /** The seller's rating, where the list includes it (search, shop, home). */
+  sellerRating?: SellerRating | null;
 }
 
 export interface CategoryRef {
@@ -149,6 +152,7 @@ export interface ListingDetail extends ListingSummary {
     regionName: string | null;
     countryCode: CountryCode;
     memberSince: string;
+    rating: SellerRating | null;
   };
   /** Only for the owner and admins. */
   rejectionReason: string | null;
