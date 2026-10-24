@@ -218,6 +218,11 @@ model Listing {
   deliveryLocal       Boolean          @default(false)
   deliveryCrossBorder Boolean          @default(false)
   deliveryNotes       String?          @db.VarChar(500)
+  /// Usual delivery time in days, set by the seller (both null when not given).
+  localDaysMin        Int?             @db.SmallInt
+  localDaysMax        Int?             @db.SmallInt
+  crossBorderDaysMin  Int?             @db.SmallInt
+  crossBorderDaysMax  Int?             @db.SmallInt
   status              ListingStatus    @default(DRAFT)
   rejectionReason     String?          @db.VarChar(500)
   submittedAt         DateTime?
@@ -316,29 +321,32 @@ enum DeliveryMethod {
 }
 
 model Order {
-  id             Int            @id @default(autoincrement())
-  buyerId        Int
-  sellerId       Int
-  status         OrderStatus    @default(PLACED)
-  currency       String         @db.Char(3) // listing currency
-  total          Decimal        @db.Decimal(14, 2)
-  buyerCurrency  String         @db.Char(3) // snapshot at order time
-  fxRate         Decimal        @db.Decimal(18, 8) // currency -> buyerCurrency
-  buyerTotal     Decimal        @db.Decimal(14, 2)
-  paymentStatus  PaymentStatus  @default(UNPAID)
-  deliveryMethod DeliveryMethod
-  deliveryNotes  String?        @db.VarChar(500)
-  buyerNote      String?        @db.VarChar(500)
-  cancelReason   String?        @db.VarChar(500)
-  acceptedAt     DateTime?
+  id              Int            @id @default(autoincrement())
+  buyerId         Int
+  sellerId        Int
+  status          OrderStatus    @default(PLACED)
+  currency        String         @db.Char(3) // listing currency
+  total           Decimal        @db.Decimal(14, 2)
+  buyerCurrency   String         @db.Char(3) // snapshot at order time
+  fxRate          Decimal        @db.Decimal(18, 8) // currency -> buyerCurrency
+  buyerTotal      Decimal        @db.Decimal(14, 2)
+  paymentStatus   PaymentStatus  @default(UNPAID)
+  deliveryMethod  DeliveryMethod
+  deliveryNotes   String?        @db.VarChar(500)
+  /// The seller's usual delivery time for this method, saved when the order was placed.
+  deliveryDaysMin Int?           @db.SmallInt
+  deliveryDaysMax Int?           @db.SmallInt
+  buyerNote       String?        @db.VarChar(500)
+  cancelReason    String?        @db.VarChar(500)
+  acceptedAt      DateTime?
   /// The buyer said they paid (the seller still confirms with paymentStatus).
-  buyerPaidAt    DateTime?
+  buyerPaidAt     DateTime?
   /// The buyer confirmed they received the item; the seller then completes the order.
-  receivedAt     DateTime?
-  completedAt    DateTime?
-  cancelledAt    DateTime?
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  receivedAt      DateTime?
+  completedAt     DateTime?
+  cancelledAt     DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
 
   buyer  User         @relation("BuyerOrders", fields: [buyerId], references: [id])
   seller User         @relation("SellerOrders", fields: [sellerId], references: [id])

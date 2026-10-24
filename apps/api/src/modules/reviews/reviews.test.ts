@@ -37,6 +37,7 @@ async function completedOrder(buyerName = 'Natasha Phiri') {
       listingId: listing.id,
       quantity: 1,
       deliveryMethod: 'CROSS_BORDER',
+      acceptCustoms: true,
     })
   ).body.order.id;
   await sellerClient.post(`/orders/${id}/accept`);
@@ -169,6 +170,7 @@ describe('hiding reviews', () => {
         listingId: first.listing.id,
         quantity: 1,
         deliveryMethod: 'CROSS_BORDER',
+        acceptCustoms: true,
       })
     ).body.order.id;
     await first.sellerClient.post(`/orders/${id2}/accept`);

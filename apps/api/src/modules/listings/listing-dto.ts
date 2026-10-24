@@ -1,11 +1,13 @@
 import type { Prisma } from '@prisma/client';
-import type {
-  SellerRating,
-  CountryCode,
-  CurrencyCode,
-  ListingDetail,
-  ListingImageDto,
-  ListingSummary,
+import {
+  formatDayRange,
+  type CountryCode,
+  type CurrencyCode,
+  type DeliveryDayRange,
+  type ListingDetail,
+  type ListingImageDto,
+  type ListingSummary,
+  type SellerRating,
 } from '@tzed/shared';
 import { imageKeys } from '../media/images.js';
 import { storage } from '../media/storage.js';
@@ -84,6 +86,11 @@ export function toListingDetail(
     deliveryPickup: l.deliveryPickup,
     deliveryLocal: l.deliveryLocal,
     deliveryNotes: l.deliveryNotes,
+    localDays: formatDayRange(l.localDaysMin, l.localDaysMax) as DeliveryDayRange | null,
+    crossBorderDays: formatDayRange(
+      l.crossBorderDaysMin,
+      l.crossBorderDaysMax,
+    ) as DeliveryDayRange | null,
     shipTo: l.shipTo.map((s) => s.country.code as CountryCode),
     seller: {
       shopName: sp?.shopName ?? l.seller.name,

@@ -83,6 +83,10 @@ export function toOrderDetail(
   const showPhone = CONTACT_VISIBLE.has(order.status);
   return {
     ...summary,
+    deliveryDays:
+      order.deliveryDaysMin !== null && order.deliveryDaysMax !== null
+        ? { min: order.deliveryDaysMin, max: order.deliveryDaysMax }
+        : null,
     listingId: item.listingId,
     unitPrice: item.unitPrice.toNumber(),
     items: order.items.map((i) => ({

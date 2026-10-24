@@ -1,6 +1,7 @@
 import type { Prisma } from '@prisma/client';
 import {
   CURRENCIES,
+  CUSTOMS_REQUIRED_MESSAGE,
   ORDER_TRANSITIONS,
   conversionFactor,
   convertMoney,
@@ -63,6 +64,36 @@ export function availableIn(listing: ListingForOrder, buyerCountryId: number) {
     listing.countryId === buyerCountryId ||
     listing.shipTo.some((s) => s.countryId === buyerCountryId)
   );
+}
+
+/** The seller's usual delivery time for a method, if they gave one (none for collection). */
+export function daysFor(listing: ListingForOrder, method: DeliveryMethod) {
+  const [min, max] =
+    method === 'LOCAL'
+      ? [listing.localDaysMin, listing.localDaysMax]
+      : method === 'CROSS_BORDER'
+        ? [listing.crossBorderDaysMin, listing.crossBorderDaysMax]
+        : [null, null];
+  return min !== null && max !== null ? { min, max } : null;
+}
+
+/** Several items sent together arrive with the slowest; unknown if any item has no estimate. */
+export function combinedDays(listings: ListingForOrder[], method: DeliveryMethod) {
+  const ranges = listings.map((l) => daysFor(l, method));
+  if (!ranges.length || ranges.some((r) => !r)) return null;
+  return {
+    min: Math.max(...ranges.map((r) => r!.min)),
+    max: Math.max(...ranges.map((r) => r!.max)),
+  };
+}
+
+/** Cross-border orders need the buyer to acknowledge that import duty may apply. */
+export function requireCustomsAccepted(method: DeliveryMethod, accepted: boolean | undefined) {
+  if (method === 'CROSS_BORDER' && !accepted) {
+    throw AppError.badRequest(CUSTOMS_REQUIRED_MESSAGE, {
+      fields: { acceptCustoms: CUSTOMS_REQUIRED_MESSAGE },
+    });
+  }
 }
 
 export function requireVerifiedEmail(user: AuthUser) {
@@ -146,6 +177,10 @@ export async function createOrderInTx(
   }
 
   const notes = [...new Set(lines.map((l) => l.listing.deliveryNotes).filter(Boolean))];
+  const days = combinedDays(
+    lines.map((l) => l.listing),
+    draft.deliveryMethod,
+  );
   return tx.order.create({
     data: {
       buyerId: user.id,
@@ -156,6 +191,8 @@ export async function createOrderInTx(
       fxRate: fxRate.toFixed(8),
       buyerTotal: fixed(buyerTotal, buyerCurrency),
       deliveryMethod: draft.deliveryMethod,
+      deliveryDaysMin: days?.min ?? null,
+      deliveryDaysMax: days?.max ?? null,
       deliveryNotes: notes.length ? notes.join('\n').slice(0, 500) : null,
       buyerNote: draft.buyerNote,
       items: {
@@ -212,6 +249,7 @@ export async function placeOrder(user: AuthUser, input: unknown) {
     const message = 'The seller does not offer that delivery option for you.';
     throw AppError.badRequest(message, { fields: { deliveryMethod: message } });
   }
+  requireCustomsAccepted(data.deliveryMethod, data.acceptCustoms);
 
   const currency = listing.currency as CurrencyCode;
   const rate = await rateFor(currency, user.country.currencyCode as CurrencyCode);

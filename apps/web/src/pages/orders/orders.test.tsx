@@ -27,6 +27,8 @@ const listing: ListingDetail = {
   deliveryPickup: true,
   deliveryLocal: true,
   deliveryNotes: null,
+  localDays: null,
+  crossBorderDays: '4-7',
   shipTo: ['TZ', 'ZM'],
   seller: {
     shopName: 'Amina Electronics',
@@ -63,6 +65,7 @@ function orderDetail(overrides: Partial<OrderDetail> = {}): OrderDetail {
     createdAt: '2026-10-23T10:00:00.000Z',
     updatedAt: '2026-10-23T10:00:00.000Z',
     itemCount: 1,
+    deliveryDays: { min: 4, max: 7 },
     listingId: 7,
     unitPrice: 380000,
     items: [
@@ -145,21 +148,34 @@ describe('Buy box', () => {
     const box = await screen.findByRole('region', { name: 'Order this item' });
     // A Zambian buyer of a Tanzanian item: collect or cross-border, not local delivery.
     expect(within(box).getByLabelText('Collect from the seller in Mbeya')).toBeInTheDocument();
-    expect(within(box).getByLabelText('Send to me in Zambia (cross-border)')).toBeInTheDocument();
+    expect(within(box).getByLabelText(/Send to me in Zambia \(cross-border\)/)).toBeInTheDocument();
+    expect(within(box).getByText('Usually takes 4–7 days')).toBeInTheDocument();
     expect(within(box).queryByLabelText('Local delivery by the seller')).not.toBeInTheDocument();
 
     await userEvent.click(within(box).getByRole('button', { name: 'Place order' }));
     expect(within(box).getByText('Choose how you want to get the item.')).toBeInTheDocument();
 
     await userEvent.selectOptions(within(box).getByLabelText('Quantity'), '2');
-    await userEvent.click(within(box).getByLabelText('Send to me in Zambia (cross-border)'));
+    await userEvent.click(within(box).getByLabelText(/Send to me in Zambia \(cross-border\)/));
     expect(within(box).getByText('TSh 760,000')).toBeInTheDocument();
     expect(await within(box).findByText('≈ K 7,238.10')).toBeInTheDocument();
+    // Cross-border: the buyer must acknowledge that import duty may apply.
+    await userEvent.click(within(box).getByRole('button', { name: 'Place order' }));
+    expect(
+      within(box).getByText('Please confirm you understand import duty may apply.'),
+    ).toBeInTheDocument();
+    expect(sent).toBeUndefined();
+    await userEvent.click(within(box).getByLabelText(/I understand that import duty/));
     await userEvent.click(within(box).getByRole('button', { name: 'Place order' }));
 
     expect(await screen.findByRole('heading', { name: 'Order #41' })).toBeInTheDocument();
     expect(screen.getByText(/Your order has been sent to the seller/)).toBeInTheDocument();
-    expect(sent).toMatchObject({ listingId: 7, quantity: 2, deliveryMethod: 'CROSS_BORDER' });
+    expect(sent).toMatchObject({
+      listingId: 7,
+      quantity: 2,
+      deliveryMethod: 'CROSS_BORDER',
+      acceptCustoms: true,
+    });
   });
 });
 
@@ -190,6 +206,26 @@ describe('Add to cart', () => {
 });
 
 describe('Order page', () => {
+  it('shows when the items should arrive once the seller accepts', async () => {
+    mockApi(
+      {
+        'GET /orders/41': () => ({
+          body: {
+            order: orderDetail({
+              status: 'ACCEPTED',
+              acceptedAt: '2026-10-23T10:00:00.000Z',
+              actions: [],
+            }),
+          },
+        }),
+      },
+      { user: zambian },
+    );
+    renderApp('/orders/41');
+    // Accepted 23 Oct, usually 4–7 days.
+    expect(await screen.findByText('Expected between Oct 27 and Oct 30')).toBeInTheDocument();
+  });
+
   it('shows the saved prices, rate and next step for the buyer', async () => {
     mockApi({ 'GET /orders/41': () => ({ body: { order: orderDetail() } }) }, { user: zambian });
     renderApp('/orders/41');

@@ -25,6 +25,7 @@ function cart(overrides: Partial<CartResponse> = {}): CartResponse {
         subtotal: 92000,
         buyerSubtotal: 876.19,
         deliveryMethods: ['PICKUP', 'CROSS_BORDER'],
+        deliveryDays: { CROSS_BORDER: { min: 4, max: 7 } },
         items: [
           {
             listingId: 7,
@@ -61,6 +62,7 @@ function cart(overrides: Partial<CartResponse> = {}): CartResponse {
         subtotal: 3500,
         buyerSubtotal: 3500,
         deliveryMethods: ['LOCAL'],
+        deliveryDays: {},
         items: [
           {
             listingId: 12,
@@ -106,14 +108,21 @@ describe('Cart', () => {
     expect(within(tz).getByText('Choose how you want to get these items.')).toBeInTheDocument();
     expect(sent).toBeUndefined();
 
-    await userEvent.click(within(tz).getByLabelText('Send to me in Zambia (cross-border)'));
+    await userEvent.click(within(tz).getByLabelText(/Send to me in Zambia \(cross-border\)/));
+    expect(within(tz).getByText('Usually takes 4–7 days')).toBeInTheDocument();
     await userEvent.type(within(tz).getByLabelText('Note to the seller (optional)'), 'By bus');
+    await userEvent.click(button);
+    expect(
+      within(tz).getByText('Please confirm you understand import duty may apply.'),
+    ).toBeInTheDocument();
+    expect(sent).toBeUndefined();
+    await userEvent.click(within(tz).getByLabelText(/I understand that import duty/));
     await userEvent.click(button);
     await waitFor(() =>
       expect(sent).toEqual({
         orders: [
-          { sellerId: 4, deliveryMethod: 'CROSS_BORDER', buyerNote: 'By bus' },
-          { sellerId: 9, deliveryMethod: 'LOCAL', buyerNote: '' },
+          { sellerId: 4, deliveryMethod: 'CROSS_BORDER', buyerNote: 'By bus', acceptCustoms: true },
+          { sellerId: 9, deliveryMethod: 'LOCAL', buyerNote: '', acceptCustoms: false },
         ],
       }),
     );

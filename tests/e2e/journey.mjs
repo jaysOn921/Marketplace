@@ -142,7 +142,8 @@ step('buyer asked the seller a question');
 
 await buyer.goto(`${base}/listings/${listingId}`);
 const box = buyer.getByRole('region', { name: 'Order this item' });
-await box.getByLabel('Send to me in Zambia (cross-border)').check();
+await box.getByLabel(/Send to me in Zambia \(cross-border\)/).check();
+await box.getByLabel(/I understand that import duty/).check();
 await box.getByText(/≈ K [\d,.]+/).waitFor();
 await box.getByRole('button', { name: 'Place order' }).click();
 await buyer.getByText('Your order has been sent to the seller.', { exact: false }).waitFor();

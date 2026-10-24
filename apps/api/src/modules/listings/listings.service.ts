@@ -12,6 +12,7 @@ import {
   roundMoney,
   type CurrencyCode,
   type ListingStatus,
+  parseDayRange,
 } from '@tzed/shared';
 import { prisma } from '../../db.js';
 import { AppError } from '../../lib/errors.js';
@@ -83,6 +84,16 @@ async function otherCountryId(countryId: number) {
   return other?.id;
 }
 
+/** The seller's delivery time ranges as database columns (only the ones that were sent). */
+function dayColumns(data: { localDays?: string | null; crossBorderDays?: string | null }) {
+  const cols = (range: string | null | undefined, prefix: 'localDays' | 'crossBorderDays') => {
+    if (range === undefined) return {};
+    const r = parseDayRange(range);
+    return { [`${prefix}Min`]: r?.[0] ?? null, [`${prefix}Max`]: r?.[1] ?? null };
+  };
+  return { ...cols(data.localDays, 'localDays'), ...cols(data.crossBorderDays, 'crossBorderDays') };
+}
+
 async function shipToRows(countryId: number, crossBorder: boolean) {
   const other = crossBorder ? await otherCountryId(countryId) : undefined;
   return [{ countryId }, ...(other ? [{ countryId: other }] : [])];
@@ -120,6 +131,7 @@ export async function createListing(user: AuthUser, input: unknown) {
       deliveryLocal: data.deliveryLocal,
       deliveryCrossBorder: data.crossBorder,
       deliveryNotes: data.deliveryNotes,
+      ...dayColumns(data),
       status: 'DRAFT',
       shipTo: { create: await shipToRows(user.countryId, data.crossBorder) },
     },
@@ -191,6 +203,7 @@ export async function updateListing(user: AuthUser, id: number, input: unknown) 
         deliveryLocal: data.deliveryLocal,
         deliveryCrossBorder: data.crossBorder,
         deliveryNotes: data.deliveryNotes,
+        ...dayColumns(data),
         ...(relist ? { status: 'ACTIVE' as const } : {}),
       },
     });

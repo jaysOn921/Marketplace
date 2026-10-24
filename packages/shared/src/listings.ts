@@ -23,6 +23,29 @@ const checkbox = z
   .union([z.boolean(), z.literal('true'), z.literal('false')])
   .transform((v) => v === true || v === 'true');
 
+/** Delivery time ranges a seller can choose from, in days ("4-7" means 4 to 7 days). */
+export const DELIVERY_DAY_RANGES = ['1-2', '2-4', '3-5', '4-7', '5-10', '7-14', '14-21'] as const;
+export type DeliveryDayRange = (typeof DELIVERY_DAY_RANGES)[number];
+
+/** A range as [min, max] days, or null when the seller didn't give one. */
+export type DayRange = [number, number] | null;
+
+export const parseDayRange = (r: string | null | undefined): DayRange => {
+  if (!r) return null;
+  const [min, max] = r.split('-').map(Number);
+  return min !== undefined && max !== undefined ? [min, max] : null;
+};
+export const formatDayRange = (min: number | null, max: number | null) =>
+  min !== null && max !== null ? `${min}-${max}` : null;
+
+/** Optional range: "" or null clears it. */
+const dayRange = z
+  .union([z.enum(DELIVERY_DAY_RANGES), z.literal(''), z.null()], {
+    error: 'Choose one of the listed times.',
+  })
+  .optional()
+  .transform((v) => (v ? v : null));
+
 const listingFields = {
   title: z
     .string()
@@ -64,6 +87,9 @@ const listingFields = {
     .max(500, { error: 'Use at most 500 characters.' })
     .optional()
     .transform((v) => (v ? v : null)),
+  /** Usual delivery time for local delivery and for sending across the border. */
+  localDays: dayRange,
+  crossBorderDays: dayRange,
 };
 
 export const needsDelivery = (d: {
@@ -144,6 +170,9 @@ export interface ListingDetail extends ListingSummary {
   deliveryPickup: boolean;
   deliveryLocal: boolean;
   deliveryNotes: string | null;
+  /** The seller's usual delivery times, e.g. "4-7"; null when not given. */
+  localDays: DeliveryDayRange | null;
+  crossBorderDays: DeliveryDayRange | null;
   shipTo: CountryCode[];
   seller: {
     shopName: string;

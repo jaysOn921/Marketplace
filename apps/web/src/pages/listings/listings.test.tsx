@@ -55,6 +55,8 @@ const listing: ListingDetail = {
   deliveryPickup: true,
   deliveryLocal: false,
   deliveryNotes: 'Bus via Tunduma, 3–5 days.',
+  localDays: null,
+  crossBorderDays: '4-7',
   shipTo: ['TZ', 'ZM'],
   seller: {
     shopName: 'Amina Electronics',
@@ -98,7 +100,7 @@ describe('Listing page', () => {
     );
     expect(screen.getByText('Available to buyers in Tanzania and Zambia')).toBeInTheDocument();
     expect(screen.getByText(/TZed doesn't handle customs/)).toBeInTheDocument();
-    expect(screen.getByText('Can be sent to Zambia')).toBeInTheDocument();
+    expect(screen.getByText('Can be sent to Zambia · usually 4–7 days')).toBeInTheDocument();
   });
 
   it('shows a friendly message when the listing is not available', async () => {

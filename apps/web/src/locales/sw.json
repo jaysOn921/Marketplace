@@ -380,14 +380,17 @@
       "price": "Bei ({{currency}})",
       "quantity": "Idadi iliyopo",
       "description": "Maelezo",
-      "deliveryNotes": "Maelezo ya usafirishaji (si lazima)"
+      "deliveryNotes": "Maelezo ya usafirishaji (si lazima)",
+      "localDays": "Muda wa kawaida wa kufikisha ndani ya nchi",
+      "crossBorderDays": "Muda wa kawaida kufikia wanunuzi wa {{country}}"
     },
     "hints": {
       "title": "Chapa, modeli na sifa kuu, mf. \"Samsung Galaxy A15, 128GB\".",
       "price": "Kwa sarafu yako ({{symbol}}). Wanunuzi wa nchi nyingine pia wanaona bei iliyobadilishwa ya takriban.",
       "priceConverted": "{{price}} ≈ {{converted}} kwa wanunuzi wa nchi nyingine.",
       "description": "Hali yake, ukubwa, rangi, vilivyomo, kasoro zozote.",
-      "deliveryNotes": "mf. gharama ya usafirishaji, muda unaochukua, kampuni ya basi au mpaka wa kuvuka."
+      "deliveryNotes": "mf. gharama ya usafirishaji, muda unaochukua, kampuni ya basi au mpaka wa kuvuka.",
+      "days": "Huonyeshwa kwa wanunuzi kama makadirio. Iache ikiwa huna uhakika."
     },
     "delivery": {
       "title": "Mnunuzi ataipataje?",
@@ -416,7 +419,8 @@
         "SOLD": "Limewekwa kuwa limeuzwa. Wanunuzi bado wanaweza kuliona.",
         "REMOVED": "Tangazo hili liliondolewa."
       }
-    }
+    },
+    "daysNotSet": "Haijawekwa"
   },
   "listing": {
     "convert": "Badilisha",
@@ -1018,5 +1022,17 @@
     "fabrics-kitenge": "Vitambaa na vitenge",
     "motorbikes-bicycles": "Pikipiki na baiskeli",
     "car-parts": "Vipuri na vifaa vya magari"
+  },
+  "delivery": {
+    "days": "siku {{min}}–{{max}}",
+    "usually": "{{text}} · kwa kawaida {{days}}",
+    "usuallyTakes": "Kwa kawaida huchukua {{days}}",
+    "expected": "Inatarajiwa kati ya {{from}} na {{to}}",
+    "afterAccept": "Kwa kawaida hufika {{days}} baada ya muuzaji kukubali.",
+    "customsTitle": "Kutoka {{from}} kwenda {{to}}",
+    "customsBody": "Ushuru wa forodha, VAT au ada nyingine zinaweza kutozwa mpakani. TZed haizikusanyi: kubalianeni na muuzaji kabla ya kuagiza nani analipa na kiasi gani.",
+    "customsHelp": "Kuhusu forodha",
+    "customsAccept": "Ninaelewa kuwa ushuru wa forodha unaweza kutozwa, na kwamba nitakubaliana nao na muuzaji.",
+    "customsRequired": "Tafadhali thibitisha unaelewa kuwa ushuru wa forodha unaweza kutozwa."
   }
 }

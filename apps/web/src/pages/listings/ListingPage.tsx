@@ -11,6 +11,7 @@ import { RatingSummary } from '../../components/Stars';
 import { StatusBadge } from '../../components/StatusBadge';
 import { useListing } from '../../lib/listings';
 import { useCategoryName } from '../../lib/categoryName';
+import { useDaysLabel } from '../../lib/delivery';
 
 const FLAG = { TZ: '🇹🇿', ZM: '🇿🇲' } as const;
 
@@ -79,6 +80,7 @@ function OwnerBanner({ listing }: { listing: ListingDetail }) {
 export function ListingPage() {
   const { t, i18n } = useTranslation();
   const catName = useCategoryName();
+  const daysLabel = useDaysLabel();
   const id = Number(useParams().id);
   const { data: listing, isPending, isError } = useListing(id);
 
@@ -97,11 +99,16 @@ export function ListingPage() {
   const date = (iso: string | null) =>
     iso ? new Date(iso).toLocaleDateString(i18n.language, { dateStyle: 'medium' }) : '';
   const otherCountry = listing.countryCode === 'TZ' ? 'ZM' : 'TZ';
+  const withDays = (text: string, range: string | null) =>
+    range ? t('delivery.usually', { text, days: daysLabel(range) }) : text;
   const deliveries = [
     listing.deliveryPickup && t('listing.delivery.pickup', { town: listing.town }),
-    listing.deliveryLocal && t('listing.delivery.local'),
+    listing.deliveryLocal && withDays(t('listing.delivery.local'), listing.localDays),
     listing.crossBorder &&
-      t('listing.delivery.crossBorder', { country: t(`countries.${otherCountry}`) }),
+      withDays(
+        t('listing.delivery.crossBorder', { country: t(`countries.${otherCountry}`) }),
+        listing.crossBorderDays,
+      ),
   ].filter(Boolean) as string[];
 
   return (

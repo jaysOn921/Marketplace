@@ -159,6 +159,7 @@ describe('conversations', () => {
       listingId: listing.id,
       quantity: 1,
       deliveryMethod: 'CROSS_BORDER',
+      acceptCustoms: true,
     });
     const res = await sellerClient.post('/conversations', {
       listingId: listing.id,
@@ -233,6 +234,7 @@ describe('notifications', () => {
       listingId: listing.id,
       quantity: 1,
       deliveryMethod: 'CROSS_BORDER',
+      acceptCustoms: true,
     });
 
     const list = await sellerClient.get('/notifications');

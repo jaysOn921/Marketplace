@@ -58,6 +58,7 @@ await seller
   .getByLabel('Description')
   .fill('Classic Nokia 105, long battery life, dual SIM. Charger included.');
 await seller.getByLabel(/Also sell to buyers in Zambia/).check();
+await seller.getByLabel('Usual time to reach buyers in Zambia').selectOption('4-7');
 await seller.getByLabel('Delivery notes (optional)').fill('Bus to Lusaka via Tunduma, 4 days.');
 await seller.getByRole('button', { name: 'Save and add photos' }).click();
 await seller.getByText('Draft saved.', { exact: false }).waitFor();
@@ -113,6 +114,7 @@ await guest
   .first()
   .waitFor();
 await guest.getByText('Available to buyers in Tanzania and Zambia').waitFor();
+await guest.getByText('Can be sent to Zambia · usually 4–7 days').waitFor();
 step('guest sees the live listing with TSh price, ≈ K and cross-border notice');
 await guest.screenshot({ path: out + 'phase3-listing-desktop.png', fullPage: true });
 const guestMobile = await session(undefined, undefined, { width: 390, height: 844 });

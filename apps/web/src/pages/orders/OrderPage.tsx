@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router';
 import { Alert } from '../../components/Form';
 import { OrderStatusBadge, PaymentBadge } from '../../components/OrderStatusBadge';
+import { expectedWindow, useDaysLabel } from '../../lib/delivery';
 import { apiErrors } from '../../lib/forms';
 import { useStartConversation } from '../../lib/messaging';
 import { useOrder, useOrderAction } from '../../lib/orders';
@@ -224,6 +225,30 @@ function Contact({ order }: { order: OrderDetail }) {
   );
 }
 
+/** When the items should arrive: a date window once accepted, the usual time before that. */
+function DeliveryEstimate({ order }: { order: OrderDetail }) {
+  const { t, i18n } = useTranslation();
+  const daysLabel = useDaysLabel();
+  if (!order.deliveryDays) return null;
+  if (['ACCEPTED', 'READY'].includes(order.status) && order.acceptedAt && !order.receivedAt) {
+    const [from, to] = expectedWindow(order.acceptedAt, order.deliveryDays);
+    const day = (d: Date) =>
+      d.toLocaleDateString(i18n.language, { day: 'numeric', month: 'short' });
+    return (
+      <p className="mt-1 font-medium text-stone-800">
+        {t('delivery.expected', { from: day(from), to: day(to) })}
+      </p>
+    );
+  }
+  if (order.status === 'PLACED')
+    return (
+      <p className="mt-1 text-stone-600">
+        {t('delivery.afterAccept', { days: daysLabel(order.deliveryDays) })}
+      </p>
+    );
+  return null;
+}
+
 export function OrderPage() {
   const { t, i18n } = useTranslation();
   const id = Number(useParams().id);
@@ -355,6 +380,7 @@ export function OrderPage() {
               },
             )}
           </p>
+          <DeliveryEstimate order={order} />
           {order.deliveryNotes && (
             <p className="mt-1 whitespace-pre-line text-stone-600">{order.deliveryNotes}</p>
           )}

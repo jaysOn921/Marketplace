@@ -37,6 +37,7 @@ export const checkoutSchema = z.object({
           .max(500, { error: 'Use at most 500 characters.' })
           .optional()
           .transform((v) => (v ? v : null)),
+        acceptCustoms: z.boolean().optional(),
       }),
     )
     .min(1, { error: 'Choose at least one seller to order from.' }),
@@ -76,6 +77,8 @@ export interface CartGroup {
   buyerSubtotal: number | null;
   /** Delivery options every orderable item in this group offers to this buyer. */
   deliveryMethods: DeliveryMethod[];
+  /** Usual delivery time per method for the whole group (the slowest item), when every item gives one. */
+  deliveryDays: Partial<Record<DeliveryMethod, { min: number; max: number }>>;
 }
 
 export interface CartResponse {

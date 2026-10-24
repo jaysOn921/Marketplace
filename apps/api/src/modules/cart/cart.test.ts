@@ -141,7 +141,12 @@ describe('checkout', () => {
 
     const res = await client.post('/cart/checkout', {
       orders: [
-        { sellerId: tzSeller.id, deliveryMethod: 'CROSS_BORDER', buyerNote: 'Bus to Lusaka' },
+        {
+          sellerId: tzSeller.id,
+          deliveryMethod: 'CROSS_BORDER',
+          acceptCustoms: true,
+          buyerNote: 'Bus to Lusaka',
+        },
         { sellerId: zmSeller.id, deliveryMethod: 'LOCAL' },
       ],
     });
@@ -208,7 +213,7 @@ describe('checkout', () => {
 
     const res = await client.post('/cart/checkout', {
       orders: [
-        { sellerId: tzSeller.id, deliveryMethod: 'CROSS_BORDER' },
+        { sellerId: tzSeller.id, deliveryMethod: 'CROSS_BORDER', acceptCustoms: true },
         { sellerId: zmSeller.id, deliveryMethod: 'PICKUP' },
       ],
     });

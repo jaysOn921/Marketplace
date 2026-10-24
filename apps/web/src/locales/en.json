@@ -380,14 +380,17 @@
       "price": "Price ({{currency}})",
       "quantity": "Quantity available",
       "description": "Description",
-      "deliveryNotes": "Delivery notes (optional)"
+      "deliveryNotes": "Delivery notes (optional)",
+      "localDays": "Usual local delivery time",
+      "crossBorderDays": "Usual time to reach buyers in {{country}}"
     },
     "hints": {
       "title": "Brand, model and key detail, e.g. \"Samsung Galaxy A15, 128GB\".",
       "price": "In your currency ({{symbol}}). Buyers in the other country also see an approximate converted price.",
       "priceConverted": "{{price}} ≈ {{converted}} for buyers in the other country.",
       "description": "Condition details, size, colour, what's included, any faults.",
-      "deliveryNotes": "e.g. delivery cost, how long it takes, bus company or border crossing."
+      "deliveryNotes": "e.g. delivery cost, how long it takes, bus company or border crossing.",
+      "days": "Shown to buyers as an estimate. Leave it unset if you're not sure."
     },
     "delivery": {
       "title": "How can the buyer get it?",
@@ -416,7 +419,8 @@
         "SOLD": "Marked as sold. Buyers can still view it.",
         "REMOVED": "This listing was removed."
       }
-    }
+    },
+    "daysNotSet": "Not set"
   },
   "listing": {
     "convert": "Convert",
@@ -993,5 +997,17 @@
   },
   "language": {
     "label": "Language"
+  },
+  "delivery": {
+    "days": "{{min}}–{{max}} days",
+    "usually": "{{text}} · usually {{days}}",
+    "usuallyTakes": "Usually takes {{days}}",
+    "expected": "Expected between {{from}} and {{to}}",
+    "afterAccept": "Usually arrives {{days}} after the seller accepts.",
+    "customsTitle": "Sending from {{from}} to {{to}}",
+    "customsBody": "Import duty, VAT or customs fees may apply at the border. TZed doesn't collect them: agree with the seller before ordering who pays and how much.",
+    "customsHelp": "About customs",
+    "customsAccept": "I understand that import duty or customs fees may apply, and that I agree them with the seller.",
+    "customsRequired": "Please confirm you understand import duty may apply."
   }
 }

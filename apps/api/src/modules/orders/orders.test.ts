@@ -41,6 +41,7 @@ const order = (listingId: number, overrides: Record<string, unknown> = {}) => ({
   listingId,
   quantity: 1,
   deliveryMethod: 'CROSS_BORDER',
+  acceptCustoms: true,
   ...overrides,
 });
 

@@ -25,12 +25,14 @@ import { getCurrentRates } from '../geo/geo.service.js';
 import { toImageDto } from '../listings/listing-dto.js';
 import {
   availableIn,
+  combinedDays,
   createOrderInTx,
   deliveryAllowed,
   notifyNewOrder,
   rateFor,
-  type OrderDraft,
+  requireCustomsAccepted,
   requireVerifiedEmail,
+  type OrderDraft,
 } from '../orders/orders.service.js';
 
 const cartInclude = {
@@ -124,6 +126,15 @@ export async function getCart(user: AuthUser): Promise<CartResponse> {
       subtotal,
       buyerSubtotal,
       deliveryMethods: orderable.length ? sharedDeliveryMethods(orderable, user.countryId) : [],
+      deliveryDays: Object.fromEntries(
+        DELIVERY_METHODS.map((m) => [
+          m,
+          combinedDays(
+            orderable.map((r) => r.listing),
+            m,
+          ),
+        ]).filter(([, d]) => d),
+      ),
     };
   });
 
@@ -243,6 +254,7 @@ export async function checkout(user: AuthUser, input: unknown) {
       const message = `${shop} doesn't offer that delivery option for every item.`;
       throw AppError.badRequest(message, { fields: { deliveryMethod: message } });
     }
+    requireCustomsAccepted(choice.deliveryMethod, choice.acceptCustoms);
     const currency = sellerRows[0]!.listing.currency as CurrencyCode;
     drafts.push({
       draft: {

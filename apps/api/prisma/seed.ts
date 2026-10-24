@@ -96,6 +96,8 @@ type DemoListing = {
   quantity?: number;
   crossBorder?: boolean;
   deliveryNotes?: string;
+  /** Usual days to reach a buyer across the border. */
+  crossBorderDays?: [number, number];
   status?: 'ACTIVE' | 'PENDING_REVIEW' | 'REJECTED';
   rejectionReason?: string;
 };
@@ -128,6 +130,7 @@ const DEMO_SELLERS: {
         quantity: 5,
         crossBorder: true,
         deliveryNotes: 'Can send to Zambia by bus via Tunduma. Delivery usually 3–5 days.',
+        crossBorderDays: [3, 5],
       },
       {
         title: 'Bluetooth speaker, waterproof',
@@ -138,6 +141,7 @@ const DEMO_SELLERS: {
         quantity: 10,
         crossBorder: true,
         deliveryNotes: 'Ships to Zambia with phone orders or by courier.',
+        crossBorderDays: [4, 7],
       },
       {
         title: 'Used laptop charger, 65W',
@@ -167,6 +171,7 @@ const DEMO_SELLERS: {
         quantity: 40,
         crossBorder: true,
         deliveryNotes: 'Close to Tunduma border. Weekly shipments to Nakonde and Lusaka.',
+        crossBorderDays: [4, 7],
       },
       {
         title: 'Handmade wooden coffee table',
@@ -217,6 +222,7 @@ const DEMO_SELLERS: {
         condition: 'GOOD',
         crossBorder: true,
         deliveryNotes: 'Can courier to Tanzania. Buyer pays courier and any duties.',
+        crossBorderDays: [5, 10],
       },
     ],
   },
@@ -343,6 +349,8 @@ async function seedDemoData() {
           deliveryPickup: true,
           deliveryLocal: true,
           deliveryCrossBorder: l.crossBorder ?? false,
+          crossBorderDaysMin: l.crossBorderDays?.[0] ?? null,
+          crossBorderDaysMax: l.crossBorderDays?.[1] ?? null,
           deliveryNotes: l.deliveryNotes,
           status,
           rejectionReason: l.rejectionReason,

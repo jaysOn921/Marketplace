@@ -9,15 +9,18 @@ import {
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router';
+import { CustomsNotice } from '../components/CustomsNotice';
 import { Alert } from '../components/Form';
 import { useMe } from '../lib/auth';
 import { useCart, useCheckout, useRemoveCartItem, useUpdateCartItem } from '../lib/cart';
+import { useDaysLabel } from '../lib/delivery';
 import { apiErrors } from '../lib/forms';
 
 interface Choice {
   include: boolean;
   method: DeliveryMethod | '';
   note: string;
+  customs: boolean;
 }
 
 function Line({ line, currency }: { line: CartLine; currency: CurrencyCode }) {
@@ -88,15 +91,18 @@ function SellerGroup({
   onChange,
   buyerCurrency,
   error,
+  customsError,
 }: {
   group: CartGroup;
   choice: Choice;
   onChange: (c: Choice) => void;
   buyerCurrency: CurrencyCode;
   error?: string;
+  customsError?: string;
 }) {
   const { t } = useTranslation();
   const { data: me } = useMe();
+  const daysLabel = useDaysLabel();
   const shop = group.seller.shopName ?? group.seller.name;
   const orderable = group.items.some((i) => !i.problem);
   const blocked = group.items.some((i) => i.problem);
@@ -164,6 +170,11 @@ function SellerGroup({
                         country: me ? t(`countries.${me.countryCode}`) : '',
                         from: t(`countries.${group.seller.countryCode}`),
                       })}
+                      {group.deliveryDays[m] && (
+                        <span className="block text-stone-600">
+                          {t('delivery.usuallyTakes', { days: daysLabel(group.deliveryDays[m]) })}
+                        </span>
+                      )}
                     </span>
                   </label>
                 ))}
@@ -172,6 +183,15 @@ function SellerGroup({
             </fieldset>
           ) : (
             <Alert kind="info">{t('cart.noSharedDelivery')}</Alert>
+          )}
+          {choice.method === 'CROSS_BORDER' && (
+            <CustomsNotice
+              checked={choice.customs}
+              onChange={(v) => onChange({ ...choice, customs: v })}
+              error={customsError}
+              from={t(`countries.${group.seller.countryCode}`)}
+              to={me ? t(`countries.${me.countryCode}`) : ''}
+            />
           )}
           <label className="block text-sm">
             <span className="mb-1 block font-medium">{t('buy.note')}</span>
@@ -210,6 +230,7 @@ export function CartPage() {
   const checkout = useCheckout();
   const [choices, setChoices] = useState<Record<number, Choice>>({});
   const [missing, setMissing] = useState<number[]>([]);
+  const [customsMissing, setCustomsMissing] = useState<number[]>([]);
 
   if (isPending || !cart) return <p className="text-stone-600">{t('common.loading')}</p>;
 
@@ -219,6 +240,7 @@ export function CartPage() {
       // One option only: choose it for the buyer.
       method: g.deliveryMethods.length === 1 ? g.deliveryMethods[0]! : '',
       note: '',
+      customs: false,
     };
   const ready = cart.groups.filter(
     (g) =>
@@ -232,14 +254,19 @@ export function CartPage() {
 
   function placeOrders() {
     const notChosen = ready.filter((g) => !choiceFor(g).method).map((g) => g.seller.id);
+    const noCustoms = ready
+      .filter((g) => choiceFor(g).method === 'CROSS_BORDER' && !choiceFor(g).customs)
+      .map((g) => g.seller.id);
     setMissing(notChosen);
-    if (notChosen.length || !ready.length) return;
+    setCustomsMissing(noCustoms);
+    if (notChosen.length || noCustoms.length || !ready.length) return;
     checkout.mutate(
       {
         orders: ready.map((g) => ({
           sellerId: g.seller.id,
           deliveryMethod: choiceFor(g).method as DeliveryMethod,
           buyerNote: choiceFor(g).note,
+          acceptCustoms: choiceFor(g).customs,
         })),
       },
       {
@@ -279,7 +306,14 @@ export function CartPage() {
                   onChange={(c) => {
                     setChoices({ ...choices, [g.seller.id]: c });
                     if (c.method) setMissing(missing.filter((id) => id !== g.seller.id));
+                    if (c.customs)
+                      setCustomsMissing(customsMissing.filter((id) => id !== g.seller.id));
                   }}
+                  customsError={
+                    customsMissing.includes(g.seller.id)
+                      ? t('delivery.customsRequired')
+                      : server.fields.acceptCustoms
+                  }
                   buyerCurrency={cart.buyerCurrency}
                   error={
                     missing.includes(g.seller.id)

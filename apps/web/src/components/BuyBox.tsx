@@ -15,6 +15,8 @@ import { apiErrors, validate, type FieldErrors } from '../lib/forms';
 import { useAddToCart } from '../lib/cart';
 import { usePlaceOrder } from '../lib/orders';
 import { useZmwTzsRate } from '../lib/rates';
+import { useDaysLabel } from '../lib/delivery';
+import { CustomsNotice } from './CustomsNotice';
 import { Alert } from './Form';
 
 /** Delivery options a buyer in `buyerCountry` can choose (mirrors the API rules). */
@@ -38,6 +40,8 @@ export function BuyBox({ listing }: { listing: ListingDetail }) {
   const [quantity, setQuantity] = useState(1);
   const [method, setMethod] = useState<DeliveryMethod | ''>('');
   const [note, setNote] = useState('');
+  const [customs, setCustoms] = useState(false);
+  const daysLabel = useDaysLabel();
   const [errors, setErrors] = useState<FieldErrors>({});
 
   if (isPending || listing.isOwner) return null;
@@ -86,13 +90,29 @@ export function BuyBox({ listing }: { listing: ListingDetail }) {
       ? convertMoney(total, listing.currency, buyerCurrency, rate)
       : null;
   const otherCountry = listing.countryCode === 'TZ' ? 'ZM' : 'TZ';
+  const daysFor = (m: DeliveryMethod) =>
+    m === 'LOCAL'
+      ? daysLabel(listing.localDays)
+      : m === 'CROSS_BORDER'
+        ? daysLabel(listing.crossBorderDays)
+        : null;
 
   function onSubmit(e: FormEvent) {
     e.preventDefault();
-    const values = { listingId: listing.id, quantity, deliveryMethod: method, buyerNote: note };
+    const values = {
+      listingId: listing.id,
+      quantity,
+      deliveryMethod: method,
+      buyerNote: note,
+      acceptCustoms: customs,
+    };
     const { errors } = validate(placeOrderSchema, values);
-    setErrors(errors ?? {});
-    if (errors) return;
+    const customsMissing = method === 'CROSS_BORDER' && !customs;
+    setErrors({
+      ...(errors ?? {}),
+      ...(customsMissing ? { acceptCustoms: t('delivery.customsRequired') } : {}),
+    });
+    if (errors || customsMissing) return;
     place.mutate(values as Parameters<typeof place.mutate>[0], {
       onSuccess: (d) => navigate(`/orders/${d.order.id}?placed=1`),
     });
@@ -145,6 +165,11 @@ export function BuyBox({ listing }: { listing: ListingDetail }) {
                   country: t(`countries.${me.countryCode}`),
                   from: t(`countries.${otherCountry}`),
                 })}
+                {daysFor(o) && (
+                  <span className="block text-stone-600">
+                    {t('delivery.usuallyTakes', { days: daysFor(o) })}
+                  </span>
+                )}
               </span>
             </label>
           ))}
@@ -155,6 +180,19 @@ export function BuyBox({ listing }: { listing: ListingDetail }) {
           </p>
         )}
       </fieldset>
+
+      {method === 'CROSS_BORDER' && (
+        <CustomsNotice
+          checked={customs}
+          onChange={(v) => {
+            setCustoms(v);
+            if (v) setErrors(({ acceptCustoms: _c, ...rest }) => rest);
+          }}
+          error={errors.acceptCustoms ?? server.fields.acceptCustoms}
+          from={t(`countries.${listing.countryCode}`)}
+          to={t(`countries.${me.countryCode}`)}
+        />
+      )}
 
       <label className="block text-sm">
         <span className="mb-1 block font-medium">{t('buy.note')}</span>

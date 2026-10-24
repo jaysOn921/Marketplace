@@ -8,6 +8,8 @@ import {
   type CurrencyCode,
   type ListingCondition,
   type ListingDetail,
+  DELIVERY_DAY_RANGES,
+  type DeliveryDayRange,
 } from '@tzed/shared';
 import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -34,6 +36,7 @@ import {
 import { useZmwTzsRate } from '../../lib/rates';
 import { PhotoManager } from './PhotoManager';
 import { useCategoryName } from '../../lib/categoryName';
+import { useDaysLabel } from '../../lib/delivery';
 
 type Values = {
   title: string;
@@ -48,6 +51,8 @@ type Values = {
   deliveryLocal: boolean;
   crossBorder: boolean;
   deliveryNotes: string;
+  localDays: DeliveryDayRange | '';
+  crossBorderDays: DeliveryDayRange | '';
 };
 
 function initialValues(
@@ -71,6 +76,8 @@ function initialValues(
     deliveryLocal: listing?.deliveryLocal ?? false,
     crossBorder: listing?.crossBorder ?? false,
     deliveryNotes: listing?.deliveryNotes ?? '',
+    localDays: listing?.localDays ?? '',
+    crossBorderDays: listing?.crossBorderDays ?? '',
   };
 }
 
@@ -104,6 +111,7 @@ function Checkbox({
 function ListingForm({ listing }: { listing?: ListingDetail }) {
   const { t } = useTranslation();
   const catName = useCategoryName();
+  const daysLabel = useDaysLabel();
   const navigate = useNavigate();
   const { data: user } = useMe();
   const { data: countries } = useCountries();
@@ -304,6 +312,43 @@ function ListingForm({ listing }: { listing?: ListingDetail }) {
             hint={t('listingForm.delivery.crossBorderHint')}
           />
           {err('deliveryPickup') && <p className="text-sm text-red-700">{err('deliveryPickup')}</p>}
+          {(values.deliveryLocal || values.crossBorder) && (
+            <div className="grid gap-3 sm:grid-cols-2">
+              {values.deliveryLocal && (
+                <SelectField
+                  label={t('listingForm.fields.localDays')}
+                  value={values.localDays}
+                  onChange={(e) => set('localDays', e.target.value as DeliveryDayRange | '')}
+                  error={err('localDays')}
+                >
+                  <option value="">{t('listingForm.daysNotSet')}</option>
+                  {DELIVERY_DAY_RANGES.map((r) => (
+                    <option key={r} value={r}>
+                      {daysLabel(r)}
+                    </option>
+                  ))}
+                </SelectField>
+              )}
+              {values.crossBorder && (
+                <SelectField
+                  label={t('listingForm.fields.crossBorderDays', {
+                    country: t(`countries.${otherCountry}`),
+                  })}
+                  value={values.crossBorderDays}
+                  onChange={(e) => set('crossBorderDays', e.target.value as DeliveryDayRange | '')}
+                  error={err('crossBorderDays')}
+                >
+                  <option value="">{t('listingForm.daysNotSet')}</option>
+                  {DELIVERY_DAY_RANGES.map((r) => (
+                    <option key={r} value={r}>
+                      {daysLabel(r)}
+                    </option>
+                  ))}
+                </SelectField>
+              )}
+              <p className="text-xs text-stone-500 sm:col-span-2">{t('listingForm.hints.days')}</p>
+            </div>
+          )}
           <TextareaField
             label={t('listingForm.fields.deliveryNotes')}
             rows={2}

@@ -26,7 +26,12 @@ async function order(
   deliveryMethod: string,
   complete = false,
 ) {
-  const res = await buyer.post('/orders', { listingId, quantity, deliveryMethod });
+  const res = await buyer.post('/orders', {
+    listingId,
+    quantity,
+    deliveryMethod,
+    acceptCustoms: true,
+  });
   expect(res.status).toBe(201);
   if (complete)
     await prisma.order.update({

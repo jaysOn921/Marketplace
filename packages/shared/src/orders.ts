@@ -83,6 +83,8 @@ export const placeOrderSchema = z.object({
     .max(500, { error: 'Use at most 500 characters.' })
     .optional()
     .transform((v) => (v ? v : null)),
+  /** Cross-border orders: the buyer accepts that import duty may apply. */
+  acceptCustoms: z.boolean().optional(),
 });
 export type PlaceOrderInput = z.input<typeof placeOrderSchema>;
 
@@ -146,7 +148,12 @@ export interface OrderItemDto {
   coverImage: ListingImageDto | null;
 }
 
+export const CUSTOMS_REQUIRED_MESSAGE =
+  'Please confirm you understand import duty may apply to cross-border orders.';
+
 export interface OrderDetail extends OrderSummary {
+  /** The seller's usual delivery time for this order, saved when it was placed. */
+  deliveryDays: { min: number; max: number } | null;
   /** The first item's listing and price (see `items` for all of them). */
   listingId: number;
   unitPrice: number;
