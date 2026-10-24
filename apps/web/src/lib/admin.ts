@@ -1,6 +1,7 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   AdminCategoryRow,
+  AdminDisputeRow,
   AdminFaqRow,
   AdminListingRow,
   AdminReviewRow,
@@ -36,6 +37,8 @@ export const useAdminListings = (p: Record<string, string | undefined>) =>
   useAdminList<Paged<AdminListingRow>>('listings', p);
 export const useAdminReviews = (p: Record<string, string | undefined>) =>
   useAdminList<Paged<AdminReviewRow>>('reviews', p);
+export const useAdminDisputes = (p: Record<string, string | undefined>) =>
+  useAdminList<Paged<AdminDisputeRow>>('disputes', p);
 export const useAdminTickets = (p: Record<string, string | undefined>) =>
   useAdminList<Paged<AdminTicketRow>>('tickets', p);
 export const useAuditLog = (p: Record<string, string | undefined>) =>

@@ -8,6 +8,7 @@ export * from './search.js';
 export * from './orders.js';
 export * from './cart.js';
 export * from './analytics.js';
+export * from './disputes.js';
 export * from './messaging.js';
 export * from './reviews.js';
 export * from './support.js';

@@ -4,6 +4,7 @@ import { prisma } from '../../db.js';
 import { idParam } from '../../lib/params.js';
 import { currentUser, requireAuth } from '../../middleware/auth.js';
 import { totalUnread } from '../messaging/messaging.service.js';
+import { openDisputeCount } from '../disputes/disputes.service.js';
 import { openReportCount } from '../reports/reports.service.js';
 
 // Mounted at the API root, so sign-in is required per route (not router-wide).
@@ -54,18 +55,20 @@ notificationsRouter.post('/notifications/:id/read', requireAuth, async (req, res
 /** Header badges in one request (polled by the web app). */
 notificationsRouter.get('/me/counts', requireAuth, async (req, res) => {
   const user = currentUser(req);
-  const [notifications, messages, ordersToAct, reviewQueue, openReports, cart] = await Promise.all([
-    prisma.notification.count({ where: { userId: user.id, readAt: null } }),
-    totalUnread(user.id),
-    prisma.order.count({ where: { sellerId: user.id, status: 'PLACED' } }),
-    user.role === 'ADMIN'
-      ? prisma.listing.count({ where: { status: 'PENDING_REVIEW' } })
-      : Promise.resolve(0),
-    user.role === 'ADMIN' ? openReportCount() : Promise.resolve(0),
-    prisma.cartItem
-      .aggregate({ where: { userId: user.id }, _sum: { quantity: true } })
-      .then((r) => r._sum.quantity ?? 0),
-  ]);
+  const [notifications, messages, ordersToAct, reviewQueue, openReports, cart, openDisputes] =
+    await Promise.all([
+      prisma.notification.count({ where: { userId: user.id, readAt: null } }),
+      totalUnread(user.id),
+      prisma.order.count({ where: { sellerId: user.id, status: 'PLACED' } }),
+      user.role === 'ADMIN'
+        ? prisma.listing.count({ where: { status: 'PENDING_REVIEW' } })
+        : Promise.resolve(0),
+      user.role === 'ADMIN' ? openReportCount() : Promise.resolve(0),
+      prisma.cartItem
+        .aggregate({ where: { userId: user.id }, _sum: { quantity: true } })
+        .then((r) => r._sum.quantity ?? 0),
+      user.role === 'ADMIN' ? openDisputeCount() : Promise.resolve(0),
+    ]);
   const body: CountsResponse = {
     notifications,
     messages,
@@ -73,6 +76,7 @@ notificationsRouter.get('/me/counts', requireAuth, async (req, res) => {
     reviewQueue,
     openReports,
     cart,
+    openDisputes,
   };
   res.set('Cache-Control', 'no-store').json(body);
 });

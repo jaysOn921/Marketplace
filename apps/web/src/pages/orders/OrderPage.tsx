@@ -8,6 +8,7 @@ import { expectedWindow, useDaysLabel } from '../../lib/delivery';
 import { apiErrors } from '../../lib/forms';
 import { useStartConversation } from '../../lib/messaging';
 import { useOrder, useOrderAction } from '../../lib/orders';
+import { ProblemSection } from './ProblemSection';
 import { ReviewSection } from './ReviewSection';
 
 const FLAG = { TZ: '🇹🇿', ZM: '🇿🇲' } as const;
@@ -420,6 +421,7 @@ export function OrderPage() {
           {t('footer.help')}
         </Link>
       </p>
+      <ProblemSection order={order} />
     </div>
   );
 }

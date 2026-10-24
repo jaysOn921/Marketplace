@@ -152,6 +152,10 @@ export const CUSTOMS_REQUIRED_MESSAGE =
   'Please confirm you understand import duty may apply to cross-border orders.';
 
 export interface OrderDetail extends OrderSummary {
+  /** The latest problem raised on this order, if any (see GET /orders/:id/dispute). */
+  dispute: { id: number; status: 'OPEN' | 'RESOLVED'; reason: string } | null;
+  /** The buyer or seller can raise a problem (none open now). */
+  canDispute: boolean;
   /** The seller's usual delivery time for this order, saved when it was placed. */
   deliveryDays: { min: number; max: number } | null;
   /** The first item's listing and price (see `items` for all of them). */

@@ -67,6 +67,8 @@ function orderDetail(overrides: Partial<OrderDetail> = {}): OrderDetail {
     createdAt: '2026-10-23T10:00:00.000Z',
     updatedAt: '2026-10-23T10:00:00.000Z',
     itemCount: 1,
+    dispute: null,
+    canDispute: true,
     deliveryDays: { min: 4, max: 7 },
     listingId: 7,
     unitPrice: 380000,
@@ -369,5 +371,108 @@ describe('Buyer confirmations', () => {
     await userEvent.click(screen.getByRole('button', { name: "I've received it" }));
     expect(await screen.findByText(/The seller will now complete the order/)).toBeInTheDocument();
     expect(calls).toEqual(['report-paid', 'received']);
+  });
+});
+
+describe('Problem with an order', () => {
+  const buyer = { id: 1, name: 'Natasha Phiri', countryCode: 'ZM' as const, phone: null };
+  const dispute = {
+    id: 3,
+    orderId: 41,
+    status: 'OPEN' as const,
+    reason: 'NOT_RECEIVED' as const,
+    openedBy: 'buyer' as const,
+    resolution: null,
+    resolvedAt: null,
+    createdAt: '2026-10-24T10:00:00.000Z',
+    messages: [
+      {
+        id: 1,
+        author: 'buyer' as const,
+        authorName: 'Natasha',
+        body: 'I paid on Monday but nothing has been sent.',
+        createdAt: '2026-10-24T10:00:00.000Z',
+      },
+    ],
+  };
+
+  it('lets the buyer describe a problem, then shows the shared conversation', async () => {
+    let sent: unknown;
+    let opened = false;
+    mockApi(
+      {
+        'GET /orders/41': () => ({
+          body: {
+            order: orderDetail({
+              buyer,
+              status: 'ACCEPTED',
+              dispute: opened ? { id: 3, status: 'OPEN', reason: 'NOT_RECEIVED' } : null,
+              canDispute: !opened,
+            }),
+          },
+        }),
+        'POST /orders/41/dispute': (body) => {
+          sent = body;
+          opened = true;
+          return { status: 201, body: { dispute } };
+        },
+        'GET /orders/41/dispute': () => ({ body: { dispute } }),
+      },
+      { user: zambian },
+    );
+    renderApp('/orders/41');
+    const section = await screen.findByRole('region', { name: 'Problem with this order?' });
+    await userEvent.click(within(section).getByRole('button', { name: 'Report a problem' }));
+    await userEvent.click(within(section).getByRole('button', { name: 'Send to TZed' }));
+    expect(within(section).getByText('Choose what the problem is.')).toBeInTheDocument();
+
+    await userEvent.click(within(section).getByLabelText('Item not received'));
+    await userEvent.type(
+      within(section).getByLabelText('What happened?'),
+      'I paid on Monday but nothing has been sent.',
+    );
+    await userEvent.click(within(section).getByRole('button', { name: 'Send to TZed' }));
+    await waitFor(() =>
+      expect(sent).toEqual({
+        reason: 'NOT_RECEIVED',
+        details: 'I paid on Monday but nothing has been sent.',
+      }),
+    );
+    const thread = await screen.findByRole('region', { name: 'Problem with this order' });
+    expect(
+      within(thread).getByText('I paid on Monday but nothing has been sent.'),
+    ).toBeInTheDocument();
+    expect(within(thread).getByLabelText('Add a message')).toBeInTheDocument();
+  });
+
+  it('shows TZed’s decision once resolved, and allows reporting another problem', async () => {
+    const resolved = {
+      ...dispute,
+      status: 'RESOLVED' as const,
+      resolution: 'The seller refunded K 200 by mobile money.',
+      resolvedAt: '2026-10-25T10:00:00.000Z',
+    };
+    mockApi(
+      {
+        'GET /orders/41': () => ({
+          body: {
+            order: orderDetail({
+              buyer,
+              dispute: { id: 3, status: 'RESOLVED', reason: 'NOT_RECEIVED' },
+              canDispute: true,
+            }),
+          },
+        }),
+        'GET /orders/41/dispute': () => ({ body: { dispute: resolved } }),
+      },
+      { user: zambian },
+    );
+    renderApp('/orders/41');
+    expect(
+      await screen.findByText('The seller refunded K 200 by mobile money.'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('TZed’s decision')).toBeInTheDocument();
+    expect(screen.queryByLabelText('Add a message')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Report another problem' })).toBeInTheDocument();
   });
 });

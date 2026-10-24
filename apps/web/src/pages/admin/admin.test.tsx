@@ -262,4 +262,47 @@ describe('Admin area', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('Verified')).toBeInTheDocument();
   });
+
+  it('resolves a problem on an order with an outcome', async () => {
+    let sent: unknown;
+    const dispute = {
+      id: 3,
+      orderId: 41,
+      status: 'OPEN',
+      reason: 'DAMAGED',
+      openedBy: 'buyer',
+      resolution: null,
+      resolvedAt: null,
+      createdAt: '2026-10-24T10:00:00.000Z',
+      messages: [
+        {
+          id: 1,
+          author: 'buyer',
+          authorName: 'Natasha',
+          body: 'The radio case is cracked.',
+          createdAt: '2026-10-24T10:00:00.000Z',
+        },
+      ],
+    };
+    mockApi(
+      {
+        'GET /me/counts': () => ({ body: { ...counts, openDisputes: 1 } }),
+        'GET /admin/disputes/3': () => ({ body: { dispute } }),
+        'POST /admin/disputes/3/resolve': (body) => {
+          sent = body;
+          return { body: { dispute: { ...dispute, status: 'RESOLVED' } } };
+        },
+      },
+      { user: admin },
+    );
+    renderApp('/admin/disputes/3');
+    expect(await screen.findByText('The radio case is cracked.')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Problems\s*1/ })).toBeInTheDocument();
+    await userEvent.type(
+      screen.getByLabelText('Outcome (shown to both sides)'),
+      'The seller will replace the radio.',
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Resolve problem' }));
+    await waitFor(() => expect(sent).toEqual({ resolution: 'The seller will replace the radio.' }));
+  });
 });

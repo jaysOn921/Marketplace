@@ -537,7 +537,8 @@
       "rates": "Exchange rate",
       "categories": "Categories",
       "help": "Help articles",
-      "audit": "Audit log"
+      "audit": "Audit log",
+      "disputes": "Problems"
     },
     "dashboard": {
       "title": "Dashboard",
@@ -758,7 +759,9 @@
       "completed": "Completed",
       "cancelled": "Cancelled",
       "received": "Buyer received the item",
-      "buyer_paid": "Buyer says they paid"
+      "buyer_paid": "Buyer says they paid",
+      "dispute_opened": "Problem reported",
+      "dispute_resolved": "Problem resolved by TZed"
     },
     "actor": {
       "buyer": "buyer",
@@ -1038,5 +1041,44 @@
   "recent": {
     "title": "Recently viewed",
     "clear": "Clear"
+  },
+  "dispute": {
+    "title": "Problem with this order?",
+    "openTitle": "Problem with this order",
+    "intro": "If something has gone wrong (the item hasn’t arrived, isn’t as described, or a payment is in question), tell us here. The other side and the TZed team see the same conversation.",
+    "start": "Report a problem",
+    "another": "Report another problem",
+    "whatHappened": "What’s the problem?",
+    "details": "What happened?",
+    "detailsPlaceholder": "Include dates, amounts and what you’ve already agreed with the other person.",
+    "whoSees": "The other side and the TZed team will see this. Please don’t include passwords or mobile money PINs.",
+    "submit": "Send to TZed",
+    "openIntro": "The TZed team will look into it. Keep the conversation here.",
+    "statusOpen": "Open",
+    "statusResolved": "Resolved",
+    "resolvedTitle": "TZed’s decision",
+    "reply": "Add a message",
+    "send": "Send",
+    "conversation": "Conversation about the problem",
+    "role": {
+      "buyer": "buyer",
+      "seller": "seller",
+      "tzed": "TZed support"
+    },
+    "reason": {
+      "NOT_RECEIVED": "Item not received",
+      "NOT_AS_DESCRIBED": "Not as described",
+      "DAMAGED": "Item damaged",
+      "PAYMENT": "Payment problem",
+      "NO_RESPONSE": "Not responding",
+      "OTHER": "Something else"
+    },
+    "adminIntro": "Problems raised on orders. Read both sides and the order, reply, then resolve with an outcome both sides will see.",
+    "parties": "{{buyer}} → {{seller}}",
+    "openedBy": "Raised by the {{role}}",
+    "viewOrder": "View order",
+    "resolution": "Outcome (shown to both sides)",
+    "resolutionPlaceholder": "e.g. The seller will refund TSh 25,000 by mobile money within 2 days.",
+    "resolve": "Resolve problem"
   }
 }

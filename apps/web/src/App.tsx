@@ -44,6 +44,8 @@ const AdminReviewsPage = lazyPage(
   () => import('./pages/admin/AdminReviewsPage'),
   'AdminReviewsPage',
 );
+const DisputesPage = lazyPage(() => import('./pages/admin/DisputesPage'), 'DisputesPage');
+const DisputePage = lazyPage(() => import('./pages/admin/DisputesPage'), 'DisputePage');
 const AnalyticsPage = lazyPage(() => import('./pages/admin/AnalyticsPage'), 'AnalyticsPage');
 const ShopAnalyticsPage = lazyPage(
   () => import('./pages/account/ShopAnalyticsPage'),
@@ -211,6 +213,8 @@ export function App() {
           <Route path="listings" element={<AdminListingsPage />} />
           <Route path="reviews" element={<AdminReviewsPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
+          <Route path="disputes" element={<DisputesPage />} />
+          <Route path="disputes/:id" element={<DisputePage />} />
           <Route path="rates" element={<RatesPage />} />
           <Route path="categories" element={<CategoriesPage />} />
           <Route path="help" element={<FaqAdminPage />} />

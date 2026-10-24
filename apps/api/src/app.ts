@@ -15,6 +15,7 @@ import { createRateLimits } from './middleware/rate-limit.js';
 import { adminRouter } from './modules/admin/admin.routes.js';
 import { authRouter } from './modules/auth/auth.routes.js';
 import { cartRouter } from './modules/cart/cart.routes.js';
+import { disputesRouter } from './modules/disputes/disputes.routes.js';
 import { PrismaSessionStore, SESSION_COOKIE } from './modules/auth/session-store.js';
 import { geoRouter } from './modules/geo/geo.routes.js';
 import { healthRouter } from './modules/health/health.routes.js';
@@ -99,6 +100,8 @@ export function createApp(options: AppOptions = {}) {
   api.use('/help', helpRouter);
   api.use('/support', supportRouter(rateLimit));
   api.use(reportsRouter(rateLimit));
+  // Before /admin and /orders: it adds /orders/:id/dispute and /admin/disputes.
+  api.use(disputesRouter);
   api.use('/admin', adminRouter);
   api.use('/orders', ordersRouter);
   api.use('/cart', cartRouter);

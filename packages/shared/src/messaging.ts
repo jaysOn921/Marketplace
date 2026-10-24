@@ -89,4 +89,6 @@ export interface CountsResponse {
   openReports: number;
   /** Units in the user's cart. */
   cart: number;
+  /** Open problems on orders, waiting for TZed (admins only, otherwise 0). */
+  openDisputes: number;
 }

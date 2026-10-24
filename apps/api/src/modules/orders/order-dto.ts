@@ -22,6 +22,7 @@ export const orderInclude = {
   },
   events: { orderBy: [{ createdAt: 'asc' }, { id: 'asc' }] },
   review: true,
+  disputes: { orderBy: { createdAt: 'desc' }, take: 1 },
 } satisfies Prisma.OrderInclude;
 
 type OrderRow = Prisma.OrderGetPayload<{ include: typeof orderInclude }>;
@@ -83,6 +84,16 @@ export function toOrderDetail(
   const showPhone = CONTACT_VISIBLE.has(order.status);
   return {
     ...summary,
+    dispute: order.disputes[0]
+      ? {
+          id: order.disputes[0].id,
+          status: order.disputes[0].status,
+          reason: order.disputes[0].reason,
+        }
+      : null,
+    canDispute:
+      (viewerId === order.buyerId || viewerId === order.sellerId) &&
+      order.disputes[0]?.status !== 'OPEN',
     deliveryDays:
       order.deliveryDaysMin !== null && order.deliveryDaysMax !== null
         ? { min: order.deliveryDaysMin, max: order.deliveryDaysMax }

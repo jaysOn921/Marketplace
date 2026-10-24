@@ -76,6 +76,7 @@ const visitors = [
     pages: [
       '/admin',
       '/admin/analytics',
+      '/admin/disputes',
       '/admin/review',
       '/admin/reports',
       '/admin/tickets',

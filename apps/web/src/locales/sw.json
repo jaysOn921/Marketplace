@@ -537,7 +537,8 @@
       "rates": "Kiwango cha ubadilishaji",
       "categories": "Makundi",
       "help": "Makala za msaada",
-      "audit": "Kumbukumbu za ukaguzi"
+      "audit": "Kumbukumbu za ukaguzi",
+      "disputes": "Matatizo"
     },
     "dashboard": {
       "title": "Dashibodi",
@@ -758,7 +759,9 @@
       "completed": "Imekamilika",
       "cancelled": "Imeghairiwa",
       "received": "Mnunuzi amepokea bidhaa",
-      "buyer_paid": "Mnunuzi anasema amelipa"
+      "buyer_paid": "Mnunuzi anasema amelipa",
+      "dispute_opened": "Tatizo limeripotiwa",
+      "dispute_resolved": "Tatizo limetatuliwa na TZed"
     },
     "actor": {
       "buyer": "mnunuzi",
@@ -1063,5 +1066,44 @@
   "recent": {
     "title": "Ulizotazama karibuni",
     "clear": "Futa"
+  },
+  "dispute": {
+    "title": "Kuna tatizo na oda hii?",
+    "openTitle": "Tatizo la oda hii",
+    "intro": "Ikiwa kuna kitu kimeharibika (bidhaa haijafika, hailingani na maelezo, au kuna utata wa malipo), tueleze hapa. Upande mwingine na timu ya TZed wanaona mazungumzo hayo hayo.",
+    "start": "Ripoti tatizo",
+    "another": "Ripoti tatizo lingine",
+    "whatHappened": "Tatizo ni nini?",
+    "details": "Nini kilitokea?",
+    "detailsPlaceholder": "Weka tarehe, kiasi na mlichokubaliana tayari na mtu mwingine.",
+    "whoSees": "Upande mwingine na timu ya TZed wataona hili. Tafadhali usiweke nenosiri wala PIN ya pesa ya simu.",
+    "submit": "Tuma kwa TZed",
+    "openIntro": "Timu ya TZed italishughulikia. Endeleeni na mazungumzo hapa.",
+    "statusOpen": "Wazi",
+    "statusResolved": "Limetatuliwa",
+    "resolvedTitle": "Uamuzi wa TZed",
+    "reply": "Ongeza ujumbe",
+    "send": "Tuma",
+    "conversation": "Mazungumzo kuhusu tatizo",
+    "role": {
+      "buyer": "mnunuzi",
+      "seller": "muuzaji",
+      "tzed": "Huduma kwa wateja ya TZed"
+    },
+    "reason": {
+      "NOT_RECEIVED": "Bidhaa haijafika",
+      "NOT_AS_DESCRIBED": "Hailingani na maelezo",
+      "DAMAGED": "Bidhaa imeharibika",
+      "PAYMENT": "Tatizo la malipo",
+      "NO_RESPONSE": "Hajibu",
+      "OTHER": "Kitu kingine"
+    },
+    "adminIntro": "Matatizo yaliyoripotiwa kwenye oda. Soma pande zote mbili na oda, jibu, kisha tatua kwa uamuzi ambao pande zote zitaona.",
+    "parties": "{{buyer}} → {{seller}}",
+    "openedBy": "Limeripotiwa na {{role}}",
+    "viewOrder": "Ona oda",
+    "resolution": "Uamuzi (utaonyeshwa kwa pande zote)",
+    "resolutionPlaceholder": "mf. Muuzaji atarudisha TSh 25,000 kwa pesa ya simu ndani ya siku 2.",
+    "resolve": "Tatua tatizo"
   }
 }

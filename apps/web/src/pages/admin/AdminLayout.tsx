@@ -12,6 +12,7 @@ export function AdminLayout() {
     { to: '/admin/analytics', label: t('admin.nav.analytics') },
     { to: '/admin/review', label: t('admin.nav.review'), badge: counts?.reviewQueue },
     { to: '/admin/reports', label: t('admin.nav.reports'), badge: counts?.openReports },
+    { to: '/admin/disputes', label: t('admin.nav.disputes'), badge: counts?.openDisputes },
     { to: '/admin/tickets', label: t('admin.nav.tickets') },
     { to: '/admin/users', label: t('admin.nav.users') },
     { to: '/admin/listings', label: t('admin.nav.listings') },
