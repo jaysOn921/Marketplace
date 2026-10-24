@@ -27,7 +27,7 @@ describe('help articles', () => {
     });
     expect(
       (await request(app).get('/api/v1/help/articles?topic=safety')).body.articles,
-    ).toHaveLength(2);
+    ).toHaveLength(3); // incl. verified sellers
   });
 
   it('searches with word beginnings and falls back to any word', async () => {
