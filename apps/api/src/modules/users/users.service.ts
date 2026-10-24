@@ -115,6 +115,7 @@ export async function exportData(user: AuthUser, req: Request) {
     tickets,
     reports,
     cart,
+    saved,
   ] = await Promise.all([
     prisma.user.findUniqueOrThrow({
       where: { id },
@@ -149,6 +150,10 @@ export async function exportData(user: AuthUser, req: Request) {
       where: { userId: id },
       select: { listingId: true, quantity: true, createdAt: true },
     }),
+    prisma.savedListing.findMany({
+      where: { userId: id },
+      select: { listingId: true, createdAt: true },
+    }),
   ]);
 
   await recordAudit({ action: 'user.data_export', targetType: 'user', targetId: id, req });
@@ -169,6 +174,7 @@ export async function exportData(user: AuthUser, req: Request) {
     supportTickets: tickets,
     reportsFiled: reports,
     cart,
+    savedItems: saved,
   };
 }
 
@@ -192,6 +198,7 @@ export async function deleteAccount(user: AuthUser, input: unknown, req: Request
     await tx.authToken.deleteMany({ where: { userId: user.id } });
     await tx.notification.deleteMany({ where: { userId: user.id } });
     await tx.cartItem.deleteMany({ where: { userId: user.id } });
+    await tx.savedListing.deleteMany({ where: { userId: user.id } });
     await tx.user.update({
       where: { id: user.id },
       data: {

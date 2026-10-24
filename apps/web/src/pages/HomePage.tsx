@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { ListingGrid } from '../components/ListingCard';
+import { RecentlyViewed } from '../components/RecentlyViewed';
 import { SearchBar } from '../components/SearchBar';
 import { useMe } from '../lib/auth';
 import { useCategories } from '../lib/listings';
@@ -96,6 +97,7 @@ export function HomePage() {
         to={`/search?country=${seller}&availableIn=${buyer}`}
         query={{ country: seller, availableIn: buyer }}
       />
+      <RecentlyViewed />
       <Section title={t('home.latest')} to="/search?sort=newest" query={{ sort: 'newest' }} />
 
       <section>

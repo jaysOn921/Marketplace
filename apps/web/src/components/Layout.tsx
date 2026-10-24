@@ -98,6 +98,7 @@ export function Layout() {
                     { to: '/account', label: t('nav.account') },
                     { to: '/orders', label: t('nav.orders') },
                     { to: '/messages', label: t('header.messages') },
+                    { to: '/saved', label: t('saved.title') },
                     { to: '/account/listings', label: t('nav.myListings') },
                     { to: '/account/seller', label: t('nav.sellerProfile') },
                     ...(user.role === 'ADMIN' ? [{ to: '/admin', label: t('nav.admin') }] : []),

@@ -6,6 +6,7 @@ import type { AuthUser } from '../../middleware/auth.js';
 import { recordAudit } from '../audit/audit.service.js';
 import { listingDetailInclude, toListingDetail } from '../listings/listing-dto.js';
 import { notify } from '../notifications/notifications.service.js';
+import { notifyPriceDrop } from '../saved/saved.service.js';
 
 /** Listings waiting for an admin, oldest first. */
 export async function reviewQueue(admin: AuthUser): Promise<ReviewQueueItem[]> {
@@ -62,6 +63,7 @@ async function decide(
               status: 'ACTIVE',
               rejectionReason: null,
               publishedAt: listing.publishedAt ?? new Date(),
+              approvedPrice: listing.price,
             }
           : { status: 'REJECTED', rejectionReason: reason },
     });
@@ -104,6 +106,14 @@ async function decide(
           email: true,
         },
   );
+  // Approved again at a lower price: tell the people who saved it.
+  if (
+    decision === 'APPROVED' &&
+    listing.approvedPrice &&
+    listing.price.lessThan(listing.approvedPrice)
+  ) {
+    await notifyPriceDrop(listing, listing.approvedPrice.toNumber(), listing.price.toNumber());
+  }
 }
 
 export function approveListing(admin: AuthUser, id: number, req: Request) {

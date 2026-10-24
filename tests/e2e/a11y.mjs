@@ -52,6 +52,7 @@ const visitors = [
       '/orders',
       'first-order',
       '/cart',
+      '/saved',
       '/messages',
       '/notifications',
       '/support/tickets',

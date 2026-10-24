@@ -2,6 +2,7 @@ import type { ListingSummary } from '@tzed/shared';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { Price } from './Price';
+import { SaveButton } from './SaveButton';
 import { VerifiedBadge } from './SellerTrust';
 import { RatingSummary } from './Stars';
 
@@ -11,7 +12,7 @@ export function ListingCard({ listing }: { listing: ListingSummary }) {
   const { t } = useTranslation();
   const other = listing.countryCode === 'TZ' ? 'ZM' : 'TZ';
   return (
-    <li className="group overflow-hidden rounded-xl border border-stone-200 bg-white transition hover:border-brand-600 hover:shadow-sm">
+    <li className="group relative overflow-hidden rounded-xl border border-stone-200 bg-white transition hover:border-brand-600 hover:shadow-sm">
       <Link
         to={`/listings/${listing.id}`}
         className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-600"
@@ -50,6 +51,8 @@ export function ListingCard({ listing }: { listing: ListingSummary }) {
           </div>
         </div>
       </Link>
+      {/* Outside the link: a button inside a link isn't valid. */}
+      <SaveButton listingId={listing.id} title={listing.title} className="absolute right-2 top-2" />
     </li>
   );
 }

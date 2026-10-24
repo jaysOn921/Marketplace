@@ -27,6 +27,7 @@ import { NotificationsPage } from './pages/NotificationsPage';
 import { OrderPage } from './pages/orders/OrderPage';
 import { OrdersPage } from './pages/orders/OrdersPage';
 import { CartPage } from './pages/CartPage';
+import { SavedPage } from './pages/SavedPage';
 import { SearchPage } from './pages/SearchPage';
 import { SellPage } from './pages/SellPage';
 import { ShopPage } from './pages/ShopPage';
@@ -139,6 +140,14 @@ export function App() {
           element={
             <RequireAuth>
               <ShopAnalyticsPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="saved"
+          element={
+            <RequireAuth>
+              <SavedPage />
             </RequireAuth>
           }
         />

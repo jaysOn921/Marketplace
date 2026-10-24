@@ -1,5 +1,5 @@
 import type { ListingDetail } from '@tzed/shared';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router';
 import { AskSeller } from '../../components/AskSeller';
@@ -12,6 +12,9 @@ import { StatusBadge } from '../../components/StatusBadge';
 import { useListing } from '../../lib/listings';
 import { useCategoryName } from '../../lib/categoryName';
 import { useDaysLabel } from '../../lib/delivery';
+import { rememberViewed } from '../../lib/recent';
+import { RecentlyViewed } from '../../components/RecentlyViewed';
+import { SaveButton } from '../../components/SaveButton';
 import { SellerTrustLines, VerifiedBadge } from '../../components/SellerTrust';
 
 const FLAG = { TZ: '🇹🇿', ZM: '🇿🇲' } as const;
@@ -84,6 +87,10 @@ export function ListingPage() {
   const daysLabel = useDaysLabel();
   const id = Number(useParams().id);
   const { data: listing, isPending, isError } = useListing(id);
+  // Remember it for "Recently viewed" on this device.
+  useEffect(() => {
+    if (listing?.status === 'ACTIVE' && !listing.isOwner) rememberViewed(listing.id);
+  }, [listing?.id, listing?.status, listing?.isOwner]);
 
   if (isPending) return <p className="text-stone-500">{t('common.loading')}</p>;
   if (isError || !listing) {
@@ -140,7 +147,12 @@ export function ListingPage() {
 
         <div className="space-y-6">
           <div>
-            <h1 className="text-2xl font-semibold leading-tight">{listing.title}</h1>
+            <div className="flex items-start justify-between gap-3">
+              <h1 className="text-2xl font-semibold leading-tight">{listing.title}</h1>
+              {!listing.isOwner && listing.status === 'ACTIVE' && (
+                <SaveButton listingId={listing.id} title={listing.title} variant="full" />
+              )}
+            </div>
             <div className="mt-3">
               <Price amount={listing.price} currency={listing.currency} size="lg" showConvert />
             </div>
@@ -237,6 +249,7 @@ export function ListingPage() {
           <ReportButton targetType="LISTING" targetId={listing.id} className="mt-4" />
         )}
       </section>
+      <RecentlyViewed exclude={listing.id} />
     </div>
   );
 }

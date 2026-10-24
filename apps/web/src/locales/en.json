@@ -1025,5 +1025,18 @@
       "DAY": "Usually replies within a day",
       "DAYS": "Usually takes a few days to reply"
     }
+  },
+  "saved": {
+    "title": "Saved items",
+    "intro": "Listings you saved. We let you know if a seller lowers the price.",
+    "empty": "You haven’t saved anything yet. Tap the heart on a listing to keep it here.",
+    "save": "Save",
+    "saved": "Saved",
+    "saveItem": "Save {{title}}",
+    "removeItem": "Remove {{title}} from saved items"
+  },
+  "recent": {
+    "title": "Recently viewed",
+    "clear": "Clear"
   }
 }

@@ -28,6 +28,7 @@ import { moderationRouter } from './modules/moderation/moderation.routes.js';
 import { notificationsRouter } from './modules/notifications/notifications.routes.js';
 import { ordersRouter } from './modules/orders/orders.routes.js';
 import { reviewsRouter } from './modules/reviews/reviews.routes.js';
+import { savedRouter } from './modules/saved/saved.routes.js';
 import { searchRouter } from './modules/search/search.routes.js';
 import { usersRouter } from './modules/users/users.routes.js';
 
@@ -90,6 +91,7 @@ export function createApp(options: AppOptions = {}) {
   api.use(geoRouter);
   api.use('/auth', authRouter(rateLimit ? createRateLimits() : null));
   api.use(notificationsRouter); // includes /me/counts, so it comes before the /me router
+  api.use(savedRouter); // /me/saved, and /listings/by-ids before /listings/:id
   api.use('/me', usersRouter);
   api.use(listingsRouter);
   api.use(searchRouter);

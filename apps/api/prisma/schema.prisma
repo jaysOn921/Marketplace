@@ -106,6 +106,7 @@ model User {
   ratesSet              ExchangeRate[]       @relation("RatesSet")
   orderEvents           OrderEvent[]
   cartItems             CartItem[]
+  savedListings         SavedListing[]
 
   @@index([countryId])
   @@index([status])
@@ -211,6 +212,8 @@ model Listing {
   title               String           @db.VarChar(120)
   description         String           @db.Text
   price               Decimal          @db.Decimal(14, 2)
+  /// The price when last approved, to tell people who saved it about a price drop.
+  approvedPrice       Decimal?         @db.Decimal(14, 2)
   currency            String           @db.Char(3) // always the seller's country currency
   condition           ListingCondition
   quantity            Int              @default(1)
@@ -243,6 +246,7 @@ model Listing {
   orderItems    OrderItem[]
   conversations Conversation[]
   cartItems     CartItem[]
+  savedBy       SavedListing[]
   dailyStats    ListingDailyStat[]
 
   @@index([status, countryId, categoryId])
@@ -612,4 +616,18 @@ model ListingDailyStat {
   @@id([listingId, day])
   @@index([day])
   @@map("listing_daily_stats")
+}
+
+/// A listing a user saved to look at later (their "Saved items").
+model SavedListing {
+  userId    Int
+  listingId Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@id([userId, listingId])
+  @@index([listingId])
+  @@index([userId, createdAt])
+  @@map("saved_listings")
 }

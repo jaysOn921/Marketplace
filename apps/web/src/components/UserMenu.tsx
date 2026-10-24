@@ -81,6 +81,9 @@ export function UserMenu() {
               </span>
             )}
           </Link>
+          <Link role="menuitem" to="/saved" className={item} onClick={() => setOpen(false)}>
+            {t('saved.title')}
+          </Link>
           <Link
             role="menuitem"
             to="/account/listings"

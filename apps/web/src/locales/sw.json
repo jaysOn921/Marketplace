@@ -1050,5 +1050,18 @@
       "DAY": "Kwa kawaida hujibu ndani ya siku moja",
       "DAYS": "Kwa kawaida huchukua siku kadhaa kujibu"
     }
+  },
+  "saved": {
+    "title": "Bidhaa nilizohifadhi",
+    "intro": "Bidhaa ulizohifadhi. Tutakujulisha muuzaji akipunguza bei.",
+    "empty": "Bado hujahifadhi chochote. Bonyeza moyo kwenye tangazo ili kulihifadhi hapa.",
+    "save": "Hifadhi",
+    "saved": "Imehifadhiwa",
+    "saveItem": "Hifadhi {{title}}",
+    "removeItem": "Ondoa {{title}} kwenye bidhaa ulizohifadhi"
+  },
+  "recent": {
+    "title": "Ulizotazama karibuni",
+    "clear": "Futa"
   }
 }
