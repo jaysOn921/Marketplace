@@ -59,7 +59,10 @@ await seller.getByText('Yes! I can deliver in Lusaka this week.').last().waitFor
 await seller.screenshot({ path: out + 'phase6-messages-desktop.png', fullPage: true });
 step('seller replied with Enter');
 
-await buyer.getByText('Yes! I can deliver in Lusaka this week.').waitFor({ timeout: 10_000 });
+await buyer
+  .getByText('Yes! I can deliver in Lusaka this week.')
+  .last()
+  .waitFor({ timeout: 10_000 });
 step('buyer received the reply without reloading');
 await buyer.screenshot({ path: out + 'phase6-thread-mobile.png' });
 await buyer.goto(base + '/messages');

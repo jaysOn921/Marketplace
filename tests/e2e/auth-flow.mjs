@@ -53,7 +53,7 @@ await p.getByRole('button', { name: 'Sign out' }).click();
 
 await p
   .getByRole('heading', { name: 'Buy and sell across Tanzania and Zambia' })
-  .waitFor({ timeout: 5000 });
+  .waitFor();
 step('signed out from the mobile menu, back on the home page');
 
 await p.goto(base + '/login');

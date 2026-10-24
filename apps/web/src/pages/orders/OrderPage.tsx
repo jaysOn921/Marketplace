@@ -279,25 +279,43 @@ export function OrderPage() {
       <Actions order={order} />
       <ReviewSection order={order} />
 
-      <section className="flex gap-4 rounded-xl border border-stone-200 bg-white p-4">
-        {order.coverImage && (
-          <img
-            src={order.coverImage.thumbUrl}
-            alt=""
-            className="h-20 w-20 shrink-0 rounded-lg object-cover"
-          />
-        )}
-        <div className="min-w-0 flex-1 text-sm">
-          <Link to={`/listings/${order.listingId}`} className="font-medium hover:text-brand-700">
-            {order.title}
-          </Link>
-          <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
-            <dt className="text-stone-500">{t('order.unitPrice')}</dt>
-            <dd className="tabular-nums">{formatMoney(order.unitPrice, order.currency)}</dd>
-            <dt className="text-stone-500">{t('buy.quantity')}</dt>
-            <dd>{order.quantity}</dd>
+      <section className="rounded-xl border border-stone-200 bg-white p-4">
+        <ul className="divide-y divide-stone-100" aria-label={t('order.items')}>
+          {order.items.map((item) => (
+            <li key={item.listingId} className="flex gap-4 py-3 first:pt-0">
+              {item.coverImage ? (
+                <img
+                  src={item.coverImage.thumbUrl}
+                  alt=""
+                  className="h-20 w-20 shrink-0 rounded-lg object-cover"
+                />
+              ) : (
+                <div className="h-20 w-20 shrink-0 rounded-lg bg-stone-100" />
+              )}
+              <div className="min-w-0 flex-1 text-sm">
+                <Link
+                  to={`/listings/${item.listingId}`}
+                  className="font-medium hover:text-brand-700"
+                >
+                  {item.title}
+                </Link>
+                <p className="mt-1 text-stone-600 tabular-nums">
+                  {t('order.qtyTimesPrice', {
+                    quantity: item.quantity,
+                    price: formatMoney(item.unitPrice, order.currency),
+                  })}
+                </p>
+              </div>
+              <p className="text-sm font-medium tabular-nums">
+                {formatMoney(item.lineTotal, order.currency)}
+              </p>
+            </li>
+          ))}
+        </ul>
+        <div className="border-t border-stone-100 pt-3 text-sm">
+          <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
             <dt className="font-semibold">{t('buy.total')}</dt>
-            <dd className="font-semibold tabular-nums">
+            <dd className="text-right font-semibold tabular-nums">
               {formatMoney(order.total, order.currency)}
             </dd>
             {converted && (
@@ -305,7 +323,7 @@ export function OrderPage() {
                 <dt className="text-stone-500">
                   {t('order.inCurrency', { currency: order.buyerCurrency })}
                 </dt>
-                <dd className="tabular-nums">
+                <dd className="text-right tabular-nums">
                   ≈ {formatMoney(order.buyerTotal, order.buyerCurrency)}
                 </dd>
               </>

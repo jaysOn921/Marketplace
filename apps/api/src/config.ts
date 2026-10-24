@@ -19,6 +19,8 @@ const envSchema = z.object({
   MAIL_FROM: z.string().default('TZed <no-reply@tzed.local>'),
   // Where uploaded images are stored (local disk driver). Defaults to <repo>/uploads.
   UPLOAD_DIR: z.string().optional(),
+  // Development only (browser test runs sign in many times): refused in production.
+  DISABLE_RATE_LIMITS: z.stringbool().default(false),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
 });
 
@@ -30,6 +32,13 @@ const parsed = envSchema
         code: 'custom',
         path: ['SESSION_SECRET'],
         message: 'Set a random SESSION_SECRET of at least 32 characters in production.',
+      });
+    }
+    if (env.DISABLE_RATE_LIMITS) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['DISABLE_RATE_LIMITS'],
+        message: 'Rate limits cannot be turned off in production.',
       });
     }
     if (!env.SMTP_URL) {

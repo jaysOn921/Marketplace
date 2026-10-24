@@ -62,8 +62,19 @@ function orderDetail(overrides: Partial<OrderDetail> = {}): OrderDetail {
     otherParty: 'Amina Electronics',
     createdAt: '2026-10-23T10:00:00.000Z',
     updatedAt: '2026-10-23T10:00:00.000Z',
+    itemCount: 1,
     listingId: 7,
     unitPrice: 380000,
+    items: [
+      {
+        listingId: 7,
+        title: listing.title,
+        unitPrice: 380000,
+        quantity: 2,
+        lineTotal: 760000,
+        coverImage: null,
+      },
+    ],
     fxRate: 1 / 105,
     deliveryNotes: 'Bus via Tunduma',
     buyerNote: null,
@@ -149,6 +160,32 @@ describe('Buy box', () => {
     expect(await screen.findByRole('heading', { name: 'Order #41' })).toBeInTheDocument();
     expect(screen.getByText(/Your order has been sent to the seller/)).toBeInTheDocument();
     expect(sent).toMatchObject({ listingId: 7, quantity: 2, deliveryMethod: 'CROSS_BORDER' });
+  });
+});
+
+describe('Add to cart', () => {
+  it('adds the chosen quantity without asking for delivery, and links to the cart', async () => {
+    let sent: unknown;
+    mockApi(
+      {
+        'GET /listings/7': () => ({ body: { listing } }),
+        'POST /cart/items': (body) => {
+          sent = body;
+          return {
+            status: 201,
+            body: { groups: [], buyerCurrency: 'ZMW', total: 0, count: 2 },
+          };
+        },
+      },
+      { user: zambian },
+    );
+    renderApp('/listings/7');
+    const box = await screen.findByRole('region', { name: 'Order this item' });
+    await userEvent.selectOptions(within(box).getByLabelText('Quantity'), '2');
+    await userEvent.click(within(box).getByRole('button', { name: 'Add to cart' }));
+    expect(await within(box).findByText(/Added 2 to your cart/)).toBeInTheDocument();
+    expect(within(box).getByRole('link', { name: 'View cart' })).toHaveAttribute('href', '/cart');
+    expect(sent).toEqual({ listingId: 7, quantity: 2 });
   });
 });
 

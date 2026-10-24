@@ -49,6 +49,7 @@ const visitors = [
       '/account',
       '/orders',
       'first-order',
+      '/cart',
       '/messages',
       '/notifications',
       '/support/tickets',
@@ -57,7 +58,13 @@ const visitors = [
   {
     who: 'seller',
     email: 'amina@demo.tzed.local',
-    pages: ['/account/listings', '/account/seller', '/sell', '/orders?role=selling'],
+    pages: [
+      '/account/listings',
+      '/account/analytics',
+      '/account/seller',
+      '/sell',
+      '/orders?role=selling',
+    ],
   },
   {
     who: 'admin',
@@ -65,6 +72,7 @@ const visitors = [
     password: 'admin-dev-password',
     pages: [
       '/admin',
+      '/admin/analytics',
       '/admin/review',
       '/admin/reports',
       '/admin/tickets',

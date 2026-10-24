@@ -1,6 +1,7 @@
 import { ORDER_STATUSES, formatMoney, type OrderStatus } from '@tzed/shared';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router';
+import { Alert } from '../../components/Form';
 import { OrderStatusBadge, PaymentBadge } from '../../components/OrderStatusBadge';
 import { useOrders } from '../../lib/orders';
 
@@ -16,6 +17,9 @@ export function OrdersPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">{t('orders.title')}</h1>
+      {Number(params.get('placed')) > 1 && (
+        <Alert kind="success">{t('cart.placed', { count: Number(params.get('placed')) })}</Alert>
+      )}
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-200">
         <nav className="flex gap-1" aria-label={t('orders.title')}>
@@ -92,8 +96,9 @@ export function OrdersPage() {
                 )}
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-medium">
-                    {o.quantity > 1 && `${o.quantity} × `}
-                    {o.title}
+                    {o.itemCount > 1
+                      ? t('orders.andMore', { title: o.title, count: o.itemCount - 1 })
+                      : `${o.quantity > 1 ? `${o.quantity} × ` : ''}${o.title}`}
                   </p>
                   <p className="truncate text-sm text-stone-500">
                     {t(role === 'buying' ? 'orders.from' : 'orders.to', { name: o.otherParty })} ·{' '}

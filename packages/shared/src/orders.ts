@@ -113,8 +113,12 @@ export interface OrderSummary {
   paymentStatus: PaymentStatus;
   /** The viewer's side of the order. */
   role: 'buyer' | 'seller';
+  /** The first item's title (orders from a cart can hold several items). */
   title: string;
+  /** Total units across all items. */
   quantity: number;
+  /** Number of different items in the order. */
+  itemCount: number;
   currency: CurrencyCode;
   total: number;
   buyerCurrency: CurrencyCode;
@@ -133,9 +137,20 @@ export interface OrderEventDto {
   createdAt: string;
 }
 
+export interface OrderItemDto {
+  listingId: number;
+  title: string;
+  unitPrice: number;
+  quantity: number;
+  lineTotal: number;
+  coverImage: ListingImageDto | null;
+}
+
 export interface OrderDetail extends OrderSummary {
+  /** The first item's listing and price (see `items` for all of them). */
   listingId: number;
   unitPrice: number;
+  items: OrderItemDto[];
   /** Rate used at order time: 1 unit of `currency` = fxRate units of `buyerCurrency`. */
   fxRate: number;
   deliveryNotes: string | null;

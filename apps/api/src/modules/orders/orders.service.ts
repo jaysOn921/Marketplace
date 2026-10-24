@@ -9,6 +9,7 @@ import {
   placeOrderSchema,
   roundMoney,
   type CurrencyCode,
+  type DeliveryMethod,
   type OrderAction,
   type OrderStatus,
 } from '@tzed/shared';
@@ -33,8 +34,38 @@ const EVENT_FOR: Record<OrderAction, string> = {
 const fixed = (amount: number, currency: CurrencyCode) =>
   amount.toFixed(CURRENCIES[currency].minorUnits);
 
-export async function placeOrder(user: AuthUser, input: unknown) {
-  const data = placeOrderSchema.parse(input);
+/** “Title”, or “Title” and N other items, for messages about an order. */
+export function orderLabel(items: { titleSnapshot: string }[]) {
+  const first = `“${items[0]?.titleSnapshot ?? ''}”`;
+  const others = items.length - 1;
+  return others > 0 ? `${first} and ${others} other item${others === 1 ? '' : 's'}` : first;
+}
+
+type ListingForOrder = Prisma.ListingGetPayload<{ include: { shipTo: true } }>;
+
+/** Whether the seller offers this delivery method to a buyer in `buyerCountryId`. */
+export function deliveryAllowed(
+  listing: ListingForOrder,
+  method: DeliveryMethod,
+  buyerCountryId: number,
+) {
+  const sameCountry = listing.countryId === buyerCountryId;
+  return (
+    (method === 'PICKUP' && listing.deliveryPickup) ||
+    (method === 'LOCAL' && listing.deliveryLocal && sameCountry) ||
+    (method === 'CROSS_BORDER' && listing.deliveryCrossBorder && !sameCountry)
+  );
+}
+
+/** Whether a buyer in `buyerCountryId` can order this listing at all. */
+export function availableIn(listing: ListingForOrder, buyerCountryId: number) {
+  return (
+    listing.countryId === buyerCountryId ||
+    listing.shipTo.some((s) => s.countryId === buyerCountryId)
+  );
+}
+
+export function requireVerifiedEmail(user: AuthUser) {
   if (!user.emailVerifiedAt) {
     throw new AppError(
       403,
@@ -42,109 +73,163 @@ export async function placeOrder(user: AuthUser, input: unknown) {
       'Please confirm your email address before ordering.',
     );
   }
+}
 
-  const listing = await prisma.listing.findUnique({
-    where: { id: data.listingId },
-    include: { shipTo: true, country: true },
-  });
-  if (!listing || listing.status !== 'ACTIVE') {
-    throw AppError.conflict('This listing is no longer available.');
-  }
-  if (listing.sellerId === user.id) throw AppError.badRequest("You can't order your own listing.");
-
-  const sameCountry = listing.countryId === user.countryId;
-  if (!sameCountry && !listing.shipTo.some((s) => s.countryId === user.countryId)) {
+/** The rate for converting `currency` to the buyer's currency, or an error if none is set. */
+export async function rateFor(currency: CurrencyCode, buyerCurrency: CurrencyCode) {
+  if (currency === buyerCurrency) return null;
+  const rate = (await getCurrentRates()).find(
+    (r) =>
+      (r.base === currency && r.quote === buyerCurrency) ||
+      (r.base === buyerCurrency && r.quote === currency),
+  );
+  if (!rate)
     throw new AppError(
-      400,
-      'NOT_AVAILABLE_IN_COUNTRY',
-      `This item isn't available to buyers in ${user.country.name}.`,
+      503,
+      'RATE_UNAVAILABLE',
+      'Ordering across the border is paused until the exchange rate is updated.',
     );
-  }
-  const allowed =
-    (data.deliveryMethod === 'PICKUP' && listing.deliveryPickup) ||
-    (data.deliveryMethod === 'LOCAL' && listing.deliveryLocal && sameCountry) ||
-    (data.deliveryMethod === 'CROSS_BORDER' && listing.deliveryCrossBorder && !sameCountry);
-  if (!allowed) {
-    const message = 'The seller does not offer that delivery option for you.';
-    throw AppError.badRequest(message, { fields: { deliveryMethod: message } });
-  }
+  return rate;
+}
 
-  // Price snapshot in the seller's currency and the buyer's, with the rate used.
-  const currency = listing.currency as CurrencyCode;
+export interface OrderDraft {
+  sellerId: number;
+  currency: CurrencyCode;
+  lines: { listing: ListingForOrder; quantity: number }[];
+  deliveryMethod: DeliveryMethod;
+  buyerNote: string | null;
+}
+
+/**
+ * Creates one order (one seller, one or more items) inside a transaction: holds the stock
+ * for every item, snapshots prices and the exchange rate, and records the "placed" event.
+ * Throws a conflict if any item no longer has enough stock, so the whole transaction is
+ * rolled back.
+ */
+export async function createOrderInTx(
+  tx: Prisma.TransactionClient,
+  user: AuthUser,
+  draft: OrderDraft,
+  rate: Awaited<ReturnType<typeof rateFor>>,
+) {
+  const { currency } = draft;
   const buyerCurrency = user.country.currencyCode as CurrencyCode;
-  const unitPrice = listing.price.toNumber();
-  const total = roundMoney(unitPrice * data.quantity, currency);
-  let fxRate = 1;
-  let buyerTotal = total;
-  if (buyerCurrency !== currency) {
-    const rate = (await getCurrentRates()).find(
-      (r) =>
-        (r.base === currency && r.quote === buyerCurrency) ||
-        (r.base === buyerCurrency && r.quote === currency),
-    );
-    if (!rate)
-      throw new AppError(
-        503,
-        'RATE_UNAVAILABLE',
-        'Ordering across the border is paused until the exchange rate is updated.',
-      );
-    fxRate = conversionFactor(currency, buyerCurrency, rate);
-    buyerTotal = convertMoney(total, currency, buyerCurrency, rate);
-  }
+  const lines = draft.lines.map(({ listing, quantity }) => {
+    const unitPrice = listing.price.toNumber();
+    return { listing, quantity, unitPrice, lineTotal: roundMoney(unitPrice * quantity, currency) };
+  });
+  const total = roundMoney(
+    lines.reduce((sum, l) => sum + l.lineTotal, 0),
+    currency,
+  );
+  const fxRate = rate ? conversionFactor(currency, buyerCurrency, rate) : 1;
+  const buyerTotal = rate ? convertMoney(total, currency, buyerCurrency, rate) : total;
 
-  const order = await prisma.$transaction(async (tx) => {
+  for (const { listing, quantity } of lines) {
     // Hold the stock: only succeeds if enough is left (safe against two buyers at once).
     const { count } = await tx.listing.updateMany({
-      where: { id: listing.id, status: 'ACTIVE', quantity: { gte: data.quantity } },
-      data: { quantity: { decrement: data.quantity } },
+      where: { id: listing.id, status: 'ACTIVE', quantity: { gte: quantity } },
+      data: { quantity: { decrement: quantity } },
     });
     if (count === 0) {
       const now = await tx.listing.findUnique({ where: { id: listing.id } });
       throw AppError.conflict(
         now?.status === 'ACTIVE' && now.quantity > 0
-          ? `Only ${now.quantity} left. Please lower the quantity.`
-          : 'Sorry, this item has just sold out.',
+          ? `Only ${now.quantity} of “${listing.title}” left. Please lower the quantity.`
+          : `Sorry, “${listing.title}” has just sold out.`,
       );
     }
     await tx.listing.updateMany({
       where: { id: listing.id, quantity: 0 },
       data: { status: 'SOLD' },
     });
+  }
 
-    return tx.order.create({
-      data: {
-        buyerId: user.id,
-        sellerId: listing.sellerId,
-        currency,
-        total: fixed(total, currency),
-        buyerCurrency,
-        fxRate: fxRate.toFixed(8),
-        buyerTotal: fixed(buyerTotal, buyerCurrency),
-        deliveryMethod: data.deliveryMethod,
-        deliveryNotes: listing.deliveryNotes,
-        buyerNote: data.buyerNote,
-        items: {
-          create: {
-            listingId: listing.id,
-            titleSnapshot: listing.title,
-            unitPrice: fixed(unitPrice, currency),
-            quantity: data.quantity,
-            lineTotal: fixed(total, currency),
-          },
-        },
-        events: { create: { type: 'placed', actorId: user.id, note: data.buyerNote } },
+  const notes = [...new Set(lines.map((l) => l.listing.deliveryNotes).filter(Boolean))];
+  return tx.order.create({
+    data: {
+      buyerId: user.id,
+      sellerId: draft.sellerId,
+      currency,
+      total: fixed(total, currency),
+      buyerCurrency,
+      fxRate: fxRate.toFixed(8),
+      buyerTotal: fixed(buyerTotal, buyerCurrency),
+      deliveryMethod: draft.deliveryMethod,
+      deliveryNotes: notes.length ? notes.join('\n').slice(0, 500) : null,
+      buyerNote: draft.buyerNote,
+      items: {
+        create: lines.map((l) => ({
+          listingId: l.listing.id,
+          titleSnapshot: l.listing.title,
+          unitPrice: fixed(l.unitPrice, currency),
+          quantity: l.quantity,
+          lineTotal: fixed(l.lineTotal, currency),
+        })),
       },
-      include: orderInclude,
-    });
+      events: { create: { type: 'placed', actorId: user.id, note: draft.buyerNote } },
+    },
+    include: orderInclude,
   });
+}
 
-  await notify(listing.sellerId, {
+/** Tells the seller about a new order. */
+export async function notifyNewOrder(
+  user: AuthUser,
+  order: Prisma.OrderGetPayload<{ include: typeof orderInclude }>,
+) {
+  const units = order.items.reduce((n, i) => n + i.quantity, 0);
+  await notify(order.sellerId, {
     type: 'order.placed',
     title: 'New order',
-    body: `${user.name} ordered ${data.quantity} × “${listing.title}” (${formatMoney(total, currency)}). Accept or decline it.`,
+    body: `${user.name} ordered ${order.items.length === 1 ? `${units} × ` : ''}${orderLabel(order.items)} (${formatMoney(order.total.toNumber(), order.currency as CurrencyCode)}). Accept or decline it.`,
     link: `/orders/${order.id}`,
     email: true,
   });
+}
+
+/** "Buy now": one listing, straight to an order. */
+export async function placeOrder(user: AuthUser, input: unknown) {
+  const data = placeOrderSchema.parse(input);
+  requireVerifiedEmail(user);
+
+  const listing = await prisma.listing.findUnique({
+    where: { id: data.listingId },
+    include: { shipTo: true },
+  });
+  if (!listing || listing.status !== 'ACTIVE') {
+    throw AppError.conflict('This listing is no longer available.');
+  }
+  if (listing.sellerId === user.id) throw AppError.badRequest("You can't order your own listing.");
+  if (!availableIn(listing, user.countryId)) {
+    throw new AppError(
+      400,
+      'NOT_AVAILABLE_IN_COUNTRY',
+      `This item isn't available to buyers in ${user.country.name}.`,
+    );
+  }
+  if (!deliveryAllowed(listing, data.deliveryMethod, user.countryId)) {
+    const message = 'The seller does not offer that delivery option for you.';
+    throw AppError.badRequest(message, { fields: { deliveryMethod: message } });
+  }
+
+  const currency = listing.currency as CurrencyCode;
+  const rate = await rateFor(currency, user.country.currencyCode as CurrencyCode);
+  const order = await prisma.$transaction((tx) =>
+    createOrderInTx(
+      tx,
+      user,
+      {
+        sellerId: listing.sellerId,
+        currency,
+        lines: [{ listing, quantity: data.quantity }],
+        deliveryMethod: data.deliveryMethod,
+        buyerNote: data.buyerNote,
+      },
+      rate,
+    ),
+  );
+  await notifyNewOrder(user, order);
   return order;
 }
 
@@ -183,29 +268,29 @@ const MESSAGES: Record<
 > = {
   accept: (t) => ({
     title: 'Order accepted',
-    body: `The seller accepted your order for “${t}”. You can now see their contact details.`,
+    body: `The seller accepted your order for ${t}. You can now see their contact details.`,
   }),
   decline: (t, r) => ({
     title: 'Order declined',
-    body: `The seller declined your order for “${t}”.${r ? ` Reason: ${r}` : ''}`,
+    body: `The seller declined your order for ${t}.${r ? ` Reason: ${r}` : ''}`,
   }),
   received: (t) => ({
     title: 'Buyer received the item',
-    body: `The buyer confirmed they received “${t}”. You can now mark the order completed.`,
+    body: `The buyer confirmed they received ${t}. You can now mark the order completed.`,
   }),
   'report-paid': (t) => ({
     title: 'Buyer says they paid',
-    body: `The buyer says they have paid for “${t}”. Check you received it, then record the payment.`,
+    body: `The buyer says they have paid for ${t}. Check you received it, then record the payment.`,
   }),
-  ready: (t) => ({ title: 'Order ready', body: `“${t}” is ready for collection or on its way.` }),
-  complete: (t) => ({ title: 'Order completed', body: `The order for “${t}” is complete.` }),
+  ready: (t) => ({ title: 'Order ready', body: `${t} is ready for collection or on its way.` }),
+  complete: (t) => ({ title: 'Order completed', body: `The order for ${t} is complete.` }),
   cancel: (t, r) => ({
     title: 'Order cancelled',
-    body: `The order for “${t}” was cancelled.${r ? ` Reason: ${r}` : ''}`,
+    body: `The order for ${t} was cancelled.${r ? ` Reason: ${r}` : ''}`,
   }),
   'mark-paid': (t) => ({
     title: 'Payment recorded',
-    body: `The seller recorded your payment for “${t}”.`,
+    body: `The seller recorded your payment for ${t}.`,
   }),
 };
 
@@ -260,7 +345,7 @@ export async function changeOrder(user: AuthUser, id: number, action: OrderActio
   });
 
   const other = role === 'seller' ? order.buyerId : order.sellerId;
-  const message = MESSAGES[action](order.items[0]!.titleSnapshot, reason);
+  const message = MESSAGES[action](orderLabel(order.items), reason);
   await notify(other, {
     type: `order.${EVENT_FOR[action]}`,
     ...message,

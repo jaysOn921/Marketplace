@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router';
@@ -128,7 +129,9 @@ export function Layout() {
       </header>
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
-        <Outlet />
+        <Suspense fallback={<p className="text-stone-600">{t('common.loading')}</p>}>
+          <Outlet />
+        </Suspense>
       </main>
 
       <footer className="border-t border-stone-200 bg-white">

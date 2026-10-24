@@ -57,7 +57,6 @@ Status: **Draft, awaiting approval.** No implementation code will be written unt
 - Online payments and escrow. Tanzania: M-Pesa, Mixx by Yas (Tigo Pesa), Airtel Money, HaloPesa. Zambia: MTN MoMo, Airtel Money, Zamtel Kwacha. Cards too. All through an aggregator covering both countries (e.g. DPO Pay or Flutterwave) or local ones (Selcom/ClickPesa for Tanzania, Lenco for Zambia). Seller payouts and fees/commissions
 - Automatic exchange rates from an FX API
 - Swahili interface (v1 is English only, but all UI text goes through a translation layer from day one, so adding Swahili later means translating text, not rewriting code)
-- Multi-seller cart (the v1 schema already supports multi-item orders, so this is UI and logic only)
 - Real-time messaging (websockets), push notifications, SMS notifications
 - Saved/favourite listings, saved searches and alerts
 - Shipping/courier integrations and delivery tracking
@@ -275,3 +274,8 @@ Defaults I'm assuming. Correct any of them:
 - **Deploy:** follow `docs/deploy.md`.
 - **Exchange rate:** set today's rate in Admin → Exchange rate.
 - **Help centre:** review the help articles and the prohibited-items policy.
+
+**Added after v1 (24 Oct 2026):**
+- **Shopping cart:** signed-in buyers can add items from several sellers. One checkout places a separate order per seller, each with its own delivery choice and note. It's all or nothing: if any item sold out meanwhile, no order is placed.
+- **Analytics:** admins see marketplace trends (sales in TSh, orders, users, listings, views, cart adds, by country, top categories and sellers). Sellers see views, cart adds, orders and sales per listing. Views are counted once per visitor per day, and only the numbers are stored.
+

@@ -1,21 +1,10 @@
+import { lazy, type ComponentType } from 'react';
 import { Route, Routes } from 'react-router';
 import { Layout } from './components/Layout';
 import { RequireAdmin } from './components/RequireAdmin';
 import { RequireAuth } from './components/RequireAuth';
 import { AccountPage } from './pages/account/AccountPage';
 import { MyListingsPage } from './pages/account/MyListingsPage';
-import { AdminListingsPage } from './pages/admin/AdminListingsPage';
-import { AdminReviewsPage } from './pages/admin/AdminReviewsPage';
-import { AdminLayout } from './pages/admin/AdminLayout';
-import { AdminTicketPage, AdminTicketsPage } from './pages/admin/AdminTicketsPage';
-import { AuditPage } from './pages/admin/AuditPage';
-import { CategoriesPage } from './pages/admin/CategoriesPage';
-import { DashboardPage } from './pages/admin/DashboardPage';
-import { FaqAdminPage } from './pages/admin/FaqAdminPage';
-import { RatesPage } from './pages/admin/RatesPage';
-import { ReportsPage } from './pages/admin/ReportsPage';
-import { UsersPage } from './pages/admin/UsersPage';
-import { ReviewQueuePage } from './pages/admin/ReviewQueuePage';
 import { ContactPage } from './pages/help/ContactPage';
 import { HelpArticlePage } from './pages/help/HelpArticlePage';
 import { TicketPage } from './pages/support/TicketPage';
@@ -37,9 +26,42 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { NotificationsPage } from './pages/NotificationsPage';
 import { OrderPage } from './pages/orders/OrderPage';
 import { OrdersPage } from './pages/orders/OrdersPage';
+import { CartPage } from './pages/CartPage';
 import { SearchPage } from './pages/SearchPage';
 import { SellPage } from './pages/SellPage';
 import { ShopPage } from './pages/ShopPage';
+
+/** Loads a page's code only when it's first opened (admin and analytics pages). */
+function lazyPage<K extends string>(load: () => Promise<Record<K, ComponentType>>, name: K) {
+  return lazy(() => load().then((m) => ({ default: m[name] })));
+}
+const AdminListingsPage = lazyPage(
+  () => import('./pages/admin/AdminListingsPage'),
+  'AdminListingsPage',
+);
+const AdminReviewsPage = lazyPage(
+  () => import('./pages/admin/AdminReviewsPage'),
+  'AdminReviewsPage',
+);
+const AnalyticsPage = lazyPage(() => import('./pages/admin/AnalyticsPage'), 'AnalyticsPage');
+const ShopAnalyticsPage = lazyPage(
+  () => import('./pages/account/ShopAnalyticsPage'),
+  'ShopAnalyticsPage',
+);
+const AdminLayout = lazyPage(() => import('./pages/admin/AdminLayout'), 'AdminLayout');
+const AdminTicketPage = lazyPage(() => import('./pages/admin/AdminTicketsPage'), 'AdminTicketPage');
+const AdminTicketsPage = lazyPage(
+  () => import('./pages/admin/AdminTicketsPage'),
+  'AdminTicketsPage',
+);
+const AuditPage = lazyPage(() => import('./pages/admin/AuditPage'), 'AuditPage');
+const CategoriesPage = lazyPage(() => import('./pages/admin/CategoriesPage'), 'CategoriesPage');
+const DashboardPage = lazyPage(() => import('./pages/admin/DashboardPage'), 'DashboardPage');
+const FaqAdminPage = lazyPage(() => import('./pages/admin/FaqAdminPage'), 'FaqAdminPage');
+const RatesPage = lazyPage(() => import('./pages/admin/RatesPage'), 'RatesPage');
+const ReportsPage = lazyPage(() => import('./pages/admin/ReportsPage'), 'ReportsPage');
+const UsersPage = lazyPage(() => import('./pages/admin/UsersPage'), 'UsersPage');
+const ReviewQueuePage = lazyPage(() => import('./pages/admin/ReviewQueuePage'), 'ReviewQueuePage');
 
 export function App() {
   return (
@@ -113,6 +135,22 @@ export function App() {
           }
         />
         <Route
+          path="account/analytics"
+          element={
+            <RequireAuth>
+              <ShopAnalyticsPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="cart"
+          element={
+            <RequireAuth>
+              <CartPage />
+            </RequireAuth>
+          }
+        />
+        <Route
           path="orders"
           element={
             <RequireAuth>
@@ -163,6 +201,7 @@ export function App() {
           <Route path="users" element={<UsersPage />} />
           <Route path="listings" element={<AdminListingsPage />} />
           <Route path="reviews" element={<AdminReviewsPage />} />
+          <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="rates" element={<RatesPage />} />
           <Route path="categories" element={<CategoriesPage />} />
           <Route path="help" element={<FaqAdminPage />} />

@@ -54,7 +54,7 @@ notificationsRouter.post('/notifications/:id/read', requireAuth, async (req, res
 /** Header badges in one request (polled by the web app). */
 notificationsRouter.get('/me/counts', requireAuth, async (req, res) => {
   const user = currentUser(req);
-  const [notifications, messages, ordersToAct, reviewQueue, openReports] = await Promise.all([
+  const [notifications, messages, ordersToAct, reviewQueue, openReports, cart] = await Promise.all([
     prisma.notification.count({ where: { userId: user.id, readAt: null } }),
     totalUnread(user.id),
     prisma.order.count({ where: { sellerId: user.id, status: 'PLACED' } }),
@@ -62,7 +62,17 @@ notificationsRouter.get('/me/counts', requireAuth, async (req, res) => {
       ? prisma.listing.count({ where: { status: 'PENDING_REVIEW' } })
       : Promise.resolve(0),
     user.role === 'ADMIN' ? openReportCount() : Promise.resolve(0),
+    prisma.cartItem
+      .aggregate({ where: { userId: user.id }, _sum: { quantity: true } })
+      .then((r) => r._sum.quantity ?? 0),
   ]);
-  const body: CountsResponse = { notifications, messages, ordersToAct, reviewQueue, openReports };
+  const body: CountsResponse = {
+    notifications,
+    messages,
+    ordersToAct,
+    reviewQueue,
+    openReports,
+    cart,
+  };
   res.set('Cache-Control', 'no-store').json(body);
 });

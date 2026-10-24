@@ -148,7 +148,9 @@ describe('placing an order', () => {
     const { listing, buyerClient } = await setup({ quantity: 2 });
     const tooMany = await buyerClient.post('/orders', order(listing.id, { quantity: 3 }));
     expect(tooMany.status).toBe(409);
-    expect(tooMany.body.error.message).toBe('Only 2 left. Please lower the quantity.');
+    expect(tooMany.body.error.message).toBe(
+      'Only 2 of “Samsung Galaxy A15” left. Please lower the quantity.',
+    );
 
     expect((await buyerClient.post('/orders', order(listing.id, { quantity: 2 }))).status).toBe(
       201,

@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { useMe } from '../lib/auth';
 import { apiErrors, validate, type FieldErrors } from '../lib/forms';
+import { useAddToCart } from '../lib/cart';
 import { usePlaceOrder } from '../lib/orders';
 import { useZmwTzsRate } from '../lib/rates';
 import { Alert } from './Form';
@@ -33,6 +34,7 @@ export function BuyBox({ listing }: { listing: ListingDetail }) {
   const { data: me, isPending } = useMe();
   const { data: rate } = useZmwTzsRate();
   const place = usePlaceOrder();
+  const addToCart = useAddToCart();
   const [quantity, setQuantity] = useState(1);
   const [method, setMethod] = useState<DeliveryMethod | ''>('');
   const [note, setNote] = useState('');
@@ -97,6 +99,7 @@ export function BuyBox({ listing }: { listing: ListingDetail }) {
   }
 
   const server = apiErrors(place.error);
+  const cartError = apiErrors(addToCart.error).message;
   return box(
     <form onSubmit={onSubmit} noValidate className="space-y-4">
       <h2 className="font-semibold">{t('buy.title')}</h2>
@@ -185,6 +188,25 @@ export function BuyBox({ listing }: { listing: ListingDetail }) {
       >
         {place.isPending ? t('buy.placing') : t('buy.place')}
       </button>
+      <button
+        type="button"
+        disabled={addToCart.isPending}
+        onClick={() => addToCart.mutate({ listingId: listing.id, quantity })}
+        className="w-full rounded-lg border border-brand-700 px-4 py-2.5 font-medium text-brand-800 hover:bg-brand-50 disabled:opacity-60"
+      >
+        {addToCart.isPending ? t('cart.adding') : t('cart.add')}
+      </button>
+      <div aria-live="polite">
+        {addToCart.isSuccess && !addToCart.isPending && (
+          <Alert kind="success">
+            {t('cart.added', { count: quantity })}{' '}
+            <Link to="/cart" className="font-medium underline">
+              {t('cart.view')}
+            </Link>
+          </Alert>
+        )}
+        {cartError && <Alert>{cartError}</Alert>}
+      </div>
       <p className="text-xs text-stone-500">{t('buy.payOffline')}</p>
     </form>,
   );

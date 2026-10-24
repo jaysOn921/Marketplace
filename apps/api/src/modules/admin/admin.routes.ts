@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { idParam } from '../../lib/params.js';
 import { currentUser, requireAdmin } from '../../middleware/auth.js';
+import { adminAnalytics } from '../analytics/analytics.service.js';
 import * as admin from './admin.service.js';
 
 /** Everything under /api/v1/admin (admins only). */
@@ -12,6 +13,7 @@ adminRouter.use((_req, res, next) => {
 });
 
 adminRouter.get('/stats', async (_req, res) => res.json(await admin.stats()));
+adminRouter.get('/analytics', async (req, res) => res.json(await adminAnalytics(req.query)));
 
 adminRouter.get('/users', async (req, res) => res.json(await admin.listUsers(req.query)));
 adminRouter.post('/users/:id/suspend', async (req, res) => {

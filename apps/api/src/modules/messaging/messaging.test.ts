@@ -247,6 +247,7 @@ describe('notifications', () => {
       ordersToAct: 1,
       reviewQueue: 0,
       openReports: 0,
+      cart: 0,
     });
 
     await sellerClient.post(`/notifications/${list.body.notifications[0].id}/read`);

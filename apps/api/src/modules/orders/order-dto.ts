@@ -15,6 +15,7 @@ export const orderInclude = {
   buyer: party,
   seller: party,
   items: {
+    orderBy: { id: 'asc' },
     include: {
       listing: { include: { images: { orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }], take: 1 } } },
     },
@@ -44,7 +45,8 @@ export function toOrderSummary(order: OrderRow, viewerId: number): OrderSummary 
     paymentStatus: order.paymentStatus,
     role,
     title: item.titleSnapshot,
-    quantity: item.quantity,
+    quantity: order.items.reduce((n, i) => n + i.quantity, 0),
+    itemCount: order.items.length,
     currency: order.currency as CurrencyCode,
     total: order.total.toNumber(),
     buyerCurrency: order.buyerCurrency as CurrencyCode,
@@ -83,6 +85,14 @@ export function toOrderDetail(
     ...summary,
     listingId: item.listingId,
     unitPrice: item.unitPrice.toNumber(),
+    items: order.items.map((i) => ({
+      listingId: i.listingId,
+      title: i.titleSnapshot,
+      unitPrice: i.unitPrice.toNumber(),
+      quantity: i.quantity,
+      lineTotal: i.lineTotal.toNumber(),
+      coverImage: i.listing.images[0] ? toImageDto(i.listing.images[0]) : null,
+    })),
     fxRate: order.fxRate.toNumber(),
     deliveryNotes: order.deliveryNotes,
     buyerNote: order.buyerNote,

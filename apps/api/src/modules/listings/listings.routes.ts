@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { recordListingView } from '../analytics/listing-stats.js';
 import multer from 'multer';
 import {
   MAX_IMAGE_BYTES,
@@ -69,6 +70,8 @@ listingsRouter.post('/listings', requireAuth, async (req, res) => {
 
 listingsRouter.get('/listings/:id', async (req, res) => {
   const listing = await listings.getVisibleListing(idParam(req.params.id), req);
+  if (listing.status === 'ACTIVE')
+    await recordListingView(listing, req.user, req.ip, req.get('user-agent'));
   const body: ListingResponse = {
     listing: toListingDetail(listing, req.user, await sellerRating(listing.sellerId)),
   };

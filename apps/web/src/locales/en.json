@@ -17,7 +17,8 @@
     "review": "Review listings",
     "orders": "Orders",
     "reports": "Reports",
-    "admin": "Admin"
+    "admin": "Admin",
+    "shopAnalytics": "Shop analytics"
   },
   "search": {
     "placeholder": "Search for phones, furniture, clothes…",
@@ -518,6 +519,7 @@
     "nav": {
       "label": "Admin",
       "dashboard": "Dashboard",
+      "analytics": "Analytics",
       "review": "Review listings",
       "reports": "Reports",
       "tickets": "Support tickets",
@@ -702,7 +704,9 @@
     "emptyBuying": "You haven't ordered anything yet.",
     "emptySelling": "No orders for your listings yet.",
     "from": "From {{name}}",
-    "to": "To {{name}}"
+    "to": "To {{name}}",
+    "andMore_one": "{{title}} and {{count}} other item",
+    "andMore_other": "{{title}} and {{count}} other items"
   },
   "order": {
     "title": "Order #{{id}}",
@@ -783,13 +787,18 @@
       "seller": "The buyer confirmed they received the item on {{date}}. You can mark the order completed."
     },
     "messageSeller": "Message the seller",
-    "messageBuyer": "Message the buyer"
+    "messageBuyer": "Message the buyer",
+    "items": "Items",
+    "qtyTimesPrice": "{{quantity}} × {{price}}"
   },
   "header": {
     "messages": "Messages",
     "messagesUnread": "Messages, {{count}} unread",
     "notifications": "Notifications",
-    "notificationsUnread": "Notifications, {{count}} unread"
+    "notificationsUnread": "Notifications, {{count}} unread",
+    "cart": "Cart",
+    "cartCount_one": "Cart, {{count}} item",
+    "cartCount_other": "Cart, {{count}} items"
   },
   "notifications": {
     "markAll": "Mark all as read",
@@ -891,5 +900,91 @@
       "OFFENSIVE": "Offensive or abusive",
       "OTHER": "Other"
     }
+  },
+  "cart": {
+    "title": "Your cart",
+    "intro": "Items are grouped by seller. Each seller gets their own order, which they accept, deliver and get paid for separately.",
+    "empty": "Your cart is empty.",
+    "browse": "Browse listings",
+    "add": "Add to cart",
+    "adding": "Adding…",
+    "added_one": "Added {{count}} to your cart.",
+    "added_other": "Added {{count}} to your cart.",
+    "view": "View cart",
+    "each": "{{price}} each",
+    "remove": "Remove",
+    "include": "Order now",
+    "subtotal": "Subtotal",
+    "summary": "Order summary",
+    "orders_one": "{{count}} order",
+    "orders_other": "{{count}} orders",
+    "totalNote": "Approximate total in your currency at today’s rate. Each order is priced in the seller’s currency.",
+    "placeOrders_one": "Place order",
+    "placeOrders_other": "Place {{count}} orders",
+    "oneOrderEach": "You pay each seller directly after they accept. Never pay before the seller accepts your order.",
+    "chooseDelivery": "Choose how you want to get these items.",
+    "noSharedDelivery": "These items have no delivery option in common. Order them separately, or remove one.",
+    "fixFirst": "Update or remove the items marked above to order from this seller.",
+    "placed_one": "Your order has been sent to the seller.",
+    "placed_other": "Your {{count}} orders have been sent to the sellers. Each seller will accept or decline theirs.",
+    "problem": {
+      "UNAVAILABLE": "No longer available.",
+      "NOT_IN_YOUR_COUNTRY": "Not sold to buyers in your country any more.",
+      "NOT_ENOUGH_STOCK_one": "Only {{count}} left. Lower the quantity.",
+      "NOT_ENOUGH_STOCK_other": "Only {{count}} left. Lower the quantity."
+    },
+    "removeItem": "Remove {{title}}"
+  },
+  "analytics": {
+    "period": "Period",
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days",
+    "adminIntro": "{{from}} to {{to}} (UTC). Sales are completed orders, added up in shillings at K 1 = TSh {{rate}}.",
+    "shopTitle": "Shop analytics",
+    "shopIntro": "How buyers find and order your listings. Sales are completed orders, in your currency.",
+    "sales": "Sales",
+    "ordersPlaced": "Orders placed",
+    "ordersCompleted": "Orders completed",
+    "newUsers": "New users",
+    "newListings": "New listings",
+    "views": "Listing views",
+    "cartAdds": "Added to cart",
+    "unitsSold": "Items ordered",
+    "conversion": "Views to orders",
+    "conversionHint": "Orders placed for every 100 listing views.",
+    "salesDaily": "Sales (TSh)",
+    "ordersDaily": "Orders placed",
+    "viewsDaily": "Listing views",
+    "usersDaily": "New users",
+    "periodTotal": "Total: {{value}}",
+    "showTable": "Show as table",
+    "showChart": "Show as chart",
+    "day": "Day",
+    "week": "Week",
+    "noChange": "No change",
+    "upFromZero": "Up from none",
+    "up": "Up {{pct}}%",
+    "down": "Down {{pct}}%",
+    "previous": "previous period: {{value}}",
+    "byCountry": "By country",
+    "country": "Country",
+    "buyerOrders": "Orders as buyers",
+    "sellerSales": "Sales by sellers",
+    "crossBorder_one": "{{count}} of {{total}} orders crossed the border.",
+    "crossBorder_other": "{{count}} of {{total}} orders crossed the border.",
+    "statuses": "Where orders stand now",
+    "topCategories": "Top categories",
+    "topSellers": "Top sellers",
+    "category": "Category",
+    "orders": "Orders",
+    "units": "Items",
+    "seller": "Seller",
+    "completed": "Completed",
+    "noOrders": "No orders in this period.",
+    "noSales": "No completed sales in this period.",
+    "perListing": "By listing",
+    "listing": "Listing",
+    "noListings": "You have no listings yet.",
+    "privacy": "Views are counted once per visitor per day. TZed stores only the numbers, not who viewed."
   }
 }

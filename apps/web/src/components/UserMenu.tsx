@@ -89,6 +89,16 @@ export function UserMenu() {
           >
             {t('nav.myListings')}
           </Link>
+          {user.sellerProfile && (
+            <Link
+              role="menuitem"
+              to="/account/analytics"
+              className={item}
+              onClick={() => setOpen(false)}
+            >
+              {t('nav.shopAnalytics')}
+            </Link>
+          )}
           <Link
             role="menuitem"
             to="/account/seller"

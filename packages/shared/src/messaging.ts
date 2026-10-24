@@ -87,4 +87,6 @@ export interface CountsResponse {
   reviewQueue: number;
   /** Reported items waiting for a decision (admins only, otherwise 0). */
   openReports: number;
+  /** Units in the user's cart. */
+  cart: number;
 }

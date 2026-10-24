@@ -14,6 +14,7 @@ import { errorHandler, notFoundHandler } from './middleware/error-handler.js';
 import { createRateLimits } from './middleware/rate-limit.js';
 import { adminRouter } from './modules/admin/admin.routes.js';
 import { authRouter } from './modules/auth/auth.routes.js';
+import { cartRouter } from './modules/cart/cart.routes.js';
 import { PrismaSessionStore, SESSION_COOKIE } from './modules/auth/session-store.js';
 import { geoRouter } from './modules/geo/geo.routes.js';
 import { healthRouter } from './modules/health/health.routes.js';
@@ -36,7 +37,7 @@ export interface AppOptions {
 }
 
 export function createApp(options: AppOptions = {}) {
-  const rateLimit = options.rateLimit ?? !config.isTest;
+  const rateLimit = options.rateLimit ?? !(config.isTest || config.DISABLE_RATE_LIMITS);
   const app = express();
 
   app.disable('x-powered-by');
@@ -98,6 +99,7 @@ export function createApp(options: AppOptions = {}) {
   api.use(reportsRouter(rateLimit));
   api.use('/admin', adminRouter);
   api.use('/orders', ordersRouter);
+  api.use('/cart', cartRouter);
   api.use('/conversations', messagingRouter(rateLimit));
   api.use('/admin/listings', moderationRouter);
   api.use(notFoundHandler);

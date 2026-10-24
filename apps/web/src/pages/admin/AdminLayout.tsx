@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, Outlet } from 'react-router';
 import { useCounts } from '../../lib/messaging';
@@ -8,6 +9,7 @@ export function AdminLayout() {
   const { data: counts } = useCounts();
   const links: { to: string; label: string; badge?: number }[] = [
     { to: '/admin', label: t('admin.nav.dashboard') },
+    { to: '/admin/analytics', label: t('admin.nav.analytics') },
     { to: '/admin/review', label: t('admin.nav.review'), badge: counts?.reviewQueue },
     { to: '/admin/reports', label: t('admin.nav.reports'), badge: counts?.openReports },
     { to: '/admin/tickets', label: t('admin.nav.tickets') },
@@ -49,7 +51,9 @@ export function AdminLayout() {
         </ul>
       </nav>
       <div className="min-w-0">
-        <Outlet />
+        <Suspense fallback={<p className="text-stone-600">{t('common.loading')}</p>}>
+          <Outlet />
+        </Suspense>
       </div>
     </div>
   );

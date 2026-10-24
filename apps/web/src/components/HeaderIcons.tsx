@@ -39,6 +39,32 @@ function MessagesIcon() {
   );
 }
 
+function CartIcon() {
+  const { t } = useTranslation();
+  const { data } = useCounts();
+  const count = data?.cart ?? 0;
+  return (
+    <Link
+      to="/cart"
+      className={iconButton}
+      aria-label={count ? t('header.cartCount', { count }) : t('header.cart')}
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M3 4h2l2.2 10.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 8H6.2"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <circle cx="9" cy="19" r="1.5" fill="currentColor" />
+        <circle cx="17" cy="19" r="1.5" fill="currentColor" />
+      </svg>
+      <Badge count={count} />
+    </Link>
+  );
+}
+
 function NotificationBell() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -159,6 +185,7 @@ export function HeaderIcons() {
   if (!user) return null;
   return (
     <div className="flex items-center">
+      <CartIcon />
       <MessagesIcon />
       <NotificationBell />
     </div>

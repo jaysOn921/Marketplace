@@ -105,6 +105,7 @@ model User {
   auditLogs             AuditLog[]
   ratesSet              ExchangeRate[]       @relation("RatesSet")
   orderEvents           OrderEvent[]
+  cartItems             CartItem[]
 
   @@index([countryId])
   @@index([status])
@@ -233,6 +234,8 @@ model Listing {
   reviewEvents  ListingReviewEvent[]
   orderItems    OrderItem[]
   conversations Conversation[]
+  cartItems     CartItem[]
+  dailyStats    ListingDailyStat[]
 
   @@index([status, countryId, categoryId])
   @@index([status, submittedAt])
@@ -568,4 +571,34 @@ model AuditLog {
   @@index([targetType, targetId])
   @@index([createdAt])
   @@map("audit_logs")
+}
+
+/// A signed-in buyer's cart: one row per listing. Prices are read live at checkout.
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  listingId Int
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, listingId])
+  @@index([listingId])
+  @@map("cart_items")
+}
+
+/// Per-listing counters for one day (UTC), for seller and admin analytics.
+/// Only counts are stored: nothing about who viewed.
+model ListingDailyStat {
+  listingId Int
+  day       DateTime @db.Date
+  views     Int      @default(0)
+  cartAdds  Int      @default(0)
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@id([listingId, day])
+  @@index([day])
+  @@map("listing_daily_stats")
 }

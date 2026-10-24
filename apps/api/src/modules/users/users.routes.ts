@@ -2,6 +2,7 @@ import { Router } from 'express';
 import type { MeResponse } from '@tzed/shared';
 import { prisma } from '../../db.js';
 import { authUserInclude, currentUser, requireAuth } from '../../middleware/auth.js';
+import { sellerAnalytics } from '../analytics/analytics.service.js';
 import { SESSION_COOKIE } from '../auth/session-store.js';
 import { toSessionUser } from './user-dto.js';
 import * as users from './users.service.js';
@@ -32,6 +33,10 @@ usersRouter.put('/seller-profile', async (req, res) => {
   const user = currentUser(req);
   await users.upsertSellerProfile(user, req.body);
   res.json(await freshMe(user.id));
+});
+
+usersRouter.get('/analytics', async (req, res) => {
+  res.set('Cache-Control', 'no-store').json(await sellerAnalytics(currentUser(req), req.query));
 });
 
 usersRouter.get('/export', async (req, res) => {
