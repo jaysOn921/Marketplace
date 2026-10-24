@@ -51,9 +51,7 @@ step('created seller profile');
 await p.getByRole('button', { name: 'Menu' }).click();
 await p.getByRole('button', { name: 'Sign out' }).click();
 
-await p
-  .getByRole('heading', { name: 'Buy and sell across Tanzania and Zambia' })
-  .waitFor();
+await p.getByRole('heading', { name: 'Buy and sell across Tanzania and Zambia' }).waitFor();
 step('signed out from the mobile menu, back on the home page');
 
 await p.goto(base + '/login');
