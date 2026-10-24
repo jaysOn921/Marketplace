@@ -2,6 +2,7 @@ import type { AdminUserRow } from '@tzed/shared';
 import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router';
+import { VerifiedBadge } from '../../components/SellerTrust';
 import { adminPost, useAdminAction, useAdminUsers } from '../../lib/admin';
 import { inputClass, PageHeader, Pager, ReasonAction } from './shared';
 
@@ -11,6 +12,10 @@ function UserRow({ u }: { u: AdminUserRow }) {
   const { t, i18n } = useTranslation();
   const act = useAdminAction(
     ({ action, reason }: { action: 'suspend' | 'reinstate'; reason: string }) =>
+      adminPost(`users/${u.id}/${action}`, { reason }),
+  );
+  const verify = useAdminAction(
+    ({ action, reason }: { action: 'verify' | 'unverify'; reason: string }) =>
       adminPost(`users/${u.id}/${action}`, { reason }),
   );
   return (
@@ -26,7 +31,8 @@ function UserRow({ u }: { u: AdminUserRow }) {
               <span className="rounded bg-red-100 px-1.5 text-xs text-red-800">
                 {u.status.toLowerCase()}
               </span>
-            )}
+            )}{' '}
+            {u.verifiedAt && <VerifiedBadge compact />}
           </p>
           <p className="text-sm text-stone-600">
             {u.email}
@@ -86,6 +92,17 @@ function UserRow({ u }: { u: AdminUserRow }) {
           pending={act.isPending}
           error={act.error}
           onConfirm={(reason) => act.mutate({ action: 'reinstate', reason })}
+        />
+      )}
+      {u.shopName && u.status === 'ACTIVE' && (
+        <ReasonAction
+          label={t(u.verifiedAt ? 'admin.users.unverify' : 'admin.users.verify')}
+          danger={Boolean(u.verifiedAt)}
+          pending={verify.isPending}
+          error={verify.error}
+          onConfirm={(reason) =>
+            verify.mutate({ action: u.verifiedAt ? 'unverify' : 'verify', reason })
+          }
         />
       )}
     </li>

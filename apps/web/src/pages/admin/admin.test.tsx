@@ -215,4 +215,51 @@ describe('Admin area', () => {
     expect(await screen.findByRole('button', { name: 'Show again' })).toBeInTheDocument();
     expect(screen.getByText(/: Shares a phone number/)).toBeInTheDocument();
   });
+
+  it('verifies a seller with a note', async () => {
+    let sent: unknown;
+    let verified = false;
+    const row = () => ({
+      id: 4,
+      name: 'Amina Juma',
+      email: 'amina@example.com',
+      countryCode: 'TZ',
+      role: 'USER',
+      status: 'ACTIVE',
+      emailVerified: true,
+      shopName: 'Amina Electronics',
+      shopSlug: 'amina-electronics',
+      verifiedAt: verified ? '2026-10-24T00:00:00.000Z' : null,
+      listings: 3,
+      orders: 9,
+      reportsAgainst: 0,
+      createdAt: '2026-10-01T00:00:00.000Z',
+      lastLoginAt: null,
+    });
+    mockApi(
+      {
+        'GET /me/counts': () => ({ body: counts }),
+        'GET /admin/users': () => ({ body: { rows: [row()], total: 1, page: 1, pageCount: 1 } }),
+        'POST /admin/users/4/verify': (body) => {
+          sent = body;
+          verified = true;
+          return { body: { ok: true } };
+        },
+      },
+      { user: admin },
+    );
+    renderApp('/admin/users');
+    await userEvent.click(await screen.findByRole('button', { name: 'Verify seller' }));
+    const form = screen.getByRole('form', { name: 'Verify seller' });
+    await userEvent.type(
+      within(form).getByPlaceholderText('Reason (shown to the person)'),
+      'TIN certificate checked',
+    );
+    await userEvent.click(within(form).getByRole('button', { name: 'Verify seller' }));
+    await waitFor(() => expect(sent).toEqual({ reason: 'TIN certificate checked' }));
+    expect(
+      await screen.findByRole('button', { name: 'Remove verified badge' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Verified')).toBeInTheDocument();
+  });
 });

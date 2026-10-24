@@ -3,6 +3,7 @@ import { searchQuerySchema, type ShopResponse, type SuggestResponse } from '@tze
 import { prisma } from '../../db.js';
 import { AppError } from '../../lib/errors.js';
 import { sellerRating } from '../reviews/reviews.service.js';
+import { sellerTrust } from '../trust/trust.service.js';
 import { searchListings, suggest } from './search.service.js';
 
 export const searchRouter = Router();
@@ -39,6 +40,7 @@ searchRouter.get('/shops/:slug', async (req, res) => {
       memberSince: profile.user.createdAt.toISOString(),
       activeListings,
       rating: await sellerRating(profile.userId),
+      trust: await sellerTrust(profile.userId),
     },
   };
   res.json(body);

@@ -126,6 +126,9 @@ model SellerProfile {
   regionId          Int?
   town              String?           @db.VarChar(80)
   contactPreference ContactPreference @default(MESSAGES)
+  /// Set when a TZed admin has checked the seller (shown as a "Verified seller" badge).
+  verifiedAt        DateTime?
+  verifiedNote      String?           @db.VarChar(500)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
   user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)

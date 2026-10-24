@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { recordListingView } from '../analytics/listing-stats.js';
+import { sellerTrust } from '../trust/trust.service.js';
 import multer from 'multer';
 import {
   MAX_IMAGE_BYTES,
@@ -73,7 +74,12 @@ listingsRouter.get('/listings/:id', async (req, res) => {
   if (listing.status === 'ACTIVE')
     await recordListingView(listing, req.user, req.ip, req.get('user-agent'));
   const body: ListingResponse = {
-    listing: toListingDetail(listing, req.user, await sellerRating(listing.sellerId)),
+    listing: toListingDetail(
+      listing,
+      req.user,
+      await sellerRating(listing.sellerId),
+      await sellerTrust(listing.sellerId),
+    ),
   };
   res.set('Cache-Control', 'no-store').json(body);
 });

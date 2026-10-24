@@ -8,6 +8,7 @@ import {
   type ListingImageDto,
   type ListingSummary,
   type SellerRating,
+  type SellerTrust,
 } from '@tzed/shared';
 import { imageKeys } from '../media/images.js';
 import { storage } from '../media/storage.js';
@@ -16,6 +17,7 @@ export const listingSummaryInclude = {
   country: true,
   region: true,
   images: { orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }], take: 1 },
+  seller: { select: { sellerProfile: { select: { verifiedAt: true } } } },
 } satisfies Prisma.ListingInclude;
 
 export const listingDetailInclude = {
@@ -58,6 +60,7 @@ export function toListingSummary(l: SummaryRow): ListingSummary {
     coverImage: l.images[0] ? toImageDto(l.images[0]) : null,
     createdAt: l.createdAt.toISOString(),
     publishedAt: l.publishedAt?.toISOString() ?? null,
+    sellerVerified: Boolean(l.seller.sellerProfile?.verifiedAt),
   };
 }
 
@@ -65,6 +68,7 @@ export function toListingDetail(
   l: DetailRow,
   viewer?: { id: number; role: string },
   sellerRating: SellerRating | null = null,
+  trust: SellerTrust | null = null,
 ): ListingDetail {
   const isOwner = viewer?.id === l.sellerId;
   const canSeeModeration = isOwner || viewer?.role === 'ADMIN';
@@ -100,6 +104,7 @@ export function toListingDetail(
       countryCode: l.seller.country.code as CountryCode,
       memberSince: l.seller.createdAt.toISOString(),
       rating: sellerRating,
+      trust,
     },
     rejectionReason: canSeeModeration ? l.rejectionReason : null,
     submittedAt: canSeeModeration ? (l.submittedAt?.toISOString() ?? null) : null,

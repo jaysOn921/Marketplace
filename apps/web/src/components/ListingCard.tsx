@@ -2,6 +2,7 @@ import type { ListingSummary } from '@tzed/shared';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { Price } from './Price';
+import { VerifiedBadge } from './SellerTrust';
 import { RatingSummary } from './Stars';
 
 const FLAG = { TZ: '🇹🇿', ZM: '🇿🇲' } as const;
@@ -43,7 +44,10 @@ export function ListingCard({ listing }: { listing: ListingSummary }) {
             <span aria-hidden="true">{FLAG[listing.countryCode]} </span>
             {listing.town}, {listing.regionName}
           </p>
-          <RatingSummary rating={listing.sellerRating} compact />
+          <div className="flex flex-wrap items-center gap-1.5">
+            {listing.sellerVerified && <VerifiedBadge compact />}
+            <RatingSummary rating={listing.sellerRating} compact />
+          </div>
         </div>
       </Link>
     </li>

@@ -567,7 +567,9 @@
       "listings": "Listings",
       "history": "History",
       "suspend": "Suspend",
-      "reinstate": "Reinstate"
+      "reinstate": "Reinstate",
+      "verify": "Verify seller",
+      "unverify": "Remove verified badge"
     },
     "listings": {
       "search": "Title, #id or seller email",
@@ -1009,5 +1011,19 @@
     "customsHelp": "About customs",
     "customsAccept": "I understand that import duty or customs fees may apply, and that I agree them with the seller.",
     "customsRequired": "Please confirm you understand import duty may apply."
+  },
+  "trust": {
+    "verified": "Verified seller",
+    "verifiedShort": "Verified",
+    "verifiedMeans": "The TZed team has checked this seller’s identity and contact details.",
+    "learnMore": "What this means",
+    "completed_one": "{{count}} completed sale",
+    "completed_other": "{{count}} completed sales",
+    "reply": {
+      "HOUR": "Usually replies within an hour",
+      "HOURS": "Usually replies within a few hours",
+      "DAY": "Usually replies within a day",
+      "DAYS": "Usually takes a few days to reply"
+    }
   }
 }

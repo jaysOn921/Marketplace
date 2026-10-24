@@ -12,6 +12,7 @@ import { StatusBadge } from '../../components/StatusBadge';
 import { useListing } from '../../lib/listings';
 import { useCategoryName } from '../../lib/categoryName';
 import { useDaysLabel } from '../../lib/delivery';
+import { SellerTrustLines, VerifiedBadge } from '../../components/SellerTrust';
 
 const FLAG = { TZ: '🇹🇿', ZM: '🇿🇲' } as const;
 
@@ -194,8 +195,13 @@ export function ListingPage() {
             )}
           </section>
 
-          <section className="rounded-xl border border-stone-200 bg-white p-4">
-            <h2 className="text-sm font-medium text-stone-500">{t('listing.seller')}</h2>
+          <section
+            aria-labelledby="seller-heading"
+            className="rounded-xl border border-stone-200 bg-white p-4"
+          >
+            <h2 id="seller-heading" className="text-sm font-medium text-stone-500">
+              {t('listing.seller')}
+            </h2>
             {listing.seller.slug ? (
               <Link
                 to={`/shop/${listing.seller.slug}`}
@@ -206,11 +212,13 @@ export function ListingPage() {
             ) : (
               <p className="mt-1 font-semibold">{listing.seller.shopName}</p>
             )}
+            {listing.seller.trust?.verified && <VerifiedBadge />}
             {listing.seller.slug && (
               <Link to={`/shop/${listing.seller.slug}#reviews`} className="block hover:underline">
                 <RatingSummary rating={listing.seller.rating} />
               </Link>
             )}
+            {listing.seller.trust && <SellerTrustLines trust={listing.seller.trust} />}
             <p className="text-sm text-stone-600">
               <span aria-hidden="true">{FLAG[listing.seller.countryCode]} </span>
               {[listing.seller.town, listing.seller.regionName].filter(Boolean).join(', ')}

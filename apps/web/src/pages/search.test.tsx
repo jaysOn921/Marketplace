@@ -18,6 +18,7 @@ const phone: ListingSummary = {
   town: 'Kariakoo',
   crossBorder: true,
   coverImage: null,
+  sellerVerified: false,
   createdAt: '2026-10-01T00:00:00.000Z',
   publishedAt: '2026-10-01T00:00:00.000Z',
 };
@@ -230,6 +231,7 @@ describe('Shop page', () => {
             countryCode: 'ZM',
             memberSince: '2026-01-01T00:00:00.000Z',
             activeListings: 1,
+            trust: { verified: true, completedOrders: 7, replyTime: 'HOUR' },
           },
         },
       }),
@@ -241,6 +243,9 @@ describe('Shop page', () => {
     renderApp('/shop/lusaka-home');
     expect(await screen.findByRole('heading', { name: 'Lusaka Home' })).toBeInTheDocument();
     expect(screen.getByText('Furniture and TVs')).toBeInTheDocument();
+    expect(screen.getByText('Verified seller')).toBeInTheDocument();
+    expect(screen.getByText('7 completed sales')).toBeInTheDocument();
+    expect(screen.getByText('Usually replies within an hour')).toBeInTheDocument();
     expect(await screen.findByRole('link', { name: /Hisense smart TV/ })).toBeInTheDocument();
     expect(calls[0]?.get('seller')).toBe('lusaka-home');
   });

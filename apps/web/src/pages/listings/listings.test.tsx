@@ -33,6 +33,7 @@ const listing: ListingDetail = {
   town: 'Mbeya',
   crossBorder: true,
   coverImage: null,
+  sellerVerified: true,
   createdAt: '2026-10-01T00:00:00.000Z',
   publishedAt: '2026-10-02T00:00:00.000Z',
   description: 'Brand new in box with charger.',
@@ -66,6 +67,7 @@ const listing: ListingDetail = {
     countryCode: 'TZ',
     memberSince: '2026-01-01T00:00:00.000Z',
     rating: null,
+    trust: { verified: true, completedOrders: 12, replyTime: 'HOURS' },
   },
   rejectionReason: null,
   submittedAt: null,
@@ -93,6 +95,10 @@ describe('Listing page', () => {
       await screen.findByRole('heading', { level: 1, name: listing.title }),
     ).toBeInTheDocument();
     expect(screen.getByText('TSh 380,000')).toBeInTheDocument();
+    const sellerCard = screen.getByRole('region', { name: 'Seller' });
+    expect(within(sellerCard).getByText('Verified seller')).toBeInTheDocument();
+    expect(within(sellerCard).getByText('12 completed sales')).toBeInTheDocument();
+    expect(within(sellerCard).getByText('Usually replies within a few hours')).toBeInTheDocument();
     expect(await screen.findByText(/≈ K 3,619\.05/)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Convert' })).toHaveAttribute(
       'href',

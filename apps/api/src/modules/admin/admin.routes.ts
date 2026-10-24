@@ -25,6 +25,15 @@ adminRouter.post('/users/:id/reinstate', async (req, res) => {
   res.json({ ok: true });
 });
 
+adminRouter.post('/users/:id/verify', async (req, res) => {
+  await admin.setSellerVerified(currentUser(req), idParam(req.params.id), true, req.body, req);
+  res.json({ ok: true });
+});
+adminRouter.post('/users/:id/unverify', async (req, res) => {
+  await admin.setSellerVerified(currentUser(req), idParam(req.params.id), false, req.body, req);
+  res.json({ ok: true });
+});
+
 adminRouter.get('/listings', async (req, res) => res.json(await admin.listListings(req.query)));
 adminRouter.post('/listings/:id/remove', async (req, res) => {
   res.json({

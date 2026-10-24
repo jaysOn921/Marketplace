@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams, useSearchParams } from 'react-router';
 import { ListingGrid } from '../components/ListingCard';
 import { ReportButton } from '../components/ReportButton';
+import { SellerTrustLines, VerifiedBadge } from '../components/SellerTrust';
 import { RatingSummary } from '../components/Stars';
 import { toApiQuery, useSearch, useShop } from '../lib/search';
 import { ShopReviews } from './ShopReviews';
@@ -47,10 +48,14 @@ export function ShopPage() {
             {shop.shopName.slice(0, 1).toUpperCase()}
           </span>
           <div className="min-w-0">
-            <h1 className="text-2xl font-semibold">{shop.shopName}</h1>
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-2xl font-semibold">{shop.shopName}</h1>
+              {shop.trust.verified && <VerifiedBadge />}
+            </div>
             <a href="#reviews" className="block hover:underline">
               <RatingSummary rating={shop.rating} />
             </a>
+            <SellerTrustLines trust={shop.trust} />
             <p className="text-sm text-stone-600">
               <span aria-hidden="true">{FLAG[shop.countryCode]} </span>
               {[shop.town, shop.regionName, t(`countries.${shop.countryCode}`)]

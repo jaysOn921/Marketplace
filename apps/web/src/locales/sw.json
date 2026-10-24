@@ -567,7 +567,9 @@
       "listings": "Matangazo",
       "history": "Historia",
       "suspend": "Simamisha",
-      "reinstate": "Rejesha"
+      "reinstate": "Rejesha",
+      "verify": "Thibitisha muuzaji",
+      "unverify": "Ondoa beji ya uthibitisho"
     },
     "listings": {
       "search": "Jina, #namba au barua pepe ya muuzaji",
@@ -1034,5 +1036,19 @@
     "customsHelp": "Kuhusu forodha",
     "customsAccept": "Ninaelewa kuwa ushuru wa forodha unaweza kutozwa, na kwamba nitakubaliana nao na muuzaji.",
     "customsRequired": "Tafadhali thibitisha unaelewa kuwa ushuru wa forodha unaweza kutozwa."
+  },
+  "trust": {
+    "verified": "Muuzaji aliyethibitishwa",
+    "verifiedShort": "Amethibitishwa",
+    "verifiedMeans": "Timu ya TZed imekagua utambulisho na mawasiliano ya muuzaji huyu.",
+    "learnMore": "Hii ina maana gani",
+    "completed_one": "Mauzo {{count}} yaliyokamilika",
+    "completed_other": "Mauzo {{count}} yaliyokamilika",
+    "reply": {
+      "HOUR": "Kwa kawaida hujibu ndani ya saa moja",
+      "HOURS": "Kwa kawaida hujibu ndani ya saa chache",
+      "DAY": "Kwa kawaida hujibu ndani ya siku moja",
+      "DAYS": "Kwa kawaida huchukua siku kadhaa kujibu"
+    }
   }
 }

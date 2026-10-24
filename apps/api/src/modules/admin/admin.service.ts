@@ -159,6 +159,7 @@ export async function listUsers(query: Record<string, unknown>): Promise<Paged<A
       emailVerified: u.emailVerifiedAt !== null,
       shopName: u.sellerProfile?.shopName ?? null,
       shopSlug: u.sellerProfile?.slug ?? null,
+      verifiedAt: u.sellerProfile?.verifiedAt?.toISOString() ?? null,
       listings: u._count.listings,
       orders: u._count.ordersAsBuyer + u._count.ordersAsSeller,
       reportsAgainst: reports.get(u.id) ?? 0,
@@ -220,6 +221,50 @@ export async function setUserStatus(
         ? { label: 'Contact support', path: '/help/contact' }
         : { label: 'Sign in', path: '/login' },
     }),
+  });
+}
+
+/** Gives or takes away a seller's "Verified seller" badge, with a note for the record. */
+export async function setSellerVerified(
+  admin: AuthUser,
+  userId: number,
+  verify: boolean,
+  input: unknown,
+  req: Request,
+) {
+  const { reason } = adminReasonSchema.parse(input);
+  const profile = await prisma.sellerProfile.findUnique({ where: { userId } });
+  if (!profile) throw AppError.notFound('This user has no seller profile.');
+  if (verify && profile.verifiedAt) throw AppError.conflict('This seller is already verified.');
+  if (!verify && !profile.verifiedAt) throw AppError.conflict('This seller is not verified.');
+
+  await prisma.$transaction(async (tx) => {
+    await tx.sellerProfile.update({
+      where: { userId },
+      data: verify
+        ? { verifiedAt: new Date(), verifiedNote: reason }
+        : { verifiedAt: null, verifiedNote: null },
+    });
+    await recordAudit(
+      {
+        action: verify ? 'seller.verify' : 'seller.unverify',
+        targetType: 'user',
+        targetId: userId,
+        before: { verified: Boolean(profile.verifiedAt) },
+        after: { verified: verify, note: reason },
+        req,
+      },
+      tx,
+    );
+  });
+  await notify(userId, {
+    type: verify ? 'seller.verified' : 'seller.unverified',
+    title: verify ? 'Your shop is now a verified seller' : 'Your verified seller badge was removed',
+    body: verify
+      ? `The TZed team has checked ${profile.shopName}. Buyers now see a “Verified seller” badge on your shop and listings.`
+      : `The “Verified seller” badge was removed from ${profile.shopName}. Reason: ${reason}`,
+    link: verify ? `/shop/${profile.slug}` : '/help/contact',
+    email: true,
   });
 }
 

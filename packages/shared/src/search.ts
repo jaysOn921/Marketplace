@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { COUNTRY_CODES, CURRENCY_CODES } from './constants.js';
 import { LISTING_CONDITIONS, type ListingSummary } from './listings.js';
-import type { SellerRating } from './reviews.js';
+import type { SellerRating, SellerTrust } from './reviews.js';
 
 export const SEARCH_SORTS = ['relevance', 'newest', 'price_asc', 'price_desc'] as const;
 export type SearchSort = (typeof SEARCH_SORTS)[number];
@@ -90,5 +90,6 @@ export interface ShopResponse {
     memberSince: string;
     activeListings: number;
     rating: SellerRating | null;
+    trust: SellerTrust;
   };
 }

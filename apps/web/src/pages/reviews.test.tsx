@@ -108,6 +108,7 @@ describe('Shop reviews', () => {
             countryCode: 'TZ',
             memberSince: '2026-01-01T00:00:00.000Z',
             activeListings: 0,
+            trust: { verified: false, completedOrders: 0, replyTime: null },
             rating: { average: 4.5, count: 2 },
           },
         },

@@ -16,6 +16,19 @@ export const reviewSchema = z.object({
 });
 export type ReviewInput = z.input<typeof reviewSchema>;
 
+/** How quickly a seller usually replies to buyers' messages. */
+export const REPLY_TIMES = ['HOUR', 'HOURS', 'DAY', 'DAYS'] as const;
+export type ReplyTime = (typeof REPLY_TIMES)[number];
+
+/** Signals that help buyers trust a seller they don't know. */
+export interface SellerTrust {
+  /** A TZed admin has checked this seller. */
+  verified: boolean;
+  completedOrders: number;
+  /** null until there are enough replies to judge (at least 3 in the last 90 days). */
+  replyTime: ReplyTime | null;
+}
+
 /** A seller's average rating (1 decimal) and number of reviews. */
 export interface SellerRating {
   average: number;

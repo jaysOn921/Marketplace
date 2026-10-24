@@ -125,6 +125,18 @@ export const CATEGORIES: {
 
 export const FAQ_ARTICLES = [
   {
+    slug: 'verified-sellers',
+    topic: 'safety',
+    title: 'Verified sellers, completed sales and reply times',
+    body: `A "Verified seller" badge means the TZed team has checked the seller's identity (for example a national ID or business registration) and that their phone number and location are real. It doesn't guarantee every sale, so still follow the safety tips: pay only after the seller accepts your order, and check the item when you can.
+
+"Completed sales" counts orders the seller has finished on TZed.
+
+The reply time shows how quickly the seller usually answers TZed messages, based on the last 90 days. It appears once a seller has answered at least three conversations.
+
+Sellers can ask to be verified by contacting support from the Help centre.`,
+  },
+  {
     slug: 'how-tzed-works',
     topic: 'getting-started',
     title: 'How TZed works',

@@ -72,6 +72,8 @@ export interface AdminUserRow {
   emailVerified: boolean;
   shopName: string | null;
   shopSlug: string | null;
+  /** When the seller was verified, if they are. */
+  verifiedAt: string | null;
   listings: number;
   orders: number;
   reportsAgainst: number;

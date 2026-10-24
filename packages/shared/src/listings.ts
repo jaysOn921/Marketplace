@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { CountryCode, CurrencyCode } from './constants.js';
-import type { SellerRating } from './reviews.js';
+import type { SellerRating, SellerTrust } from './reviews.js';
 
 export const LISTING_CONDITIONS = ['NEW', 'LIKE_NEW', 'GOOD', 'FAIR', 'FOR_PARTS'] as const;
 export type ListingCondition = (typeof LISTING_CONDITIONS)[number];
@@ -152,6 +152,8 @@ export interface ListingSummary {
   publishedAt: string | null;
   /** The seller's rating, where the list includes it (search, shop, home). */
   sellerRating?: SellerRating | null;
+  /** The seller has a "Verified seller" badge. */
+  sellerVerified: boolean;
 }
 
 export interface CategoryRef {
@@ -182,6 +184,8 @@ export interface ListingDetail extends ListingSummary {
     countryCode: CountryCode;
     memberSince: string;
     rating: SellerRating | null;
+    /** Only on the public listing view (not in responses to the seller's own edits). */
+    trust: SellerTrust | null;
   };
   /** Only for the owner and admins. */
   rejectionReason: string | null;
