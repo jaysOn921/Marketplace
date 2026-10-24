@@ -18,7 +18,11 @@
     "orders": "Orders",
     "reports": "Reports",
     "admin": "Admin",
-    "shopAnalytics": "Shop analytics"
+    "shopAnalytics": "Shop analytics",
+    "mainLabel": "Main",
+    "mobileLabel": "Menu",
+    "footerLabel": "Footer",
+    "homeLabel": "TZed home"
   },
   "search": {
     "placeholder": "Search for phones, furniture, clothes…",
@@ -986,5 +990,8 @@
     "listing": "Listing",
     "noListings": "You have no listings yet.",
     "privacy": "Views are counted once per visitor per day. TZed stores only the numbers, not who viewed."
+  },
+  "language": {
+    "label": "Language"
   }
 }

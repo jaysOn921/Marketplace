@@ -10,6 +10,7 @@ import { Price } from '../../components/Price';
 import { RatingSummary } from '../../components/Stars';
 import { StatusBadge } from '../../components/StatusBadge';
 import { useListing } from '../../lib/listings';
+import { useCategoryName } from '../../lib/categoryName';
 
 const FLAG = { TZ: '🇹🇿', ZM: '🇿🇲' } as const;
 
@@ -77,6 +78,7 @@ function OwnerBanner({ listing }: { listing: ListingDetail }) {
 
 export function ListingPage() {
   const { t, i18n } = useTranslation();
+  const catName = useCategoryName();
   const id = Number(useParams().id);
   const { data: listing, isPending, isError } = useListing(id);
 
@@ -112,7 +114,7 @@ export function ListingPage() {
               to={`/search?category=${listing.category.parent.slug}`}
               className="hover:text-brand-700 hover:underline"
             >
-              {listing.category.parent.name}
+              {catName(listing.category.parent)}
             </Link>
             {' › '}
           </>
@@ -121,7 +123,7 @@ export function ListingPage() {
           to={`/search?category=${listing.category.slug}`}
           className="hover:text-brand-700 hover:underline"
         >
-          {listing.category.name}
+          {catName(listing.category)}
         </Link>
       </nav>
 

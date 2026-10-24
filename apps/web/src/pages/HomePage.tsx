@@ -5,6 +5,7 @@ import { SearchBar } from '../components/SearchBar';
 import { useMe } from '../lib/auth';
 import { useCategories } from '../lib/listings';
 import { toApiQuery, useSearch } from '../lib/search';
+import { useCategoryName } from '../lib/categoryName';
 
 function Section({
   title,
@@ -36,6 +37,7 @@ function Section({
 
 export function HomePage() {
   const { t } = useTranslation();
+  const catName = useCategoryName();
   const { data: categories } = useCategories();
   const { data: user } = useMe();
   // Cross-border deals for the viewer's country; for guests, the main TZ → ZM route.
@@ -78,7 +80,7 @@ export function HomePage() {
                   to={`/search?category=${c.slug}`}
                   className="block rounded-lg border border-stone-200 bg-white px-4 py-3 text-sm font-medium hover:border-brand-600 hover:text-brand-800"
                 >
-                  {c.name}
+                  {catName(c)}
                 </Link>
               </li>
             ))}

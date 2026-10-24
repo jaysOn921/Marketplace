@@ -33,6 +33,7 @@ import {
 } from '../../lib/listings';
 import { useZmwTzsRate } from '../../lib/rates';
 import { PhotoManager } from './PhotoManager';
+import { useCategoryName } from '../../lib/categoryName';
 
 type Values = {
   title: string;
@@ -102,6 +103,7 @@ function Checkbox({
 
 function ListingForm({ listing }: { listing?: ListingDetail }) {
   const { t } = useTranslation();
+  const catName = useCategoryName();
   const navigate = useNavigate();
   const { data: user } = useMe();
   const { data: countries } = useCountries();
@@ -188,16 +190,16 @@ function ListingForm({ listing }: { listing?: ListingDetail }) {
             <option value="">{t('seller.fields.choose')}</option>
             {categories?.map((c) =>
               c.children.length ? (
-                <optgroup key={c.id} label={c.name}>
+                <optgroup key={c.id} label={catName(c)}>
                   {c.children.map((child) => (
                     <option key={child.id} value={child.id}>
-                      {child.name}
+                      {catName(child)}
                     </option>
                   ))}
                 </optgroup>
               ) : (
                 <option key={c.id} value={c.id}>
-                  {c.name}
+                  {catName(c)}
                 </option>
               ),
             )}

@@ -4,6 +4,7 @@
 // Fails on "serious" or "critical" findings; lists "minor" and "moderate" ones.
 // Needs the dev servers running (npm run dev) and the dev seed.
 // Usage: node tests/e2e/a11y.mjs [baseUrl]
+//        TZED_LANG=sw node tests/e2e/a11y.mjs   (the same checks with the site in Swahili)
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { join } from 'node:path';
@@ -21,6 +22,7 @@ const axeSource = readFileSync(
   'utf8',
 );
 
+const lang = process.env.TZED_LANG ?? 'en';
 const viewports = {
   phone: { width: 390, height: 844 },
   desktop: { width: 1280, height: 900 },
@@ -117,6 +119,9 @@ for (const visitor of visitors) {
       await page.getByRole('button', { name: 'Sign in' }).click();
       await page.getByRole('heading', { name: 'My account' }).waitFor();
     }
+    // Sign in happens in English; every page after that uses the chosen language.
+    if (lang !== 'en')
+      await context.addInitScript((l) => localStorage.setItem('tzed.lang', l), lang);
     for (const entry of visitor.pages) {
       const path = await resolvePath(page, entry);
       await page.goto(base + path);
@@ -150,7 +155,10 @@ for (const visitor of visitors) {
   }
 }
 
-writeFileSync('tests/artifacts/a11y-report.json', JSON.stringify(report, null, 2));
+writeFileSync(
+  `tests/artifacts/a11y-report${lang === 'en' ? '' : `-${lang}`}.json`,
+  JSON.stringify(report, null, 2),
+);
 if (pageErrors.length) console.log('page errors:\n  ' + pageErrors.join('\n  '));
 console.log(
   `${report.length} page checks, ${serious} serious/critical problem(s). Report: tests/artifacts/a11y-report.json`,

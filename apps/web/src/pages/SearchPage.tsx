@@ -18,6 +18,7 @@ import { useMe } from '../lib/auth';
 import { useDisplayCurrency } from '../lib/display-currency';
 import { useCategories } from '../lib/listings';
 import { toApiQuery, useSearch } from '../lib/search';
+import { useCategoryName } from '../lib/categoryName';
 
 const FLAG = { TZ: '🇹🇿', ZM: '🇿🇲' } as const;
 
@@ -146,6 +147,7 @@ function Filters({
   update: (u: Record<string, string | null>) => void;
 }) {
   const { t } = useTranslation();
+  const catName = useCategoryName();
   const { data: categories } = useCategories();
   const category = params.get('category');
   const conditions = (params.get('condition') ?? '').split(',').filter(Boolean);
@@ -173,7 +175,7 @@ function Filters({
               onChange={() => update({ category: parent.slug })}
             >
               <span className="font-medium">
-                {t('search.filters.allIn', { name: parent.name })}
+                {t('search.filters.allIn', { name: catName(parent) })}
               </span>
             </Radio>
             {parent.children.map((c) => (
@@ -183,7 +185,7 @@ function Filters({
                 checked={category === c.slug}
                 onChange={() => update({ category: c.slug })}
               >
-                <span>{c.name}</span>
+                <span>{catName(c)}</span>
                 <span className="text-stone-500">{count(facets.categories, c.slug) ?? ''}</span>
               </Radio>
             ))}
@@ -204,7 +206,7 @@ function Filters({
                 checked={category === c.slug}
                 onChange={() => update({ category: c.slug })}
               >
-                <span>{c.name}</span>
+                <span>{catName(c)}</span>
                 <span className="text-stone-500">{count(facets.categories, c.slug) ?? 0}</span>
               </Radio>
             ))}
@@ -297,6 +299,7 @@ function ActiveFilters({
   clear: () => void;
 }) {
   const { t } = useTranslation();
+  const catName = useCategoryName();
   const { data: categories } = useCategories();
   const chips: { key: string; label: string; remove: Record<string, string | null> }[] = [];
   const catSlug = params.get('category');
@@ -304,7 +307,7 @@ function ActiveFilters({
     const all = categories?.flatMap((c) => [c, ...c.children]) ?? [];
     chips.push({
       key: 'category',
-      label: all.find((c) => c.slug === catSlug)?.name ?? catSlug,
+      label: ((c) => (c ? catName(c) : catSlug))(all.find((c) => c.slug === catSlug)),
       remove: { category: null },
     });
   }
@@ -423,6 +426,7 @@ function Pagination({
 
 export function SearchPage() {
   const { t } = useTranslation();
+  const catName = useCategoryName();
   const [params, setParams] = useSearchParams();
   const [filtersOpen, setFiltersOpen] = useState(false);
   const apiQuery = toApiQuery(params);
@@ -447,8 +451,8 @@ export function SearchPage() {
 
   const heading = data?.category
     ? q
-      ? t('search.inCategory', { q, category: data.category.name })
-      : data.category.name
+      ? t('search.inCategory', { q, category: catName(data.category) })
+      : catName(data.category)
     : q
       ? t('search.resultsFor', { q })
       : t('search.browseAll');
@@ -469,7 +473,7 @@ export function SearchPage() {
             to={`/search?category=${data.category.parent.slug}`}
             className="text-sm text-brand-700 hover:underline"
           >
-            {data.category.parent.name}
+            {catName(data.category.parent)}
           </Link>
         )}
         <h1 className="text-2xl font-semibold">{heading}</h1>
@@ -489,7 +493,7 @@ export function SearchPage() {
                 onClick={() => update({ category: c.slug })}
                 className="rounded-full border border-stone-300 bg-white px-3 py-1 text-sm hover:border-brand-600"
               >
-                {c.name}
+                {catName(c)}
               </button>
             </li>
           ))}

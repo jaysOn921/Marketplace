@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router';
 import { ConverterMenu } from './ConverterMenu';
+import { LanguageSwitcher } from './LanguageSwitcher';
 import { HeaderIcons } from './HeaderIcons';
 import { SearchBar } from './SearchBar';
 import { UserMenu } from './UserMenu';
@@ -14,8 +15,9 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   }`;
 
 function Logo() {
+  const { t } = useTranslation();
   return (
-    <Link to="/" className="flex shrink-0 items-center gap-2" aria-label="TZed home">
+    <Link to="/" className="flex shrink-0 items-center gap-2" aria-label={t('nav.homeLabel')}>
       <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-700 text-sm font-bold text-white">
         TZ
       </span>
@@ -45,7 +47,7 @@ export function Layout() {
         <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
           <Logo />
           <SearchBar className="hidden md:flex" />
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
+          <nav className="hidden items-center gap-1 md:flex" aria-label={t('nav.mainLabel')}>
             {links
               .filter((l) => l.to !== '/converter')
               .map((l) => (
@@ -86,8 +88,9 @@ export function Layout() {
           <nav
             id="mobile-menu"
             className="border-t border-stone-200 px-4 py-2 md:hidden"
-            aria-label="Mobile"
+            aria-label={t('nav.mobileLabel')}
           >
+            <LanguageSwitcher className="px-3 py-2 text-sm" />
             {[
               ...links,
               ...(user
@@ -137,7 +140,8 @@ export function Layout() {
       <footer className="border-t border-stone-200 bg-white">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 text-sm text-stone-600 md:flex-row md:items-center md:justify-between">
           <p>{t('footer.countries')}</p>
-          <nav className="flex gap-4" aria-label="Footer">
+          <LanguageSwitcher />
+          <nav className="flex flex-wrap gap-4" aria-label={t('nav.footerLabel')}>
             <Link to="/help" className="hover:text-brand-700">
               {t('footer.help')}
             </Link>

@@ -2,12 +2,14 @@ import { useEffect, useId, useRef, useState, type FormEvent, type KeyboardEvent 
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useSearchParams } from 'react-router';
 import { useSuggestions } from '../lib/search';
+import { useCategoryName } from '../lib/categoryName';
 
 type Option = { kind: 'search' | 'listing' | 'category'; label: string; to: string };
 
 /** Header search box with suggestions as you type (WAI-ARIA combobox pattern). */
 export function SearchBar({ className = '' }: { className?: string }) {
   const { t } = useTranslation();
+  const catName = useCategoryName();
   const navigate = useNavigate();
   const location = useLocation();
   const [params] = useSearchParams();
@@ -41,7 +43,7 @@ export function SearchBar({ className = '' }: { className?: string }) {
           },
           ...data.categories.map((c) => ({
             kind: 'category' as const,
-            label: c.name,
+            label: catName(c),
             to: `/search?category=${c.slug}`,
           })),
           ...data.listings.map((l) => ({

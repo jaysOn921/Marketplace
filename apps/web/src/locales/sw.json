@@ -1,0 +1,1022 @@
+{
+  "brand": {
+    "name": "TZed",
+    "tagline": "Nunua na uuze kati ya Tanzania na Zambia"
+  },
+  "nav": {
+    "browse": "Vinjari",
+    "sell": "Uza",
+    "help": "Msaada",
+    "signIn": "Ingia",
+    "menu": "Menyu",
+    "converter": "Kibadilishaji",
+    "account": "Akaunti yangu",
+    "sellerProfile": "Wasifu wa muuzaji",
+    "signOut": "Toka",
+    "myListings": "Bidhaa zangu",
+    "review": "Kagua bidhaa",
+    "orders": "Oda",
+    "reports": "Ripoti",
+    "admin": "Msimamizi",
+    "shopAnalytics": "Takwimu za duka",
+    "mainLabel": "Kuu",
+    "mobileLabel": "Menyu",
+    "footerLabel": "Chini",
+    "homeLabel": "Mwanzo wa TZed"
+  },
+  "search": {
+    "placeholder": "Tafuta simu, samani, nguo…",
+    "button": "Tafuta",
+    "label": "Tafuta bidhaa",
+    "title": "Matokeo ya utafutaji",
+    "resultsFor": "Matokeo ya “{{q}}”",
+    "browseAll": "Bidhaa zote",
+    "inCategory": "“{{q}}” katika {{category}}",
+    "count_one": "Bidhaa {{count}}",
+    "count_other": "Bidhaa {{count}}",
+    "sortLabel": "Panga kwa",
+    "sort": {
+      "relevance": "Zinazolingana zaidi",
+      "newest": "Mpya zaidi",
+      "price_asc": "Bei: chini kwenda juu",
+      "price_desc": "Bei: juu kwenda chini"
+    },
+    "anyMatch": "Hakuna bidhaa iliyolingana na maneno yote ya “{{q}}”, kwa hiyo hizi ni bidhaa zinazolingana na baadhi ya maneno.",
+    "error": "Utafutaji haufanyi kazi kwa sasa. Tafadhali jaribu tena.",
+    "pagination": "Kurasa",
+    "prev": "Iliyotangulia",
+    "next": "Inayofuata",
+    "empty": {
+      "title": "Hakuna bidhaa zinazolingana na vichujio hivi",
+      "titleQuery": "Hakuna bidhaa zilizopatikana kwa “{{q}}”",
+      "tipSpelling": "Hakikisha tahajia au jaribu neno la jumla zaidi.",
+      "tipFilters": "Ondoa vichujio",
+      "tipBrowse": "Vinjari bidhaa zote"
+    },
+    "chips": {
+      "from": "Wauzaji wa {{country}}",
+      "remove": "Ondoa kichujio: {{label}}",
+      "clearAll": "Ondoa vyote"
+    },
+    "suggest": {
+      "label": "Mapendekezo",
+      "searchFor": "Tafuta “{{q}}”",
+      "category": "Kundi"
+    },
+    "filters": {
+      "title": "Vichujio",
+      "toggle": "Vichujio ({{count}})",
+      "category": "Kundi",
+      "allCategories": "Makundi yote",
+      "allIn": "{{name}} zote",
+      "availableIn": "Inapatikana kwa",
+      "anywhere": "Wanunuzi wa popote",
+      "buyersIn": "Wanunuzi wa {{country}}",
+      "sellerCountry": "Muuzaji yuko",
+      "bothCountries": "Tanzania au Zambia",
+      "price": "Bei",
+      "priceCurrency": "Sarafu ya bei",
+      "min": "Chini",
+      "max": "Juu",
+      "minLabel": "Bei ya chini kwa {{currency}}",
+      "maxLabel": "Bei ya juu kwa {{currency}}",
+      "applyPrice": "Tumia bei",
+      "priceHint": "Bidhaa za sarafu nyingine zinalinganishwa kwa kiwango cha leo."
+    }
+  },
+  "home": {
+    "heroTitle": "Nunua na uuze kati ya Tanzania na Zambia",
+    "heroBody": "Pata bidhaa nzuri kutoka kwa wauzaji wa nchi zote mbili, bei zikionyeshwa kwa shilingi na kwacha.",
+    "ctaBrowse": "Anza kuvinjari",
+    "ctaSell": "Uza bidhaa",
+    "howTitle": "TZed inavyofanya kazi",
+    "how1Title": "Kila bidhaa inakaguliwa",
+    "how1Body": "Timu yetu hukagua kila tangazo kabla halijaonekana.",
+    "how2Title": "Bei kwa sarafu yako",
+    "how2Body": "Ona bei za takriban kwa TSh au K popote muuzaji alipo.",
+    "how3Title": "Ongea na muuzaji",
+    "how3Body": "Tuma ujumbe kwa wauzaji, kubalianeni kuhusu usafirishaji, na ulipe unapopokea au kwa pesa ya simu.",
+    "categories": "Vinjari makundi",
+    "crossBorder": "Kutoka {{from}}, zinapatikana {{to}}",
+    "latest": "Bidhaa mpya",
+    "seeAll": "Ona zote"
+  },
+  "help": {
+    "title": "Kituo cha msaada",
+    "intro": "Majibu ya maswali ya kawaida kuhusu kununua na kuuza kwenye TZed.",
+    "searchLabel": "Tafuta makala za msaada",
+    "searchPlaceholder": "mf. kibadilishaji, forodha, malipo",
+    "topics": "Mada",
+    "allTopics": "Zote",
+    "topic": {
+      "getting-started": "Kuanza",
+      "buying": "Kununua",
+      "selling": "Kuuza",
+      "payments": "Malipo",
+      "safety": "Usalama"
+    },
+    "resultsFor": "Makala za “{{q}}”",
+    "anyMatch": "Hakuna makala iliyolingana na maneno yote ya “{{q}}”, kwa hiyo hizi ni makala zinazolingana na baadhi ya maneno.",
+    "noResults": "Hakuna makala zilizopatikana kwa “{{q}}”. Jaribu neno lingine, au wasiliana nasi hapa chini.",
+    "stillNeed": "Bado unahitaji msaada?",
+    "stillNeedBody": "Tutumie ujumbe na timu yetu itakujibu kwa barua pepe, kwa kawaida ndani ya siku moja ya kazi.",
+    "contactUs": "Wasiliana na huduma kwa wateja",
+    "notFound": "Makala ya msaada haikupatikana",
+    "back": "Kituo cha msaada",
+    "related": "Makala zinazohusiana",
+    "notAnswered": "Hukupata jibu la swali lako?"
+  },
+  "footer": {
+    "help": "Kituo cha msaada",
+    "terms": "Masharti",
+    "privacy": "Faragha",
+    "countries": "Tunahudumia Tanzania 🇹🇿 na Zambia 🇿🇲",
+    "rights": "© {{year}} TZed",
+    "converter": "Kibadilishaji sarafu"
+  },
+  "notFound": {
+    "title": "Ukurasa haukupatikana",
+    "body": "Ukurasa unaoutafuta haupo au umehamishwa.",
+    "home": "Nenda ukurasa wa mwanzo"
+  },
+  "converter": {
+    "title": "Kibadilishaji sarafu",
+    "intro": "Badilisha kati ya kwacha ya Zambia na shilingi ya Tanzania. Andika kiasi kwenye kisanduku chochote na kingine kitabadilika papo hapo.",
+    "open": "Fungua kibadilishaji sarafu",
+    "close": "Funga kibadilishaji",
+    "fullPage": "Fungua kibadilishaji kamili",
+    "swap": "Badilisha sarafu",
+    "currency": {
+      "TZS": "Shilingi ya Tanzania",
+      "ZMW": "Kwacha ya Zambia"
+    },
+    "loading": "Inapakia kiwango kipya…",
+    "unavailable": "Kiwango cha ubadilishaji hakipatikani kwa sasa. Tafadhali jaribu tena baadaye.",
+    "updated": "Kiwango kilisasishwa {{date}}.",
+    "approximate": "Kiasi kilichobadilishwa ni cha takriban.",
+    "quickTitle": "{{from}} → {{to}}",
+    "disclaimer": "TZed huweka kiwango hiki na kukisasisha mara kwa mara. Bei zilizobadilishwa ni mwongozo tu. Bei mnayokubaliana na muuzaji ni kwa sarafu ya muuzaji."
+  },
+  "common": {
+    "loading": "Inapakia…",
+    "cancel": "Ghairi"
+  },
+  "countries": {
+    "TZ": "Tanzania",
+    "ZM": "Zambia",
+    "currency": {
+      "TZ": "Bei kwa shilingi (TSh)",
+      "ZM": "Bei kwa kwacha (K)"
+    }
+  },
+  "auth": {
+    "backToLogin": "Rudi kuingia",
+    "fields": {
+      "email": "Barua pepe",
+      "password": "Nenosiri",
+      "name": "Jina kamili",
+      "country": "Uko nchi gani?",
+      "phoneOptional": "Namba ya simu (si lazima)",
+      "currentPassword": "Nenosiri la sasa",
+      "newPassword": "Nenosiri jipya"
+    },
+    "login": {
+      "title": "Ingia",
+      "intro": "Karibu tena TZed.",
+      "submit": "Ingia",
+      "forgot": "Umesahau nenosiri?",
+      "noAccount": "Mgeni TZed?",
+      "register": "Fungua akaunti"
+    },
+    "register": {
+      "title": "Fungua akaunti yako",
+      "intro": "Nunua na uuze kati ya Tanzania na Zambia. Akaunti moja inatosha kwa yote mawili.",
+      "submit": "Fungua akaunti",
+      "haveAccount": "Tayari una akaunti?",
+      "phoneHint": "Inaonyeshwa tu kwa wanunuzi ambao umekubali oda zao.",
+      "passwordHint": "Angalau herufi {{min}}.",
+      "consentPrefix": "Nakubaliana na",
+      "consentAnd": "na"
+    },
+    "forgot": {
+      "title": "Weka upya nenosiri lako",
+      "intro": "Andika barua pepe yako na tutakutumia kiungo cha kuchagua nenosiri jipya.",
+      "submit": "Tuma kiungo",
+      "sent": "Kama akaunti ya {{email}} ipo, tumetuma kiungo. Angalia sanduku lako la barua (na folda ya spam). Kiungo kinaisha baada ya saa 1."
+    },
+    "reset": {
+      "title": "Chagua nenosiri jipya",
+      "intro": "Utatolewa kwenye vifaa vyako vyote.",
+      "submit": "Hifadhi nenosiri jipya",
+      "done": "Nenosiri lako limebadilishwa. Sasa unaweza kuingia.",
+      "badLink": "Kiungo hiki si sahihi au muda wake umeisha.",
+      "requestNew": "Omba kiungo kipya"
+    },
+    "verify": {
+      "title": "Thibitisha barua pepe yako",
+      "checking": "Tunakagua kiungo chako…",
+      "done": "Asante, barua pepe yako imethibitishwa.",
+      "toAccount": "Nenda kwenye akaunti yangu"
+    }
+  },
+  "account": {
+    "title": "Akaunti yangu",
+    "hello": "Umeingia kama {{name}}.",
+    "save": "Hifadhi mabadiliko",
+    "saved": "Imehifadhiwa.",
+    "welcome": "Karibu TZed! Tumekutumia barua pepe: fungua kiungo kilichomo ili kuthibitisha anwani yako.",
+    "verify": {
+      "notice": "Tafadhali thibitisha barua pepe yako. Angalia kiungo tulichotuma kwenye sanduku lako la barua.",
+      "resend": "Tuma barua pepe tena",
+      "sent": "Imetumwa. Angalia sanduku lako la barua."
+    },
+    "profile": {
+      "title": "Wasifu",
+      "countryHint": "Nchi yako huamua sarafu ya bei za bidhaa zako. Haiwezi kubadilishwa baada ya kuweka bidhaa."
+    },
+    "password": {
+      "title": "Nenosiri",
+      "intro": "Kubadilisha nenosiri kunakutoa kwenye vifaa vyako vingine.",
+      "submit": "Badilisha nenosiri",
+      "done": "Nenosiri limebadilishwa."
+    },
+    "seller": {
+      "title": "Kuuza kwenye TZed",
+      "none": "Weka wasifu wa muuzaji ili uanze kuweka bidhaa.",
+      "has": "Wasifu wako wa muuzaji uko tayari.",
+      "create": "Weka wasifu wa muuzaji",
+      "edit": "Hariri wasifu wa muuzaji"
+    },
+    "data": {
+      "title": "Taarifa zako",
+      "intro": "Pakua nakala ya taarifa zote TZed inazohifadhi kukuhusu, au futa akaunti yako.",
+      "export": "Pakua taarifa zangu"
+    },
+    "delete": {
+      "title": "Futa akaunti",
+      "intro": "Hii inaondoa taarifa zako binafsi na bidhaa zako na kukutoa kila mahali. Oda na jumbe za zamani zinabaki kwa kumbukumbu za mtu mwingine, zikionyeshwa kama \"Mtumiaji aliyefutwa\". Hili haliwezi kutenduliwa.",
+      "start": "Futa akaunti yangu",
+      "confirmLabel": "Andika nenosiri lako kuthibitisha",
+      "confirm": "Futa kabisa"
+    }
+  },
+  "seller": {
+    "title": "Wasifu wa muuzaji",
+    "intro": "Hiki ndicho wanunuzi wanachoona kuhusu duka lako. Unauza kutoka {{country}}.",
+    "newShop": "Duka lako",
+    "shopLink": "Kiungo cha duka lako: /shop/{{slug}}",
+    "create": "Unda wasifu wa muuzaji",
+    "fields": {
+      "shopName": "Jina la duka",
+      "regionTZ": "Mkoa",
+      "regionZM": "Jimbo",
+      "choose": "Chagua…",
+      "town": "Mji",
+      "contact": "Wanunuzi wanawezaje kuwasiliana nawe",
+      "contactHint": "Namba yako ya simu inaonyeshwa tu baada ya kukubali oda.",
+      "bio": "Kuhusu duka lako (si lazima)"
+    },
+    "contact": {
+      "MESSAGES": "Jumbe za TZed tu",
+      "PHONE": "Simu (baada ya oda kukubaliwa)",
+      "BOTH": "Jumbe na simu"
+    }
+  },
+  "legal": {
+    "draftNotice": "Rasimu. Itakaguliwa kabla TZed haijaanza rasmi.",
+    "terms": {
+      "title": "Masharti ya matumizi",
+      "sections": [
+        {
+          "heading": "Kutumia TZed",
+          "body": "TZed ni soko ambapo watu wa Tanzania na Zambia hununua na kuuza bidhaa halisi. Lazima uwe na umri wa miaka 18 au zaidi na utoe taarifa sahihi. Mtu mmoja, akaunti moja."
+        },
+        {
+          "heading": "Matangazo ya bidhaa",
+          "body": "Kila tangazo hukaguliwa na TZed kabla halijaonekana. Weka tu bidhaa unazomiliki na unazoruhusiwa kuuza. Bidhaa zilizopigwa marufuku (angalia Kituo cha msaada) huondolewa, na akaunti zinazovunja sheria zinaweza kusimamishwa."
+        },
+        {
+          "heading": "Oda, malipo na usafirishaji",
+          "body": "Wanunuzi na wauzaji hukubaliana wenyewe kuhusu malipo na usafirishaji. TZed hurekodi oda lakini haipokei malipo, haishikilii pesa wala haishughulikii forodha. Bei zilizobadilishwa ni za takriban; bei iliyokubaliwa ni kwa sarafu ya muuzaji."
+        },
+        {
+          "heading": "Ripoti na usimamizi",
+          "body": "Mtu yeyote anaweza kuripoti tangazo, mtumiaji au ujumbe. Wasimamizi wa TZed hukagua ripoti na wanaweza kuondoa maudhui au kusimamisha akaunti. Hatua za wasimamizi hurekodiwa kwenye kumbukumbu za ukaguzi."
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Sera ya faragha",
+      "sections": [
+        {
+          "heading": "Tunachokusanya",
+          "body": "Jina lako, barua pepe, nchi, na ukipenda namba yako ya simu na taarifa za duka. Bidhaa, oda, jumbe na tathmini unazotengeneza. Kumbukumbu za msingi za usalama (kuingia, anwani ya IP) ili kulinda akaunti."
+        },
+        {
+          "heading": "Kwa nini",
+          "body": "Ili kuendesha soko: kuonyesha bidhaa zako, kuunganisha wanunuzi na wauzaji, kutuma barua pepe za akaunti, na kuweka jukwaa salama. Hatuuzi taarifa zako."
+        },
+        {
+          "heading": "Nani anaziona",
+          "body": "Wanunuzi wanaona jina la duka lako, mji na bidhaa zako. Namba yako ya simu inaonyeshwa kwa mnunuzi tu baada ya kukubali oda yake. Wasimamizi wa TZed wanaweza kuona taarifa za akaunti ili kusimamia jukwaa."
+        },
+        {
+          "heading": "Haki zako",
+          "body": "Unaweza kupakua taarifa zako zote au kufuta akaunti yako wakati wowote kupitia Akaunti yangu. Baada ya kufuta, oda na jumbe za zamani zinabaki kwa kumbukumbu za upande mwingine, zikionyeshwa kama \"Mtumiaji aliyefutwa\". Haki hizi zinafuata Sheria ya Ulinzi wa Taarifa Binafsi ya Tanzania ya 2022 na Sheria ya Ulinzi wa Data ya Zambia ya 2021."
+        }
+      ]
+    }
+  },
+  "condition": {
+    "NEW": "Mpya",
+    "LIKE_NEW": "Kama mpya",
+    "GOOD": "Nzuri",
+    "FAIR": "Ya wastani",
+    "FOR_PARTS": "Kwa vipuri / haifanyi kazi"
+  },
+  "listingStatus": {
+    "DRAFT": "Rasimu",
+    "PENDING_REVIEW": "Inasubiri ukaguzi",
+    "ACTIVE": "Hewani",
+    "REJECTED": "Inahitaji marekebisho",
+    "SOLD": "Imeuzwa",
+    "REMOVED": "Imeondolewa"
+  },
+  "sell": {
+    "title": "Uza kwenye TZed",
+    "intro": "Fikia wanunuzi wa Tanzania na Zambia. Ni hatua tatu fupi kabla ya tangazo lako la kwanza.",
+    "step1": "Fungua akaunti bure",
+    "step2": "Thibitisha barua pepe yako",
+    "step3": "Weka wasifu wako wa muuzaji",
+    "verifyFirst": "Tafadhali thibitisha barua pepe yako kwanza: angalia kiungo chetu kwenye sanduku lako la barua, au kitume tena kupitia Akaunti yangu.",
+    "profileFirst": "Weka wasifu wako wa muuzaji kabla ya kuweka bidhaa."
+  },
+  "photos": {
+    "title": "Picha",
+    "intro": "Weka picha wazi za bidhaa halisi. Picha ya kwanza ndiyo ya jalada. Picha hukaguliwa kama sehemu ya ukaguzi.",
+    "count": "{{count}} kati ya {{max}}",
+    "add": "Ongeza picha",
+    "uploading": "Inapakia…",
+    "cover": "Jalada",
+    "alt": "Picha {{n}}",
+    "moveLeft": "Sogeza picha {{n}} mbele",
+    "moveRight": "Sogeza picha {{n}} nyuma",
+    "remove": "Ondoa picha {{n}}",
+    "tooMany": "Unaweza kuweka hadi picha {{max}} (zimebaki {{room}}).",
+    "tooBig": "{{name}} ni kubwa kuliko MB 10."
+  },
+  "listingForm": {
+    "newTitle": "Weka bidhaa",
+    "newIntro": "Jaza maelezo, kisha ongeza picha na uitume kwa ukaguzi.",
+    "details": "Maelezo ya bidhaa",
+    "createDraft": "Hifadhi na uongeze picha",
+    "created": "Rasimu imehifadhiwa. Sasa ongeza angalau picha moja, kisha uitume kwa ukaguzi.",
+    "liveWarning": "Tangazo hili liko hewani. Kubadilisha jina, maelezo, bei, kundi au kuongeza picha kunalirudisha kwenye ukaguzi, na linafichwa hadi likubaliwe. Mabadiliko ya idadi, mahali na usafirishaji hayalirudishi.",
+    "sentForReview": "Mabadiliko yako yametumwa kwa ukaguzi. Tangazo limefichwa hadi msimamizi alikubali.",
+    "fields": {
+      "title": "Jina la bidhaa",
+      "category": "Kundi",
+      "condition": "Hali",
+      "price": "Bei ({{currency}})",
+      "quantity": "Idadi iliyopo",
+      "description": "Maelezo",
+      "deliveryNotes": "Maelezo ya usafirishaji (si lazima)"
+    },
+    "hints": {
+      "title": "Chapa, modeli na sifa kuu, mf. \"Samsung Galaxy A15, 128GB\".",
+      "price": "Kwa sarafu yako ({{symbol}}). Wanunuzi wa nchi nyingine pia wanaona bei iliyobadilishwa ya takriban.",
+      "priceConverted": "{{price}} ≈ {{converted}} kwa wanunuzi wa nchi nyingine.",
+      "description": "Hali yake, ukubwa, rangi, vilivyomo, kasoro zozote.",
+      "deliveryNotes": "mf. gharama ya usafirishaji, muda unaochukua, kampuni ya basi au mpaka wa kuvuka."
+    },
+    "delivery": {
+      "title": "Mnunuzi ataipataje?",
+      "pickup": "Mnunuzi anaifuata kwangu",
+      "local": "Ninaweza kuifikisha ndani ya nchi",
+      "crossBorder": "Uza pia kwa wanunuzi wa {{country}}: ninaweza kuituma kuvuka mpaka",
+      "crossBorderHint": "Tangazo lako litaonekana kwa wanunuzi wa nchi zote mbili."
+    },
+    "status": {
+      "title": "Hali",
+      "view": "Ona tangazo",
+      "reason": "Sababu:",
+      "submit": "Tuma kwa ukaguzi",
+      "resubmit": "Tuma tena kwa ukaguzi",
+      "markSold": "Weka kuwa imeuzwa",
+      "markAvailable": "Weka kuwa inapatikana tena",
+      "delete": "Futa tangazo",
+      "confirmDelete": "Ufute tangazo hili?",
+      "deleteYes": "Ndiyo, futa",
+      "needPhoto": "Ongeza angalau picha moja ili kutuma.",
+      "explain": {
+        "DRAFT": "Ni wewe tu unayeona rasimu hii. Itume ikiwa tayari.",
+        "PENDING_REVIEW": "Msimamizi anakagua tangazo hili. Utaarifiwa likikubaliwa.",
+        "ACTIVE": "Tangazo lako liko hewani na wanunuzi wanaliona.",
+        "REJECTED": "Msimamizi ameomba marekebisho. Rekebisha tangazo kisha ulitume tena.",
+        "SOLD": "Limewekwa kuwa limeuzwa. Wanunuzi bado wanaweza kuliona.",
+        "REMOVED": "Tangazo hili liliondolewa."
+      }
+    }
+  },
+  "listing": {
+    "convert": "Badilisha",
+    "notFound": "Tangazo hili halipatikani",
+    "notYours": "Hili si tangazo lako.",
+    "noPhotos": "Bado hakuna picha",
+    "photoOf": "{{title}}, picha {{n}} kati ya {{total}}",
+    "edit": "Hariri tangazo",
+    "breadcrumb": "Kundi",
+    "available": "Zinazopatikana",
+    "location": "Mahali",
+    "posted": "Imewekwa",
+    "seller": "Muuzaji",
+    "memberSince": "Yuko TZed tangu {{date}}",
+    "description": "Maelezo",
+    "delivery": {
+      "title": "Usafirishaji",
+      "pickup": "Ifuate kwa muuzaji {{town}}",
+      "local": "Muuzaji anafikisha ndani ya nchi",
+      "crossBorder": "Inaweza kutumwa {{country}}"
+    },
+    "crossBorder": {
+      "title": "Inapatikana kwa wanunuzi wa {{a}} na {{b}}",
+      "customs": "Ushuru wa forodha hukubaliwa kati yako na muuzaji. TZed haishughulikii forodha. Muulize muuzaji kuhusu gharama na muda wa usafirishaji kabla ya kuagiza."
+    }
+  },
+  "myListings": {
+    "title": "Bidhaa zangu",
+    "new": "Weka bidhaa",
+    "filter": "Chuja kwa hali",
+    "all": "Zote",
+    "empty": "Bado hujaweka bidhaa yoyote.",
+    "emptyTab": "Hakuna bidhaa hapa.",
+    "noPhoto": "Hakuna picha",
+    "updated": "{{date}}"
+  },
+  "admin": {
+    "notAllowed": "Ukurasa huu ni kwa wasimamizi wa TZed.",
+    "review": {
+      "title": "Kagua bidhaa",
+      "intro": "Kagua kila tangazo kabla halijaonekana. Za zamani kwanza.",
+      "empty": "Hakuna cha kukagua. Kila kitu kimekamilika! 🎉",
+      "approve": "Kubali",
+      "reject": "Kataa…",
+      "sendRejection": "Kataa tangazo",
+      "reasonLabel": "Sababu (itaonyeshwa kwa muuzaji)",
+      "edited": "Limehaririwa: lilikuwa hewani awali",
+      "crossBorder": "linauza kwa nchi zote mbili",
+      "submitted": "Lilitumwa",
+      "history": "Historia ({{count}})",
+      "decision": {
+        "SUBMITTED": "Lilitumwa",
+        "APPROVED": "Lilikubaliwa",
+        "REJECTED": "Lilikataliwa"
+      },
+      "reasonShort": {
+        "prohibited": "Bidhaa iliyokatazwa",
+        "photos": "Picha",
+        "category": "Kundi si sahihi",
+        "price": "Bei",
+        "details": "Maelezo hayatoshi"
+      },
+      "reasons": {
+        "prohibited": "Bidhaa hii hairuhusiwi kwenye TZed (angalia Bidhaa usizoweza kuuza katika Kituo cha msaada).",
+        "photos": "Tafadhali weka picha wazi za bidhaa halisi, si picha za mtandaoni.",
+        "category": "Tafadhali hamishia tangazo hili kwenye kundi sahihi.",
+        "price": "Bei inaonekana si sahihi. Tafadhali hakikisha iko kwa sarafu yako.",
+        "details": "Tafadhali ongeza maelezo zaidi: hali yake, ukubwa na vilivyomo."
+      },
+      "openPhoto": "Fungua picha {{n}} kwa ukubwa kamili (dirisha jipya)"
+    },
+    "reports": {
+      "title": "Ripoti",
+      "intro": "Ripoti zimepangwa kwa kilichoripotiwa. Chukua hatua au zitupilie mbali; walioripoti wanaarifiwa matokeo na kila uamuzi unarekodiwa.",
+      "empty": "Hakuna ripoti zilizo wazi. 🎉",
+      "count_one": "Ripoti {{count}}",
+      "count_other": "Ripoti {{count}}",
+      "owner": "Na {{name}}",
+      "previous": "Imeripotiwa na kushughulikiwa mara {{count}} awali",
+      "actions": "Hatua",
+      "note": "Maelezo (yataonyeshwa kwa mhusika)",
+      "takeAction": "Chukua hatua",
+      "dismiss": "Tupilia mbali",
+      "type": {
+        "LISTING": "Tangazo",
+        "USER": "Mtumiaji",
+        "MESSAGE": "Ujumbe"
+      },
+      "action": {
+        "none": "Hakuna hatua",
+        "remove_listing": "Ondoa tangazo",
+        "remove_message": "Ondoa ujumbe",
+        "suspend_user": "Simamisha akaunti"
+      }
+    },
+    "reason": "Sababu",
+    "reasonPlaceholder": "Sababu (itaonyeshwa kwa mhusika)",
+    "pageOf": "Ukurasa {{page}} kati ya {{pageCount}}",
+    "total_one": "Tokeo {{count}}",
+    "total_other": "Matokeo {{count}}",
+    "none": "Hakuna kitu hapa.",
+    "status": "Hali",
+    "allStatuses": "Hali zote",
+    "nav": {
+      "label": "Msimamizi",
+      "dashboard": "Dashibodi",
+      "analytics": "Takwimu",
+      "review": "Kagua bidhaa",
+      "reports": "Ripoti",
+      "tickets": "Maombi ya msaada",
+      "users": "Watumiaji",
+      "listings": "Matangazo",
+      "reviews": "Tathmini za wauzaji",
+      "rates": "Kiwango cha ubadilishaji",
+      "categories": "Makundi",
+      "help": "Makala za msaada",
+      "audit": "Kumbukumbu za ukaguzi"
+    },
+    "dashboard": {
+      "title": "Dashibodi",
+      "waiting": "Vinavyokusubiri",
+      "openTickets": "Maombi ya msaada yaliyo wazi",
+      "marketplace": "Soko",
+      "users": "Watumiaji",
+      "byCountry": "Watumiaji kwa nchi",
+      "newUsers": "Watumiaji wapya wiki hii",
+      "suspended": "Akaunti zilizosimamishwa",
+      "liveListings": "Matangazo yaliyo hewani",
+      "soldListings": "Matangazo yaliyouzwa",
+      "orders": "Oda",
+      "ordersWeek": "Oda za wiki hii",
+      "rateOld": "Kiwango cha ubadilishaji kilisasishwa mara ya mwisho siku {{days}} zilizopita.",
+      "noRate": "Hakuna kiwango cha ubadilishaji kilichowekwa, kwa hiyo bei na oda za kuvuka mpaka zimesimamishwa.",
+      "updateRate": "Kisasishe",
+      "currentRate": "Kiwango cha sasa: K 1 = TSh {{rate}} (kiliwekwa {{date}})."
+    },
+    "users": {
+      "search": "Jina, barua pepe au duka",
+      "unverified": "barua pepe haijathibitishwa",
+      "counts": "Matangazo {{listings}} · Oda {{orders}}",
+      "reports_one": "Ripoti {{count}}",
+      "reports_other": "Ripoti {{count}}",
+      "joined": "alijiunga {{date}}",
+      "listings": "Matangazo",
+      "history": "Historia",
+      "suspend": "Simamisha",
+      "reinstate": "Rejesha"
+    },
+    "listings": {
+      "search": "Jina, #namba au barua pepe ya muuzaji",
+      "remove": "Ondoa",
+      "restore": "Rejesha",
+      "forSeller": "Inaonyesha matangazo ya muuzaji mmoja."
+    },
+    "tickets": {
+      "guest": "mgeni",
+      "messages_one": "Ujumbe {{count}}",
+      "messages_other": "Jumbe {{count}}",
+      "reply": "Jibu kama huduma kwa wateja ya TZed",
+      "replyHint": "Hutumwa kwa barua pepe. Wageni hupata kiungo kipya cha siri kwa kila jibu.",
+      "send": "Tuma jibu",
+      "sendClose": "Tuma na ufunge"
+    },
+    "rates": {
+      "title": "Kiwango cha ubadilishaji",
+      "intro": "Kiwango kimoja huhifadhiwa (kwacha → shilingi) na kinyume chake hukokotolewa, kwa hiyo pande zote mbili zinakubaliana. Kinatumika kwa bei zilizobadilishwa, kichujio cha bei na oda mpya; oda za zamani zinabaki na kiwango chao.",
+      "current": "Kiwango cha sasa",
+      "set": "Weka kiwango kipya",
+      "rateLabel": "Kwacha moja inanunua shilingi ngapi",
+      "preview": "Kwa hiyo TSh 1,000 = {{k}}",
+      "note": "Maelezo",
+      "notePlaceholder": "mf. chanzo cha kiwango",
+      "save": "Hifadhi kiwango",
+      "saved": "Kiwango kimehifadhiwa. Kinatumika kila mahali kuanzia sasa.",
+      "confirm": "Ndiyo, kihifadhi",
+      "history": "Historia",
+      "when": "Lini",
+      "by": "Kiliwekwa na",
+      "seed": "(kiwango cha kuanzia)"
+    },
+    "categories": {
+      "intro": "Makundi yaliyofichwa hayaonekani kwenye kuvinjari wala fomu ya tangazo; matangazo yaliyomo yanabaki.",
+      "name": "Jina",
+      "order": "Mpangilio",
+      "listings_one": "Tangazo {{count}}",
+      "listings_other": "Matangazo {{count}}",
+      "hide": "Ficha",
+      "show": "Onyesha",
+      "new": "Kundi jipya",
+      "parent": "Ndani ya",
+      "topLevel": "(ngazi ya juu)",
+      "add": "Ongeza"
+    },
+    "help": {
+      "intro": "Makala za Kituo cha msaada. Makala ambazo hazijachapishwa hazionekani kwa watumiaji.",
+      "new": "Makala mpya",
+      "titleField": "Kichwa",
+      "topic": "Mada",
+      "body": "Maandishi",
+      "bodyHint": "Maandishi ya kawaida. Acha mstari mtupu kati ya aya.",
+      "published": "Imechapishwa",
+      "draft": "haijachapishwa",
+      "edit": "Hariri"
+    },
+    "audit": {
+      "intro": "Kila hatua ya msimamizi, mpya kwanza. Weka alama kwenye kisanduku kujumuisha kuingia na matukio mengine ya usalama.",
+      "action": "Hatua",
+      "allActions": "Hatua zote",
+      "from": "Kuanzia",
+      "to": "Hadi",
+      "security": "Jumuisha matukio ya usalama",
+      "system": "Mfumo"
+    },
+    "reviews": {
+      "search": "Maoni, jina au namba ya oda",
+      "visibility": "Kuonekana",
+      "all": "Tathmini zote",
+      "visible": "Zinazoonekana",
+      "hidden": "Zilizofichwa",
+      "anyRating": "Nyota zozote",
+      "hide": "Ficha",
+      "unhide": "Onyesha tena",
+      "hiddenBadge": "Imefichwa",
+      "hiddenBecause": "Ilifichwa {{date}}: {{reason}}",
+      "byFor": "{{reviewer}} → {{seller}}",
+      "order": "Oda #{{id}}",
+      "intro": "Tathmini zilizofichwa zinabaki zimehifadhiwa lakini zinaondoka kwenye ukurasa wa duka na alama ya muuzaji. Mwandishi anaarifiwa sababu.",
+      "rating": "Nyota"
+    }
+  },
+  "card": {
+    "shipsTo": "Inatumwa {{flag}}"
+  },
+  "currencyPref": {
+    "label": "Onyesha bei za takriban kwa",
+    "BOTH": "Zote",
+    "TZS": "TSh",
+    "ZMW": "K"
+  },
+  "shop": {
+    "notFound": "Duka halikupatikana",
+    "liveCount_one": "Tangazo {{count}} hewani",
+    "liveCount_other": "Matangazo {{count}} hewani",
+    "searchLabel": "Tafuta katika {{shop}}",
+    "searchPlaceholder": "Tafuta katika duka hili…",
+    "empty": "Duka hili halina matangazo hewani kwa sasa.",
+    "noResults": "Hakuna bidhaa za duka hili zinazolingana na utafutaji wako."
+  },
+  "orderStatus": {
+    "PLACED": "Inasubiri muuzaji",
+    "ACCEPTED": "Imekubaliwa",
+    "READY": "Iko tayari / imetumwa",
+    "COMPLETED": "Imekamilika",
+    "DECLINED": "Imekataliwa",
+    "CANCELLED": "Imeghairiwa"
+  },
+  "paymentStatus": {
+    "UNPAID": "Bado haijalipwa",
+    "PAID_OFFLINE": "Imelipwa"
+  },
+  "buy": {
+    "title": "Agiza bidhaa hii",
+    "notAvailable": "Bidhaa hii haiwezi kuagizwa kwa sasa.",
+    "signInToOrder": "Ingia ili kuagiza bidhaa hii. Kujiunga ni bure.",
+    "signIn": "Ingia kuagiza",
+    "notInYourCountry": "Muuzaji huyu hatumi bidhaa hii {{country}}.",
+    "verifyFirst": "Tafadhali thibitisha barua pepe yako kabla ya kuagiza. Angalia kiungo chetu kwenye sanduku lako la barua.",
+    "quantity": "Idadi",
+    "delivery": "Usafirishaji",
+    "note": "Ujumbe kwa muuzaji (si lazima)",
+    "notePlaceholder": "mf. kampuni ya basi unayopendelea au muda mzuri wa kuifuata",
+    "total": "Jumla",
+    "inYourCurrency": "Kwa sarafu yako",
+    "place": "Weka oda",
+    "placing": "Inaweka oda…",
+    "payOffline": "Unamlipa muuzaji moja kwa moja (taslimu au pesa ya simu) baada ya kukubali. Usilipe kamwe kabla muuzaji hajakubali oda yako.",
+    "method": {
+      "PICKUP": "Ifuate kwa muuzaji {{town}}",
+      "LOCAL": "Muuzaji anafikisha ndani ya nchi",
+      "CROSS_BORDER": "Nitumie {{country}} (kuvuka mpaka)"
+    }
+  },
+  "orders": {
+    "title": "Oda",
+    "buying": "Ninazonunua",
+    "selling": "Ninazouza",
+    "show": "Onyesha",
+    "allStatuses": "Zote",
+    "emptyBuying": "Bado hujaagiza chochote.",
+    "emptySelling": "Bado hakuna oda za bidhaa zako.",
+    "from": "Kutoka kwa {{name}}",
+    "to": "Kwa {{name}}",
+    "andMore_one": "{{title}} na bidhaa nyingine {{count}}",
+    "andMore_other": "{{title}} na bidhaa nyingine {{count}}"
+  },
+  "order": {
+    "title": "Oda #{{id}}",
+    "notFound": "Oda hii haipo au si yako.",
+    "placedOn": "Iliwekwa {{date}}",
+    "placedNotice": "Oda yako imetumwa kwa muuzaji. Tutakujulisha atakapojibu.",
+    "reasonLabel": "Sababu:",
+    "unitPrice": "Bei kwa kila moja",
+    "inCurrency": "Kwa {{currency}}",
+    "rateSaved": "Ilibadilishwa kwa {{rate}} tarehe {{date}}. Kiasi hiki hakitabadilika hata kiwango kikibadilika baadaye.",
+    "buyerNote": "Ujumbe wa mnunuzi:",
+    "seller": "Muuzaji",
+    "buyer": "Mnunuzi",
+    "phone": "Simu:",
+    "noPhone": "Hakuna namba ya simu iliyotolewa. Tumia jumbe za TZed kuwasiliana.",
+    "contactAfterAccept": "Mawasiliano yanatolewa muuzaji akishakubali oda.",
+    "timeline": "Mfuatano",
+    "safety": "Lipa tu baada ya muuzaji kukubali, na ikiwezekana kagua bidhaa kabla ya kulipa. Kuna tatizo?",
+    "actions": {
+      "accept": "Kubali oda",
+      "decline": "Kataa",
+      "ready": "Weka iko tayari / imetumwa",
+      "complete": "Weka imekamilika",
+      "cancel": "Ghairi oda",
+      "mark-paid": "Rekodi malipo yamepokelewa",
+      "received": "Nimeipokea",
+      "report-paid": "Nimelipa"
+    },
+    "reason": {
+      "decline": "Kwa nini unakataa? (itaonyeshwa kwa mnunuzi)",
+      "cancel": "Sababu ya kughairi (si lazima, itaonyeshwa kwa upande mwingine)"
+    },
+    "event": {
+      "placed": "Oda iliwekwa",
+      "accepted": "Imekubaliwa na muuzaji",
+      "declined": "Imekataliwa",
+      "ready": "Iko tayari kufuatwa / imetumwa",
+      "paid": "Malipo yamerekodiwa",
+      "completed": "Imekamilika",
+      "cancelled": "Imeghairiwa",
+      "received": "Mnunuzi amepokea bidhaa",
+      "buyer_paid": "Mnunuzi anasema amelipa"
+    },
+    "actor": {
+      "buyer": "mnunuzi",
+      "seller": "muuzaji",
+      "admin": "msimamizi"
+    },
+    "next": {
+      "buyer": {
+        "PLACED": "Inasubiri muuzaji akubali. Usilipe bado.",
+        "ACCEPTED": "Muuzaji amekubali. Kubalianeni kuhusu malipo na usafirishaji kwa kutumia mawasiliano yaliyo hapa chini. Bonyeza \"Nimelipa\" baada ya kulipa, na \"Nimeipokea\" ukishapata bidhaa.",
+        "READY": "Bidhaa yako iko tayari kufuatwa au iko njiani. Bonyeza \"Nimeipokea\" ukishaipata; kisha muuzaji ataikamilisha oda.",
+        "COMPLETED": "Oda hii imekamilika. Asante kwa kununua TZed!",
+        "DECLINED": "Muuzaji amekataa oda hii.",
+        "CANCELLED": "Oda hii ilighairiwa."
+      },
+      "seller": {
+        "PLACED": "Oda mpya! Ikubali kama unaweza kuitimiza, au ikatae ukieleza sababu. Bidhaa zimeshikiliwa hadi uamue.",
+        "ACCEPTED": "Panga malipo na usafirishaji na mnunuzi. Iweke tayari au imetumwa ikifika hapo, na rekodi malipo ukiyapokea.",
+        "READY": "Inasubiri mnunuzi athibitishe ameipokea. Weka oda imekamilika mauzo yakishakamilika.",
+        "COMPLETED": "Oda hii imekamilika.",
+        "DECLINED": "Ulikataa oda hii. Bidhaa zimerudishwa.",
+        "CANCELLED": "Oda hii ilighairiwa. Bidhaa zimerudishwa."
+      }
+    },
+    "sellerMethod": {
+      "PICKUP": "Mnunuzi anaifuata kwako {{town}}",
+      "LOCAL": "Unaifikisha ndani ya nchi",
+      "CROSS_BORDER": "Unaituma kwa mnunuzi {{country}} (kuvuka mpaka)"
+    },
+    "buyerPaidNotice": {
+      "buyer": "Ulimwambia muuzaji umelipa tarehe {{date}}. Itaonyeshwa imelipwa akithibitisha ameipokea.",
+      "seller": "Mnunuzi anasema amelipa tarehe {{date}}. Hakikisha umepokea pesa, kisha rekodi malipo."
+    },
+    "receivedNotice": {
+      "buyer": "Ulithibitisha umepokea bidhaa tarehe {{date}}. Sasa muuzaji ataikamilisha oda.",
+      "seller": "Mnunuzi alithibitisha amepokea bidhaa tarehe {{date}}. Unaweza kuweka oda imekamilika."
+    },
+    "messageSeller": "Mtumie muuzaji ujumbe",
+    "messageBuyer": "Mtumie mnunuzi ujumbe",
+    "items": "Bidhaa",
+    "qtyTimesPrice": "{{quantity}} × {{price}}"
+  },
+  "header": {
+    "messages": "Jumbe",
+    "messagesUnread": "Jumbe, {{count}} hazijasomwa",
+    "notifications": "Arifa",
+    "notificationsUnread": "Arifa, {{count}} hazijasomwa",
+    "cart": "Kikapu",
+    "cartCount_one": "Kikapu, bidhaa {{count}}",
+    "cartCount_other": "Kikapu, bidhaa {{count}}"
+  },
+  "notifications": {
+    "markAll": "Weka zote zimesomwa",
+    "empty": "Bado hakuna arifa.",
+    "seeAll": "Ona arifa zote",
+    "unread": "Hazijasomwa"
+  },
+  "messages": {
+    "title": "Jumbe",
+    "inbox": "Mazungumzo",
+    "empty": "Bado hakuna jumbe. Muulize muuzaji swali kutoka kwenye tangazo lolote.",
+    "choose": "Chagua mazungumzo.",
+    "notFound": "Mazungumzo haya hayapo au si yako.",
+    "back": "Rudi kwenye mazungumzo",
+    "viewOrder": "Ona oda",
+    "older": "Jumbe za zamani hazionyeshwi.",
+    "you": "Wewe",
+    "unreadCount": "{{count}} hazijasomwa",
+    "write": "Andika ujumbe",
+    "placeholder": "Andika ujumbe… (Enter kutuma, Shift+Enter kwa mstari mpya)",
+    "send": "Tuma",
+    "safety": "Fanya malipo kwa oda mlizokubaliana tu. Usimpe mtu nenosiri wala PIN yako.",
+    "cannotReply": "Akaunti ya mtu huyu haitumiki tena, kwa hiyo huwezi kujibu.",
+    "ask": "Muulize muuzaji swali",
+    "askLabel": "Tuma ujumbe kwa {{shop}}",
+    "askPlaceholder": "mf. Bado inapatikana? Unaweza kuituma Lusaka?",
+    "removed": "Ujumbe huu uliondolewa na TZed."
+  },
+  "reviews": {
+    "title": "Tathmini",
+    "outOf5": "Nyota {{value}} kati ya 5",
+    "none": "Bado hakuna tathmini",
+    "noneYet": "Bado hakuna tathmini. Tathmini huonekana baada ya oda kukamilika.",
+    "summary": "Nyota {{average}} kati ya 5 kutoka tathmini {{count}}",
+    "count_one": "(tathmini {{count}})",
+    "count_other": "(tathmini {{count}})",
+    "yourRating": "Alama yako",
+    "starOption_one": "Nyota {{count}}",
+    "starOption_other": "Nyota {{count}}",
+    "label": {
+      "1": "Mbaya",
+      "2": "Wastani",
+      "3": "Nzuri",
+      "4": "Nzuri sana",
+      "5": "Bora kabisa"
+    },
+    "yours": "Tathmini yako",
+    "buyersReview": "Tathmini ya mnunuzi",
+    "rateSeller": "Uzoefu wako na {{seller}} ulikuwaje?",
+    "rateIntro": "Tathmini yako inawasaidia wanunuzi wengine wa Tanzania na Zambia. Unaweza kutathmini kila oda mara moja.",
+    "comment": "Maoni (si lazima)",
+    "commentPlaceholder": "mf. bidhaa ililingana na maelezo, usafirishaji, mawasiliano",
+    "submit": "Tuma tathmini",
+    "breakdown": "Mgawanyo wa nyota",
+    "bought": "Alinunua: {{title}}",
+    "hiddenNote": "Timu ya TZed imeficha tathmini hii kwenye ukurasa wa duka, kwa hiyo haihesabiwi kwenye alama ya muuzaji."
+  },
+  "support": {
+    "contactTitle": "Wasiliana na huduma kwa wateja",
+    "contactIntro": "Tueleze kinachoendelea. Weka namba za oda au viungo vya matangazo kama unavyo.",
+    "asUser": "Tutajibu kwa {{email}} na kwenye akaunti yako ya TZed.",
+    "subject": "Kichwa",
+    "message": "Ujumbe",
+    "messageHint": "Tafadhali usiweke nenosiri wala PIN ya pesa ya simu.",
+    "send": "Tuma ujumbe",
+    "sentTitle": "Ujumbe umetumwa",
+    "sentUser": "Asante! Namba ya ombi lako ni #{{id}}. Tutajibu hapa na kwa barua pepe.",
+    "sentGuest": "Asante! Namba ya ombi lako ni #{{id}}. Tumekutumia kiungo cha siri kwa barua pepe ili kufuatilia na kujibu.",
+    "viewTicket": "Ona ombi lako",
+    "myTickets": "Maombi yangu ya msaada",
+    "new": "Ombi jipya",
+    "none": "Bado hujawasiliana na huduma kwa wateja.",
+    "notFound": "Ombi hili halipo, au kiungo si sahihi.",
+    "fromStaff": "Huduma kwa wateja ya TZed",
+    "reply": "Jibu",
+    "sendReply": "Tuma jibu",
+    "close": "Funga ombi",
+    "closed": "Ombi hili limefungwa.",
+    "status": {
+      "OPEN": "Wazi",
+      "ANSWERED": "Limejibiwa",
+      "CLOSED": "Limefungwa"
+    }
+  },
+  "report": {
+    "open": {
+      "LISTING": "Ripoti tangazo hili",
+      "USER": "Ripoti muuzaji huyu",
+      "MESSAGE": "Ripoti"
+    },
+    "why": "Kuna tatizo gani?",
+    "details": "Maelezo (si lazima isipokuwa ukichagua Nyingine)",
+    "send": "Tuma ripoti",
+    "thanks": "Asante. Timu yetu italishughulikia.",
+    "reason": {
+      "SCAM": "Utapeli au udanganyifu",
+      "PROHIBITED_ITEM": "Bidhaa iliyokatazwa",
+      "WRONG_CATEGORY": "Kundi si sahihi",
+      "OFFENSIVE": "Matusi au unyanyasaji",
+      "OTHER": "Nyingine"
+    }
+  },
+  "cart": {
+    "title": "Kikapu chako",
+    "intro": "Bidhaa zimepangwa kwa muuzaji. Kila muuzaji anapata oda yake, ambayo anaikubali, anaifikisha na analipwa kivyake.",
+    "empty": "Kikapu chako kiko tupu.",
+    "browse": "Vinjari bidhaa",
+    "add": "Weka kwenye kikapu",
+    "adding": "Inaweka…",
+    "added_one": "Umeweka {{count}} kwenye kikapu.",
+    "added_other": "Umeweka {{count}} kwenye kikapu.",
+    "view": "Ona kikapu",
+    "each": "{{price}} kila moja",
+    "remove": "Ondoa",
+    "include": "Agiza sasa",
+    "subtotal": "Jumla ndogo",
+    "summary": "Muhtasari wa oda",
+    "orders_one": "Oda {{count}}",
+    "orders_other": "Oda {{count}}",
+    "totalNote": "Jumla ya takriban kwa sarafu yako kwa kiwango cha leo. Kila oda ina bei kwa sarafu ya muuzaji.",
+    "placeOrders_one": "Weka oda",
+    "placeOrders_other": "Weka oda {{count}}",
+    "oneOrderEach": "Unamlipa kila muuzaji moja kwa moja baada ya kukubali. Usilipe kamwe kabla muuzaji hajakubali oda yako.",
+    "chooseDelivery": "Chagua jinsi unavyotaka kupata bidhaa hizi.",
+    "noSharedDelivery": "Bidhaa hizi hazina njia moja ya usafirishaji inayofanana. Ziagize moja moja, au ondoa mojawapo.",
+    "fixFirst": "Rekebisha au ondoa bidhaa zilizowekwa alama hapo juu ili kuagiza kutoka kwa muuzaji huyu.",
+    "placed_one": "Oda yako imetumwa kwa muuzaji.",
+    "placed_other": "Oda zako {{count}} zimetumwa kwa wauzaji. Kila muuzaji atakubali au kukataa yake.",
+    "problem": {
+      "UNAVAILABLE": "Haipatikani tena.",
+      "NOT_IN_YOUR_COUNTRY": "Haiuzwi tena kwa wanunuzi wa nchi yako.",
+      "NOT_ENOUGH_STOCK_one": "Imebaki {{count}} tu. Punguza idadi.",
+      "NOT_ENOUGH_STOCK_other": "Zimebaki {{count}} tu. Punguza idadi."
+    },
+    "removeItem": "Ondoa {{title}}"
+  },
+  "analytics": {
+    "period": "Kipindi",
+    "days_one": "Siku {{count}}",
+    "days_other": "Siku {{count}}",
+    "adminIntro": "{{from}} hadi {{to}} (UTC). Mauzo ni oda zilizokamilika, zikijumlishwa kwa shilingi kwa K 1 = TSh {{rate}}.",
+    "shopTitle": "Takwimu za duka",
+    "shopIntro": "Jinsi wanunuzi wanavyopata na kuagiza bidhaa zako. Mauzo ni oda zilizokamilika, kwa sarafu yako.",
+    "sales": "Mauzo",
+    "ordersPlaced": "Oda zilizowekwa",
+    "ordersCompleted": "Oda zilizokamilika",
+    "newUsers": "Watumiaji wapya",
+    "newListings": "Matangazo mapya",
+    "views": "Waliotazama matangazo",
+    "cartAdds": "Waliweka kwenye kikapu",
+    "unitsSold": "Bidhaa zilizoagizwa",
+    "conversion": "Kutazama hadi kuagiza",
+    "conversionHint": "Oda zilizowekwa kwa kila matazamo 100 ya matangazo.",
+    "salesDaily": "Mauzo (TSh)",
+    "ordersDaily": "Oda zilizowekwa",
+    "viewsDaily": "Waliotazama matangazo",
+    "usersDaily": "Watumiaji wapya",
+    "periodTotal": "Jumla: {{value}}",
+    "showTable": "Onyesha kama jedwali",
+    "showChart": "Onyesha kama chati",
+    "day": "Siku",
+    "week": "Wiki",
+    "noChange": "Hakuna mabadiliko",
+    "upFromZero": "Imepanda kutoka sifuri",
+    "up": "Imepanda {{pct}}%",
+    "down": "Imeshuka {{pct}}%",
+    "previous": "kipindi kilichopita: {{value}}",
+    "byCountry": "Kwa nchi",
+    "country": "Nchi",
+    "buyerOrders": "Oda kama wanunuzi",
+    "sellerSales": "Mauzo ya wauzaji",
+    "crossBorder_one": "Oda {{count}} kati ya {{total}} zilivuka mpaka.",
+    "crossBorder_other": "Oda {{count}} kati ya {{total}} zilivuka mpaka.",
+    "statuses": "Hali ya oda kwa sasa",
+    "topCategories": "Makundi yanayoongoza",
+    "topSellers": "Wauzaji wanaoongoza",
+    "category": "Kundi",
+    "orders": "Oda",
+    "units": "Bidhaa",
+    "seller": "Muuzaji",
+    "completed": "Zilizokamilika",
+    "noOrders": "Hakuna oda katika kipindi hiki.",
+    "noSales": "Hakuna mauzo yaliyokamilika katika kipindi hiki.",
+    "perListing": "Kwa tangazo",
+    "listing": "Tangazo",
+    "noListings": "Bado huna matangazo.",
+    "privacy": "Matazamo huhesabiwa mara moja kwa kila mtembeleaji kwa siku. TZed huhifadhi idadi tu, si nani aliyetazama."
+  },
+  "language": {
+    "label": "Lugha"
+  },
+  "categoryNames": {
+    "electronics": "Vifaa vya kielektroniki",
+    "home-furniture": "Nyumbani na samani",
+    "fashion": "Mitindo",
+    "vehicles-parts": "Magari na vipuri",
+    "baby-kids": "Watoto",
+    "sports-outdoors": "Michezo na nje",
+    "health-beauty": "Afya na urembo",
+    "agriculture-tools": "Kilimo na zana",
+    "books-stationery": "Vitabu na vifaa vya kuandikia",
+    "other": "Nyingine",
+    "phones-tablets": "Simu na tableti",
+    "computers-laptops": "Kompyuta na laptopu",
+    "tv-audio-video": "TV, sauti na video",
+    "electronics-accessories": "Vifaa vya ziada",
+    "furniture": "Samani",
+    "kitchen-appliances": "Jiko na vifaa vya nyumbani",
+    "home-decor": "Mapambo ya nyumbani",
+    "womens-clothing": "Nguo za wanawake",
+    "mens-clothing": "Nguo za wanaume",
+    "shoes": "Viatu",
+    "fabrics-kitenge": "Vitambaa na vitenge",
+    "motorbikes-bicycles": "Pikipiki na baiskeli",
+    "car-parts": "Vipuri na vifaa vya magari"
+  }
+}
