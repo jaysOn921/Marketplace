@@ -31,6 +31,26 @@ export const SW: Record<string, string> = {
   'This link has already been used.': 'Kiungo hiki tayari kimetumika.',
   'This link is invalid or has expired.': 'Kiungo hiki si halali au muda wake umeisha.',
   'User not found.': 'Mtumiaji hakupatikana.',
+  'Please confirm your email address before ordering.':
+    'Tafadhali thibitisha barua pepe yako kabla ya kuagiza.',
+  'Please confirm your email address before listing items.':
+    'Tafadhali thibitisha barua pepe yako kabla ya kuweka matangazo.',
+  'Please confirm your email address before sending messages.':
+    'Tafadhali thibitisha barua pepe yako kabla ya kutuma ujumbe.',
+  'This account has been suspended. Please contact support if you think this is a mistake.':
+    'Akaunti hii imesimamishwa. Tafadhali wasiliana na huduma kwa wateja ukidhani ni kosa.',
+  "You can't change your country after creating listings. Contact support if you've moved.":
+    'Huwezi kubadilisha nchi baada ya kuweka matangazo. Wasiliana na huduma kwa wateja kama umehama.',
+  'Set up your seller profile before listing items.':
+    'Weka wasifu wako wa muuzaji kabla ya kuweka matangazo.',
+  "This item isn't available to buyers in {country}.":
+    'Bidhaa hii haipatikani kwa wanunuzi walioko {country}.',
+  'Ordering across the border is paused until the exchange rate is updated.':
+    'Kuagiza nje ya mpaka kumesimamishwa hadi kiwango cha ubadilishaji kisasishwe.',
+  'A listing needs at least one photo. Add another before removing this one.':
+    'Tangazo linahitaji angalau picha moja. Ongeza nyingine kabla ya kuondoa hii.',
+  'This account is already active.': 'Akaunti hii tayari iko hai.',
+  'This account is already suspended.': 'Akaunti hii tayari imesimamishwa.',
 
   // ─── Form checks ─────────────────────────────────────────────────────────
   'Enter a valid email address.': 'Weka barua pepe halali.',
