@@ -283,25 +283,65 @@
     }
   },
   "legal": {
-    "draftNotice": "Rasimu. Itakaguliwa kabla TZed haijaanza rasmi.",
+    "draftNotice": "Rasimu, imesasishwa 25 Oktoba 2026. Maandishi ndani ya [mabano] yatajazwa kabla ya kuzinduliwa, baada ya mapitio ya kisheria.",
     "terms": {
       "title": "Masharti ya matumizi",
       "sections": [
         {
-          "heading": "Kutumia TZed",
-          "body": "TZed ni soko ambapo watu wa Tanzania na Zambia hununua na kuuza bidhaa halisi. Lazima uwe na umri wa miaka 18 au zaidi na utoe taarifa sahihi. Mtu mmoja, akaunti moja."
+          "heading": "Kuhusu masharti haya",
+          "body": "Masharti haya ni makubaliano kati yako na TZed, mwendeshaji wa soko hili [jina rasmi, namba ya usajili na anwani vitaongezwa kabla ya kuzinduliwa]. Kwa kufungua akaunti au kutumia TZed unayakubali. Tunaweza kuyabadilisha; tutakujulisha kwa barua pepe au kwenye tovuti kabla mabadiliko muhimu hayajaanza kutumika."
         },
         {
-          "heading": "Matangazo ya bidhaa",
-          "body": "Kila tangazo hukaguliwa na TZed kabla halijaonekana. Weka tu bidhaa unazomiliki na unazoruhusiwa kuuza. Bidhaa zilizopigwa marufuku (angalia Kituo cha msaada) huondolewa, na akaunti zinazovunja sheria zinaweza kusimamishwa."
+          "heading": "Nani anaweza kutumia TZed",
+          "body": "Lazima uwe na miaka 18 au zaidi, uishi Tanzania au Zambia, na utoe taarifa sahihi. Mtu mmoja, akaunti moja. Unawajibika kulinda nenosiri lako na kwa kila kinachofanywa kwa akaunti yako."
         },
         {
-          "heading": "Oda, malipo na usafirishaji",
-          "body": "Wanunuzi na wauzaji hukubaliana wenyewe kuhusu malipo na usafirishaji. TZed hurekodi oda lakini haipokei malipo, haishikilii pesa wala haishughulikii forodha. Bei zilizobadilishwa ni za takriban; bei iliyokubaliwa ni kwa sarafu ya muuzaji."
+          "heading": "TZed ni nini",
+          "body": "TZed ni soko linalounganisha wanunuzi na wauzaji wa bidhaa halisi. Wauzaji wanauza bidhaa zao wenyewe; TZed si muuzaji na haimiliki, haikagui wala haisafirishi bidhaa. Tunakagua matangazo, tunarekodi oda, na tunasaidia pale tatizo linapotokea."
         },
         {
-          "heading": "Ripoti na usimamizi",
-          "body": "Mtu yeyote anaweza kuripoti tangazo, mtumiaji au ujumbe. Wasimamizi wa TZed hukagua ripoti na wanaweza kuondoa maudhui au kusimamisha akaunti. Hatua za wasimamizi hurekodiwa kwenye kumbukumbu za ukaguzi."
+          "heading": "Kuuza kwenye TZed",
+          "body": "• Weka matangazo ya bidhaa unazomiliki na unazoruhusiwa kisheria kuuza, kwa maelezo, picha na bei za kweli.\n• Kila tangazo hukaguliwa kabla ya kuonekana. Bidhaa zilizokatazwa (angalia Kituo cha msaada) hukataliwa au huondolewa.\n• Kubali au kataa oda haraka, mjulishe mnunuzi, na uwasilishe ulichoeleza.\n• Wauzaji wa nje ya mpaka wanawajibika kwa sheria za kusafirisha nje; mnunuzi hushughulikia ushuru na forodha."
+        },
+        {
+          "heading": "Kununua kwenye TZed",
+          "body": "• Soma tangazo na umuulize muuzaji maswali kabla ya kuagiza.\n• Bei zilizobadilishwa kwa sarafu yako ni makadirio; bei mnayokubaliana ni kwa sarafu ya muuzaji.\n• Thibitisha unapopokea bidhaa, na uripoti tatizo kwenye ukurasa wa oda kama kuna kasoro.\n• Oda za nje ya mpaka zinaweza kuhitaji ushuru na kibali cha forodha, ambavyo ni jukumu la mnunuzi."
+        },
+        {
+          "heading": "Malipo",
+          "body": "Kwa sasa wanunuzi na wauzaji hupanga malipo wenyewe, kwa mfano kwa pesa za simu au taslimu wakati wa kuchukua. TZed haipokei wala haishikilii malipo. Usilipe nje ya kilichokubaliwa kwenye oda, na uwe makini na yeyote anayekuomba umlipe mtu usiyemjua au utoe namba za siri."
+        },
+        {
+          "heading": "Kutumia taarifa za watu wengine",
+          "body": "Oda ikikubaliwa, mnunuzi na muuzaji wanaona jina na namba ya simu ya kila mmoja. Zitumie kwa oda hiyo tu: kamwe si kwa matangazo, kamwe usizishiriki na wengine, na uzifute oda na tatizo lolote vikishamalizika. Ijulishe TZed mara moja ukidhani taarifa za mtu zimetumiwa vibaya au zimevuja."
+        },
+        {
+          "heading": "Matatizo kati ya wanunuzi na wauzaji",
+          "body": "Jaribuni kwanza kumaliza mambo kwenye ukurasa wa oda. Mkishindwa, ripoti tatizo: timu ya TZed itaangalia pande zote mbili na kupendekeza suluhisho la haki. TZed haiwezi kulazimisha kurudishiwa pesa wakati malipo yanafanyika nje ya jukwaa, lakini tunaweza kuzuia au kusimamisha akaunti zinazofanya isivyo haki."
+        },
+        {
+          "heading": "Mambo yasiyoruhusiwa",
+          "body": "Udanganyifu, matangazo au tathmini za uongo, bidhaa bandia au za wizi, unyanyasaji, barua taka, kuomba malipo nje ya oda, kukusanya taarifa za watumiaji wengine, au kujaribu kuharibu au kuzidisha mzigo wa tovuti. Usiwaombe watumiaji wengine nyaraka za utambulisho au namba za vitambulisho vya taifa."
+        },
+        {
+          "heading": "Ripoti, udhibiti na kusimamishwa",
+          "body": "Yeyote anaweza kuripoti tangazo, mtumiaji au ujumbe. Wasimamizi wa TZed hukagua ripoti na wanaweza kuondoa maudhui, kuficha tathmini au kusimamisha akaunti. Tunakueleza sababu, na unaweza kujibu kupitia huduma kwa wateja. Kila hatua ya msimamizi hurekodiwa."
+        },
+        {
+          "heading": "Maudhui yako",
+          "body": "Unaendelea kumiliki matangazo, picha na jumbe zako. Unairuhusu TZed kuyaonyesha kwenye jukwaa na katika kutangaza matangazo yako yakiwa hai."
+        },
+        {
+          "heading": "Dhima",
+          "body": "TZed inatolewa kama ilivyo. Tunajitahidi iwe inapatikana na salama, lakini hatuwajibiki kwa bidhaa, mwenendo wa wanunuzi na wauzaji, au hasara zitokanazo na mapatano kati yao, kwa kadiri sheria inavyoruhusu. Hakuna katika masharti haya kinachopunguza haki zako chini ya sheria za kumlinda mlaji za Tanzania au Zambia."
+        },
+        {
+          "heading": "Kufunga akaunti yako",
+          "body": "Unaweza kufuta akaunti yako wakati wowote kupitia Akaunti yangu. Tunaweza kufunga akaunti zinazokiuka masharti haya. Akaunti zisizotumika kwa miaka 3 hufungwa baada ya onyo kwa barua pepe."
+        },
+        {
+          "heading": "Sheria na mawasiliano",
+          "body": "Masharti haya yanafuata sheria ya nchi unayoishi (Tanzania au Zambia). Maswali: wasiliana nasi kupitia Kituo cha msaada."
         }
       ]
     },
@@ -309,20 +349,48 @@
       "title": "Sera ya faragha",
       "sections": [
         {
-          "heading": "Tunachokusanya",
-          "body": "Jina lako, barua pepe, nchi, na ukipenda namba yako ya simu na taarifa za duka. Bidhaa, oda, jumbe na tathmini unazotengeneza. Kumbukumbu za msingi za usalama (kuingia, anwani ya IP) ili kulinda akaunti."
+          "heading": "Sisi ni nani",
+          "body": "TZed [jina rasmi na anwani vitaongezwa kabla ya kuzinduliwa] inaendesha soko hili na ndiyo mdhibiti wa taarifa zako binafsi. Tumesajiliwa na Tume ya Ulinzi wa Taarifa Binafsi ya Tanzania na Ofisi ya Kamishna wa Ulinzi wa Taarifa ya Zambia [namba za usajili zitaongezwa]. Afisa wa ulinzi wa taarifa: [jina], privacy@[domain], au kupitia Kituo cha msaada."
         },
         {
-          "heading": "Kwa nini",
-          "body": "Ili kuendesha soko: kuonyesha bidhaa zako, kuunganisha wanunuzi na wauzaji, kutuma barua pepe za akaunti, na kuweka jukwaa salama. Hatuuzi taarifa zako."
+          "heading": "Tunachokusanya",
+          "body": "• Akaunti: jina, barua pepe, nchi, nenosiri (huhifadhiwa kwa njia salama isiyosomeka tu), lugha, na ulipokubali masharti haya.\n• Hiari: namba ya simu; kwa wauzaji, jina la duka, mji, mkoa na maelezo.\n• Unachounda: matangazo na picha, oda, jumbe, tathmini, ripoti, tiketi za msaada na ripoti za matatizo.\n• Shughuli: kuingia, ziara ya mwisho, na kumbukumbu za usalama zenye anwani ya IP na kivinjari.\n• Idadi ya waliotazama matangazo na walioweka kwenye kikapu (namba tu, si nani alitazama).\nHatukusanyi namba za vitambulisho vya taifa, namba za pasipoti, picha za vitambulisho, namba za kadi wala namba za siri za pesa za simu."
+        },
+        {
+          "heading": "Kwa nini tunazitumia",
+          "body": "• Kuendesha akaunti yako na soko (mkataba wetu nawe): kuonyesha matangazo, kuweka oda, kufikisha jumbe na kutuma barua pepe za akaunti.\n• Kuiweka TZed salama (maslahi yetu halali): kukagua matangazo, kushughulikia ripoti na matatizo, na kuzuia udanganyifu.\n• Kutimiza wajibu wa kisheria, kama kumbukumbu za kodi na maombi ya mamlaka.\nHatuuzi taarifa zako, na hatutumi barua pepe za matangazo usipochagua kuzipokea."
         },
         {
           "heading": "Nani anaziona",
-          "body": "Wanunuzi wanaona jina la duka lako, mji na bidhaa zako. Namba yako ya simu inaonyeshwa kwa mnunuzi tu baada ya kukubali oda yake. Wasimamizi wa TZed wanaweza kuona taarifa za akaunti ili kusimamia jukwaa."
+          "body": "• Kila mtu: jina la duka la muuzaji, mji, matangazo na tathmini.\n• Mtu mwingine kwenye oda: jina na namba ya simu, baada tu ya muuzaji kukubali. Wanaweza kuzitumia kwa oda hiyo tu.\n• Wasimamizi wa TZed: wanachohitaji kukagua matangazo, ripoti, matatizo na maombi ya msaada.\n• Watoa huduma wanaotufanyia kazi kwa mkataba: uhifadhi wa tovuti, utumaji wa barua pepe na nakala za akiba.\n• Mamlaka, pale sheria inapotaka."
+        },
+        {
+          "heading": "Taarifa kuvuka mipaka",
+          "body": "TZed inahudumia Tanzania na Zambia, hivyo oda ya nje ya mpaka hushiriki taarifa za mnunuzi na muuzaji na nchi nyingine. Seva zetu ziko [nchi itathibitishwa]. Uhamishaji unafuata sheria za nchi zote mbili, pamoja na vibali zinavyotaka."
+        },
+        {
+          "heading": "Tunazihifadhi kwa muda gani",
+          "body": "• Vipindi vilivyoisha na viungo vya kuingia vilivyotumika: hufutwa ndani ya siku chache.\n• Arifa: miezi 12.\n• Anwani ya IP na kivinjari kwenye kumbukumbu za usalama: miezi 12.\n• Idadi ya waliotazama na walioweka kwenye kikapu: miezi 24.\n• Akaunti zisizotumika kwa miaka 3: hufungwa baada ya onyo kwa barua pepe siku 30 kabla.\n• Oda: huhifadhiwa kwa kumbukumbu za kodi na hesabu hata akaunti ikifutwa, zikionyeshwa kama \"Mtumiaji aliyefutwa\"."
         },
         {
           "heading": "Haki zako",
-          "body": "Unaweza kupakua taarifa zako zote au kufuta akaunti yako wakati wowote kupitia Akaunti yangu. Baada ya kufuta, oda na jumbe za zamani zinabaki kwa kumbukumbu za upande mwingine, zikionyeshwa kama \"Mtumiaji aliyefutwa\". Haki hizi zinafuata Sheria ya Ulinzi wa Taarifa Binafsi ya Tanzania ya 2022 na Sheria ya Ulinzi wa Data ya Zambia ya 2021."
+          "body": "Unaweza:\n• kuona na kupakua taarifa zako (Akaunti yangu → Pakua taarifa zangu);\n• kuzirekebisha (hariri wasifu, duka na matangazo yako);\n• kufuta akaunti yako (Akaunti yangu), jambo linaloondoa taarifa zako binafsi;\n• kupinga matumizi ya taarifa zako, au kuondoa ridhaa uliyotoa;\n• kulalamika kwa Tume ya Ulinzi wa Taarifa Binafsi (Tanzania) au Kamishna wa Ulinzi wa Taarifa (Zambia).\nKwa jambo lingine lolote, wasiliana nasi kupitia Kituo cha msaada. Tunajibu ndani ya siku 30."
+        },
+        {
+          "heading": "Usalama",
+          "body": "Manenosiri huhifadhiwa kwa njia isiyosomeka, mawasiliano yamesimbwa, hatua za wasimamizi hurekodiwa, na picha huondolewa taarifa za mahali zilizofichwa. Uvujaji ukihatarisha taarifa zako, tunazijulisha mamlaka na wewe kama sheria inavyotaka."
+        },
+        {
+          "heading": "Vidakuzi",
+          "body": "Tunatumia vidakuzi vinavyohitajika tu ili ubaki umeingia na kulinda fomu. Lugha uliyochagua huhifadhiwa kwenye kivinjari chako. Hakuna vidakuzi vya matangazo wala vya kufuatilia."
+        },
+        {
+          "heading": "Watoto",
+          "body": "TZed ni kwa watu wenye miaka 18 na zaidi. Hatukusanyi kwa makusudi taarifa za watoto; tukizipata, tunazifuta."
+        },
+        {
+          "heading": "Mabadiliko",
+          "body": "Tutasasisha sera hii desturi zetu zikibadilika, na kukujulisha kuhusu mabadiliko muhimu kwa barua pepe au kwenye tovuti."
         }
       ]
     }

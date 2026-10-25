@@ -279,3 +279,23 @@ Defaults I'm assuming. Correct any of them:
 - **Shopping cart:** signed-in buyers can add items from several sellers. One checkout places a separate order per seller, each with its own delivery choice and note. It's all or nothing: if any item sold out meanwhile, no order is placed.
 - **Analytics:** admins see marketplace trends (sales in TSh, orders, users, listings, views, cart adds, by country, top categories and sellers). Sellers see views, cart adds, orders and sales per listing. Views are counted once per visitor per day, and only the numbers are stored.
 
+
+## 7. To-do checklist
+
+See `docs/overview.md` for everything built so far.
+
+**Needs an outside provider or decision**
+- [ ] **Phone check by SMS code:** confirm a seller's phone number with a one-time code before they can sell. Needs an SMS provider, such as Beem (TZ) or Africa's Talking (TZ and ZM).
+- [ ] **Online payments with escrow-style release:** a licensed provider (PesaPal, DPO, Selcom…) holds the payment until the buyer confirms delivery; an open problem freezes it. Keep offline payment as a fallback.
+- [ ] **Hosting country:** Zambia recommended (`docs/data-protection.md` §4), plus the transfer approvals.
+- [ ] **Registration** with the PDPC (Tanzania) and the ODPC (Zambia, yearly), and a named data protection officer.
+- [ ] **Legal review** of the terms of use and privacy policy; fill in the [bracketed] details.
+- [ ] **Native-speaker review** of all Swahili text (site and server messages).
+- [ ] **Message retention:** decide how many years after an order closes to delete message texts.
+- [ ] **SMTP provider** for real emails, with a data processing agreement.
+
+**Can be built now**
+- [ ] Age confirmation (18+) at sign-up, and a separate opt-in for marketing emails.
+- [ ] Two-step sign-in for admins.
+- [ ] Breach response runbook and register (`docs/data-protection.md` §6).
+- [ ] Masked contact (in-app messages only) instead of sharing phone numbers.

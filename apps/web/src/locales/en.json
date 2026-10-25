@@ -283,25 +283,65 @@
     }
   },
   "legal": {
-    "draftNotice": "Draft. To be reviewed before TZed launches.",
+    "draftNotice": "Draft, last updated 25 October 2026. Text in [brackets] is filled in before launch, after legal review.",
     "terms": {
       "title": "Terms of use",
       "sections": [
         {
-          "heading": "Using TZed",
-          "body": "TZed is a marketplace where people in Tanzania and Zambia buy and sell physical goods. You must be at least 18 and give accurate information. One person, one account."
+          "heading": "About these terms",
+          "body": "These terms are an agreement between you and TZed, the operator of this marketplace [legal name, registration number and address to be added before launch]. By creating an account or using TZed you accept them. We may update them; we'll tell you by email or on the site before important changes take effect."
         },
         {
-          "heading": "Listings",
-          "body": "Every listing is reviewed by TZed before it appears. Only list items you own and are allowed to sell. Prohibited items (see the Help centre) are removed, and accounts that break the rules may be suspended."
+          "heading": "Who can use TZed",
+          "body": "You must be 18 or older, live in Tanzania or Zambia, and give accurate details. One person, one account. You're responsible for keeping your password safe and for everything done with your account."
         },
         {
-          "heading": "Orders, payment and delivery",
-          "body": "Buyers and sellers agree payment and delivery between themselves. TZed records orders but does not take payments, hold money or handle customs. Converted prices are approximate; the agreed price is in the seller's currency."
+          "heading": "What TZed is",
+          "body": "TZed is a marketplace that connects buyers and sellers of physical goods. Sellers sell their own items; TZed is not the seller and does not own, inspect or deliver the goods. We review listings, record orders, and help when something goes wrong."
         },
         {
-          "heading": "Reports and moderation",
-          "body": "Anyone can report a listing, user or message. TZed admins review reports and may remove content or suspend accounts. Admin actions are recorded in an audit log."
+          "heading": "Selling on TZed",
+          "body": "• Only list items you own and may legally sell, with honest descriptions, photos and prices.\n• Every listing is reviewed before it appears. Prohibited items (see the Help centre) are refused or removed.\n• Accept or decline orders promptly, keep buyers informed, and deliver what you described.\n• Cross-border sellers are responsible for export rules; the buyer handles import duties and customs."
+        },
+        {
+          "heading": "Buying on TZed",
+          "body": "• Read the listing and ask the seller questions before ordering.\n• Prices converted to your currency are estimates; the price you agree is in the seller's currency.\n• Confirm when you receive your item, and report a problem from the order page if something is wrong.\n• Cross-border orders may need import duties and customs clearance, which are the buyer's responsibility."
+        },
+        {
+          "heading": "Payment",
+          "body": "For now buyers and sellers arrange payment between themselves, for example by mobile money or cash on collection. TZed does not take or hold payments. Never pay outside what is agreed on the order, and be wary of anyone asking you to pay a stranger or share codes or PINs."
+        },
+        {
+          "heading": "Using other people's details",
+          "body": "When an order is accepted, the buyer and seller see each other's name and phone number. Use them only for that order: never for marketing, never shared with others, and delete them when the order and any problem are finished. Tell TZed straight away if you think someone's details were misused or leaked."
+        },
+        {
+          "heading": "Problems between buyers and sellers",
+          "body": "Try to sort things out on the order page first. If you can't, report a problem: the TZed team will look at both sides and suggest a fair outcome. TZed can't force a refund while payment happens outside the platform, but we may restrict or suspend accounts that behave unfairly."
+        },
+        {
+          "heading": "Things you must not do",
+          "body": "Fraud, fake listings or reviews, counterfeit or stolen goods, harassment, spam, asking for payment outside the order, collecting other users' data, or trying to break or overload the site. Don't ask other users for ID documents or national ID numbers."
+        },
+        {
+          "heading": "Reports, moderation and suspension",
+          "body": "Anyone can report a listing, user or message. TZed admins review reports and may remove content, hide reviews or suspend accounts. We tell you why, and you can reply through support. Every admin action is recorded."
+        },
+        {
+          "heading": "Your content",
+          "body": "You keep ownership of your listings, photos and messages. You allow TZed to show them on the platform and in its promotion of your listings while they are live."
+        },
+        {
+          "heading": "Liability",
+          "body": "TZed is provided as it is. We work to keep it available and safe, but we are not responsible for the goods, the conduct of buyers and sellers, or losses from deals between them, as far as the law allows. Nothing in these terms limits rights you have under Tanzanian or Zambian consumer law."
+        },
+        {
+          "heading": "Closing your account",
+          "body": "You can delete your account at any time from My account. We may close accounts that break these terms. Accounts not used for 3 years are closed after an email warning."
+        },
+        {
+          "heading": "Law and contact",
+          "body": "These terms follow the law of the country you live in (Tanzania or Zambia). Questions: contact us through the Help centre."
         }
       ]
     },
@@ -309,20 +349,48 @@
       "title": "Privacy policy",
       "sections": [
         {
-          "heading": "What we collect",
-          "body": "Your name, email, country, and optionally your phone number and shop details. Listings, orders, messages and reviews you create. Basic security logs (sign-ins, IP address) to protect accounts."
+          "heading": "Who we are",
+          "body": "TZed [legal name and address to be added before launch] runs this marketplace and is the controller of your personal data. We are registered with Tanzania's Personal Data Protection Commission and Zambia's Office of the Data Protection Commissioner [registration numbers to be added]. Data protection officer: [name], privacy@[domain], or through the Help centre."
         },
         {
-          "heading": "Why",
-          "body": "To run the marketplace: show your listings, connect buyers and sellers, send account emails, and keep the platform safe. We don't sell your data."
+          "heading": "What we collect",
+          "body": "• Account: name, email, country, password (stored only as a secure hash), language, and when you agreed to these terms.\n• Optional: phone number; for sellers, shop name, town, region and description.\n• What you create: listings and photos, orders, messages, reviews, reports, support tickets and problem reports.\n• Activity: sign-ins, last visit, and security logs with IP address and browser.\n• Counts of listing views and cart adds (numbers only, not who viewed).\nWe do not collect national ID numbers, passport numbers, ID photos, card numbers or mobile money PINs."
+        },
+        {
+          "heading": "Why we use it",
+          "body": "• To run your account and the marketplace (our contract with you): show listings, place orders, deliver messages and send account emails.\n• To keep TZed safe (our legitimate interest): review listings, handle reports and problems, and prevent fraud.\n• To meet legal duties, such as tax records and requests from authorities.\nWe don't sell your data, and we don't send marketing emails unless you choose to receive them."
         },
         {
           "heading": "Who sees it",
-          "body": "Buyers see your shop name, town and listings. Your phone number is only shared with a buyer after you accept their order. TZed admins can see account data to moderate the platform."
+          "body": "• Everyone: a seller's shop name, town, listings and reviews.\n• The other person in an order: name and phone number, only after the seller accepts. They may use them for that order only.\n• TZed admins: what they need to review listings, reports, problems and support requests.\n• Service providers who work for us under contract: hosting, email delivery and backups.\n• Authorities, when the law requires it."
+        },
+        {
+          "heading": "Data across borders",
+          "body": "TZed serves Tanzania and Zambia, so a cross-border order shares the buyer's and seller's details with the other country. Our servers are in [country to be confirmed]. Transfers follow both countries' laws, with the approvals they require."
+        },
+        {
+          "heading": "How long we keep it",
+          "body": "• Expired sessions and used sign-in links: deleted within days.\n• Notifications: 12 months.\n• IP address and browser in security logs: 12 months.\n• Listing view and cart-add counts: 24 months.\n• Accounts not used for 3 years: closed after an email warning 30 days before.\n• Orders: kept for tax and accounting records even after an account is deleted, shown as \"Deleted user\"."
         },
         {
           "heading": "Your rights",
-          "body": "You can download all your data or delete your account at any time from My account. After deletion, past orders and messages remain for the other party's records, shown as \"Deleted user\". These rights follow Tanzania's Personal Data Protection Act 2022 and Zambia's Data Protection Act 2021."
+          "body": "You can:\n• see and download your data (My account → Download my data);\n• correct it (edit your profile, shop and listings);\n• delete your account (My account), which removes your personal details;\n• object to a use of your data, or withdraw consent you gave;\n• complain to the Personal Data Protection Commission (Tanzania) or the Data Protection Commissioner (Zambia).\nFor anything else, contact us through the Help centre. We reply within 30 days."
+        },
+        {
+          "heading": "Security",
+          "body": "Passwords are hashed, connections are encrypted, admin actions are logged, and photos are stripped of hidden location data. If a breach puts your data at risk, we tell the authorities and you as the law requires."
+        },
+        {
+          "heading": "Cookies",
+          "body": "We use only the cookies needed to keep you signed in and protect forms. Your language choice is stored in your browser. No advertising or tracking cookies."
+        },
+        {
+          "heading": "Children",
+          "body": "TZed is for people aged 18 and over. We don't knowingly collect children's data; if we find any, we delete it."
+        },
+        {
+          "heading": "Changes",
+          "body": "We'll update this policy when our practices change, and tell you about important changes by email or on the site."
         }
       ]
     }
