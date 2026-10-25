@@ -2,6 +2,7 @@ import type { Prisma } from '@prisma/client';
 import type { RequestHandler } from 'express';
 import { prisma } from '../db.js';
 import { AppError } from '../lib/errors.js';
+import { localeFrom } from '../lib/i18n.js';
 
 export const authUserInclude = {
   country: true,
@@ -20,6 +21,13 @@ export const loadUser: RequestHandler = async (req, _res, next) => {
 
   const user = await prisma.user.findUnique({ where: { id: userId }, include: authUserInclude });
   if (user && user.status === 'ACTIVE') {
+    // Remember the site language they use, for notifications and emails sent later.
+    const asked = req.get('accept-language');
+    const locale = asked ? localeFrom(asked) : user.locale;
+    if (locale !== user.locale) {
+      await prisma.user.update({ where: { id: user.id }, data: { locale } });
+      user.locale = locale;
+    }
     req.user = user;
   } else {
     delete req.session.userId;

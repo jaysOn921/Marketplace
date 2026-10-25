@@ -22,6 +22,7 @@ import {
 import { prisma } from '../../db.js';
 import { renderEmail } from '../../lib/email-layout.js';
 import { AppError } from '../../lib/errors.js';
+import { translate, type Locale } from '../../lib/i18n.js';
 import { sendMailInBackground } from '../../lib/mailer.js';
 import { slugify } from '../../lib/slug.js';
 import { hashToken, randomToken } from '../../lib/tokens.js';
@@ -208,8 +209,12 @@ export async function setUserStatus(
   // Suspended users can't sign in, so tell them by email directly.
   sendMailInBackground({
     to: user.email,
-    subject: suspend ? 'Your TZed account has been suspended' : 'Your TZed account is active again',
+    subject: translate(
+      suspend ? 'Your TZed account has been suspended' : 'Your TZed account is active again',
+      user.locale as Locale,
+    ),
     ...renderEmail({
+      locale: user.locale as Locale,
       name: user.name,
       paragraphs: [
         suspend
@@ -572,10 +577,14 @@ export async function replyToTicket(admin: AuthUser, id: number, input: unknown,
       link: path,
     });
   }
+  const owner = ticket.userId
+    ? await prisma.user.findUnique({ where: { id: ticket.userId }, select: { locale: true } })
+    : null;
   sendMailInBackground({
     to: ticket.email,
     subject: `Re: ${ticket.subject} [#${id}]`,
     ...renderEmail({
+      locale: (owner?.locale ?? 'en') as Locale,
       name: ticket.name,
       paragraphs: [`TZed support replied to your ticket #${id}:`, body],
       action: { label: close ? 'View ticket' : 'Reply', path },

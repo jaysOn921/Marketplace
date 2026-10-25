@@ -1,15 +1,24 @@
 import { APP_NAME } from '@tzed/shared';
 import { renderEmail } from '../../lib/email-layout.js';
+import { translate, type Locale } from '../../lib/i18n.js';
 import type { MailMessage } from '../../lib/mailer.js';
+
+interface Recipient {
+  email: string;
+  name: string;
+  locale: string;
+}
 
 const withToken = (path: string, token: string) => `${path}?token=${encodeURIComponent(token)}`;
 
-export function verifyEmailMessage(to: string, name: string, token: string): MailMessage {
+export function verifyEmailMessage(user: Recipient, token: string): MailMessage {
+  const locale = user.locale as Locale;
   return {
-    to,
-    subject: `Confirm your email for ${APP_NAME}`,
+    to: user.email,
+    subject: translate(`Confirm your email for ${APP_NAME}`, locale),
     ...renderEmail({
-      name,
+      locale,
+      name: user.name,
       paragraphs: [
         `Welcome to ${APP_NAME}! Please confirm your email address so you can buy and sell.`,
       ],
@@ -19,12 +28,14 @@ export function verifyEmailMessage(to: string, name: string, token: string): Mai
   };
 }
 
-export function resetPasswordMessage(to: string, name: string, token: string): MailMessage {
+export function resetPasswordMessage(user: Recipient, token: string): MailMessage {
+  const locale = user.locale as Locale;
   return {
-    to,
-    subject: `Reset your ${APP_NAME} password`,
+    to: user.email,
+    subject: translate(`Reset your ${APP_NAME} password`, locale),
     ...renderEmail({
-      name,
+      locale,
+      name: user.name,
       paragraphs: [
         'We received a request to reset your password. Choose a new one with the button below.',
       ],

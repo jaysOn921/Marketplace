@@ -9,6 +9,7 @@ import {
 import { prisma } from '../../db.js';
 import { renderEmail } from '../../lib/email-layout.js';
 import { AppError } from '../../lib/errors.js';
+import { requestLocale, translate } from '../../lib/i18n.js';
 import { sendMailInBackground } from '../../lib/mailer.js';
 import { hashToken, randomToken, safeEqual } from '../../lib/tokens.js';
 import { notify } from '../notifications/notifications.service.js';
@@ -83,8 +84,12 @@ export async function createTicket(req: Request, input: unknown) {
   const path = `/support/tickets/${ticket.id}${token ? `?token=${encodeURIComponent(token)}` : ''}`;
   sendMailInBackground({
     to: contact.email,
-    subject: `We received your message: ${data.subject} [#${ticket.id}]`,
+    subject: translate(
+      `We received your message: ${data.subject} [#${ticket.id}]`,
+      requestLocale(req),
+    ),
     ...renderEmail({
+      locale: requestLocale(req),
       name: contact.name,
       paragraphs: [
         `Thanks for contacting TZed support. Your ticket number is #${ticket.id}. We usually reply within one working day.`,

@@ -3,6 +3,7 @@ import type { ApiError } from '@tzed/shared';
 import { MulterError } from 'multer';
 import { ZodError } from 'zod';
 import { AppError } from '../lib/errors.js';
+import { requestLocale, translate } from '../lib/i18n.js';
 import { logger } from '../logger.js';
 
 export const notFoundHandler: RequestHandler = (req, _res, next) => {
@@ -61,6 +62,14 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
             ? { code: 'TOO_LARGE', message: 'The request is too large.' }
             : { code: 'BAD_REQUEST', message: 'The request could not be handled.' },
     };
+  }
+
+  // Messages are written in English; send them in the language the request asked for.
+  const locale = requestLocale(req);
+  body.error.message = translate(body.error.message, locale);
+  const fields = (body.error.details as { fields?: Record<string, string> } | undefined)?.fields;
+  if (fields && locale !== 'en') {
+    for (const key of Object.keys(fields)) fields[key] = translate(fields[key]!, locale);
   }
 
   if (status >= 500) {

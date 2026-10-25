@@ -1,6 +1,7 @@
 import { APP_NAME } from '@tzed/shared';
 import { prisma } from '../../db.js';
 import { renderEmail } from '../../lib/email-layout.js';
+import { translate, type Locale } from '../../lib/i18n.js';
 import { sendMailInBackground } from '../../lib/mailer.js';
 
 export interface NotificationInput {
@@ -20,17 +21,22 @@ export async function notify(userId: number, n: NotificationInput) {
   const user = await prisma.user.findUnique({ where: { id: userId } });
   if (!user || user.status !== 'ACTIVE') return;
 
+  // Written in English by the caller; stored and sent in the person's own language.
+  const locale = user.locale as Locale;
+  const title = translate(n.title, locale);
+  const body = n.body === undefined ? undefined : translate(n.body, locale);
   await prisma.notification.create({
-    data: { userId, type: n.type, title: n.title, body: n.body ?? null, link: n.link ?? null },
+    data: { userId, type: n.type, title, body: body ?? null, link: n.link ?? null },
   });
 
   if (n.email) {
     sendMailInBackground({
       to: user.email,
-      subject: `${n.title} — ${APP_NAME}`,
+      subject: `${title} — ${APP_NAME}`,
       ...renderEmail({
+        locale,
         name: user.name,
-        paragraphs: [n.body ?? n.title],
+        paragraphs: [body ?? title],
         action: n.link ? { label: n.actionLabel ?? `Open ${APP_NAME}`, path: n.link } : undefined,
       }),
     });

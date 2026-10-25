@@ -1,4 +1,5 @@
 import { API_PREFIX, type ApiError, type CsrfResponse } from '@tzed/shared';
+import i18n from 'i18next';
 
 export class ApiRequestError extends Error {
   constructor(
@@ -44,6 +45,8 @@ export async function api<T>(path: string, init: RequestInit = {}, retried = fal
   if (init.body && !(init.body instanceof FormData)) {
     headers.set('Content-Type', 'application/json');
   }
+  // The server answers (errors, and later notifications and emails) in the site language.
+  if (i18n.language) headers.set('Accept-Language', i18n.language);
   if (!SAFE_METHODS.has(method)) {
     headers.set('X-CSRF-Token', await getCsrfToken());
   }

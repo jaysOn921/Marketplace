@@ -6,6 +6,7 @@ import { loginSchema, registerSchema, resetPasswordSchema } from '@tzed/shared';
 import { config } from '../../config.js';
 import { prisma } from '../../db.js';
 import { AppError } from '../../lib/errors.js';
+import { requestLocale } from '../../lib/i18n.js';
 import { sendMailInBackground } from '../../lib/mailer.js';
 import { hashToken, randomToken } from '../../lib/tokens.js';
 import { recordAudit, recordAuditInBackground } from '../audit/audit.service.js';
@@ -91,6 +92,7 @@ export async function register(input: RegisterInput, req: Request) {
     data: {
       email: data.email,
       name: data.name,
+      locale: requestLocale(req),
       phone: data.phone ?? null,
       passwordHash: await hashPassword(data.password),
       countryId: country.id,
@@ -105,9 +107,7 @@ export async function register(input: RegisterInput, req: Request) {
     targetId: user.id,
     req,
   });
-  sendMailInBackground(
-    verifyEmailMessage(user.email, user.name, await issueToken(user.id, 'EMAIL_VERIFY')),
-  );
+  sendMailInBackground(verifyEmailMessage(user, await issueToken(user.id, 'EMAIL_VERIFY')));
   return user;
 }
 
@@ -169,18 +169,14 @@ export async function verifyEmail(token: string, req: Request) {
 export async function resendVerification(userId: number) {
   const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
   if (user.emailVerifiedAt) throw AppError.badRequest('Your email is already confirmed.');
-  sendMailInBackground(
-    verifyEmailMessage(user.email, user.name, await issueToken(user.id, 'EMAIL_VERIFY')),
-  );
+  sendMailInBackground(verifyEmailMessage(user, await issueToken(user.id, 'EMAIL_VERIFY')));
 }
 
 /** Always succeeds from the caller's point of view, so it can't reveal which emails exist. */
 export async function requestPasswordReset(email: string, req: Request) {
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user || user.status !== 'ACTIVE') return;
-  sendMailInBackground(
-    resetPasswordMessage(user.email, user.name, await issueToken(user.id, 'PASSWORD_RESET')),
-  );
+  sendMailInBackground(resetPasswordMessage(user, await issueToken(user.id, 'PASSWORD_RESET')));
   recordAuditInBackground({ action: 'auth.password_reset_requested', actorId: user.id, req });
 }
 
