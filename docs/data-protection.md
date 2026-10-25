@@ -47,8 +47,13 @@ That matters because sellers often photograph items at home. Keep it that way.
 biometrics, children's data, and (in Zambia) financial details and judicial matters. Two things
 to watch:
 
-- Verifying sellers with **national ID, TIN or a selfie** would be sensitive or biometric.
-  Under Zambia s.70(3) it **must be stored on a server in Zambia**.
+- **Policy: TZed does not collect national ID numbers (NIDA, NRC), passport numbers, TINs,
+  ID photos or selfies.** No form asks for them, and admins and support never request them
+  in messages or tickets.
+  - If one is ever needed, it is sensitive or biometric data, and under Zambia s.70(3) it
+    **must be stored on a server in Zambia**.
+  - That means a new impact assessment and a licensed identity provider first, not a field
+    in our database.
 - **Payment and mobile-money details** are treated as sensitive financial data in Zambia.
 
 Keep those with a licensed provider (identity or payment) rather than in our database.
@@ -116,10 +121,16 @@ users and need a Tanzanian transfer permit for Tanzanians. Options, from simples
    - This matters because sellers become **controllers themselves** for the buyer data they
      receive.
    - Better still, in the long run: masked contact (in-app messages only).
-3. **Verification.** Today an admin checks and adds a note (legitimate interest).
-   - If ID documents are collected, get explicit written consent for that purpose, keep them
-     in-country with an identity-verification provider, and delete the image after checking.
-   - Store only "verified on date X by admin Y".
+3. **Verification, without ID documents.** The "Verified seller" badge rests on checks that
+   need no ID on TZed:
+   - **Track record:** completed orders, reviews, reply time and account age (already shown).
+   - **Contact check:** a working phone number and confirmed email.
+   - **Visible business details:** a registered business name or licence the seller chooses
+     to show. These are business records, not personal ID.
+   - We store only "verified on date X by admin Y" and a short note. The note must not
+     contain ID numbers.
+   - **Payments later:** the licensed payment provider does the know-your-customer checks
+     before paying a seller out, and holds the ID itself. TZed receives only "verified: yes".
 4. **Analytics shown to sellers** are counts only, with no buyer identities. Keep it that way.
    Showing which buyers viewed a shop would need a basis and notice.
 5. **Seller terms (data clauses).** Sellers must:
