@@ -249,7 +249,7 @@
     },
     "data": {
       "title": "Your data",
-      "intro": "Download a copy of everything TZed holds about you, or delete your account.",
+      "intro": "Download a copy of everything TZed holds about you, or delete your account. Accounts not used for 3 years are closed, after an email warning 30 days before.",
       "export": "Download my data"
     },
     "delete": {

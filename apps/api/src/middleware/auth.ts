@@ -4,6 +4,8 @@ import { prisma } from '../db.js';
 import { AppError } from '../lib/errors.js';
 import { localeFrom } from '../lib/i18n.js';
 
+const DAY_MS = 24 * 60 * 60 * 1000;
+
 export const authUserInclude = {
   country: true,
   sellerProfile: { include: { region: true } },
@@ -24,9 +26,13 @@ export const loadUser: RequestHandler = async (req, _res, next) => {
     // Remember the site language they use, for notifications and emails sent later.
     const asked = req.get('accept-language');
     const locale = asked ? localeFrom(asked) : user.locale;
-    if (locale !== user.locale) {
-      await prisma.user.update({ where: { id: user.id }, data: { locale } });
-      user.locale = locale;
+    // Seen today, for the dormant-account rule in the retention job.
+    const now = new Date();
+    const stale = !user.lastActiveAt || now.getTime() - user.lastActiveAt.getTime() > DAY_MS;
+    if (locale !== user.locale || stale) {
+      const data = { locale, ...(stale ? { lastActiveAt: now, dormantWarnedAt: null } : {}) };
+      await prisma.user.update({ where: { id: user.id }, data });
+      Object.assign(user, data);
     }
     req.user = user;
   } else {

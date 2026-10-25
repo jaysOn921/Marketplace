@@ -146,8 +146,11 @@ Leave out `--uploads` to restore only the database.
 | Restart the app                       | `docker compose restart app`                                                   |
 | MySQL shell                           | `docker compose exec mysql sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" tzed'` |
 | Disk use of volumes                   | `docker system df -v`                                                          |
+| Run the data retention job now        | `docker compose exec app node dist/retention.js`                               |
 
 Logs are rotated: at most 5 × 20 MB for the app.
+
+**Data retention** runs inside the app once a day (old sessions, sign-in links, notifications and stats; audit-log IPs; dormant accounts, see `docs/data-protection.md`). Its summary is logged as `Retention job finished`. Set `RETENTION_JOB=false` to turn it off, for example when you run it from cron instead.
 
 **Monitoring:** point an uptime monitor (UptimeRobot, Better Stack…) at `https://<your domain>/api/v1/health`. It returns `{"status":"ok","db":"ok"}` with status 200 when the app and database are fine, and 503 otherwise.
 

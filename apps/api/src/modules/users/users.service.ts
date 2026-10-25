@@ -1,4 +1,5 @@
 import type { Request } from 'express';
+import type { Prisma } from '@prisma/client';
 import argon2 from 'argon2';
 import {
   changePasswordSchema,
@@ -116,6 +117,7 @@ export async function exportData(user: AuthUser, req: Request) {
     reports,
     cart,
     saved,
+    problems,
   ] = await Promise.all([
     prisma.user.findUniqueOrThrow({
       where: { id },
@@ -128,15 +130,17 @@ export async function exportData(user: AuthUser, req: Request) {
         status: true,
         emailVerifiedAt: true,
         consentAt: true,
+        locale: true,
         lastLoginAt: true,
+        lastActiveAt: true,
         createdAt: true,
         country: { select: { code: true, name: true } },
         sellerProfile: { include: { region: { select: { name: true } } } },
       },
     }),
     prisma.listing.findMany({ where: { sellerId: id }, include: { images: true, shipTo: true } }),
-    prisma.order.findMany({ where: { buyerId: id }, include: { items: true } }),
-    prisma.order.findMany({ where: { sellerId: id }, include: { items: true } }),
+    prisma.order.findMany({ where: { buyerId: id }, include: { items: true, events: true } }),
+    prisma.order.findMany({ where: { sellerId: id }, include: { items: true, events: true } }),
     prisma.review.findMany({ where: { reviewerId: id } }),
     prisma.review.findMany({ where: { sellerId: id } }),
     prisma.conversation.findMany({
@@ -153,6 +157,11 @@ export async function exportData(user: AuthUser, req: Request) {
     prisma.savedListing.findMany({
       where: { userId: id },
       select: { listingId: true, createdAt: true },
+    }),
+    // Problems on their orders, with only the messages they wrote.
+    prisma.orderDispute.findMany({
+      where: { order: { OR: [{ buyerId: id }, { sellerId: id }] } },
+      include: { messages: { where: { authorId: id } } },
     }),
   ]);
 
@@ -175,6 +184,11 @@ export async function exportData(user: AuthUser, req: Request) {
     reportsFiled: reports,
     cart,
     savedItems: saved,
+    orderProblems: problems.map((p) => ({
+      ...p,
+      messagesYouSent: p.messages,
+      messages: undefined,
+    })),
   };
 }
 
@@ -187,30 +201,37 @@ export async function deleteAccount(user: AuthUser, input: unknown, req: Request
   await checkPassword(user, password);
 
   await prisma.$transaction(async (tx) => {
-    await tx.listing.updateMany({
-      where: {
-        sellerId: user.id,
-        status: { in: ['DRAFT', 'PENDING_REVIEW', 'ACTIVE', 'REJECTED'] },
-      },
-      data: { status: 'REMOVED' },
-    });
-    await tx.sellerProfile.deleteMany({ where: { userId: user.id } });
-    await tx.authToken.deleteMany({ where: { userId: user.id } });
-    await tx.notification.deleteMany({ where: { userId: user.id } });
-    await tx.cartItem.deleteMany({ where: { userId: user.id } });
-    await tx.savedListing.deleteMany({ where: { userId: user.id } });
-    await tx.user.update({
-      where: { id: user.id },
-      data: {
-        status: 'DELETED',
-        email: `deleted-${user.id}@deleted.invalid`,
-        name: 'Deleted user',
-        phone: null,
-        passwordHash: '!',
-        emailVerifiedAt: null,
-      },
-    });
+    await anonymiseUser(tx, user.id);
     await recordAudit({ action: 'user.delete', targetType: 'user', targetId: user.id, req }, tx);
   });
   await destroyUserSessions(user.id);
+}
+
+/** Removes a person's personal data, keeping orders, messages and reviews as "Deleted user". */
+export async function anonymiseUser(tx: Prisma.TransactionClient, userId: number) {
+  await tx.listing.updateMany({
+    where: {
+      sellerId: userId,
+      status: { in: ['DRAFT', 'PENDING_REVIEW', 'ACTIVE', 'REJECTED'] },
+    },
+    data: { status: 'REMOVED' },
+  });
+  await tx.sellerProfile.deleteMany({ where: { userId } });
+  await tx.authToken.deleteMany({ where: { userId } });
+  await tx.notification.deleteMany({ where: { userId } });
+  await tx.cartItem.deleteMany({ where: { userId } });
+  await tx.savedListing.deleteMany({ where: { userId } });
+  await tx.user.update({
+    where: { id: userId },
+    data: {
+      status: 'DELETED',
+      email: `deleted-${userId}@deleted.invalid`,
+      name: 'Deleted user',
+      phone: null,
+      passwordHash: '!',
+      emailVerifiedAt: null,
+      lastActiveAt: null,
+      dormantWarnedAt: null,
+    },
+  });
 }

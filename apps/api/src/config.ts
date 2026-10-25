@@ -21,6 +21,8 @@ const envSchema = z.object({
   UPLOAD_DIR: z.string().optional(),
   // Development only (browser test runs sign in many times): refused in production.
   DISABLE_RATE_LIMITS: z.stringbool().default(false),
+  /** Daily clean-up of old personal data (src/jobs/retention.ts). */
+  RETENTION_JOB: z.stringbool().default(true),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
 });
 

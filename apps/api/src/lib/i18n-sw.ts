@@ -296,6 +296,10 @@ export const SW: Record<string, string> = {
   'Your account has been reinstated. You can sign in again.':
     'Akaunti yako imerejeshwa. Unaweza kuingia tena.',
   'Reason: {reason}': 'Sababu: {reason}',
+  'Your TZed account will be closed': 'Akaunti yako ya TZed itafungwa',
+  "You haven't used your TZed account for 3 years. To protect your personal information, we will close it and delete your details in 30 days.":
+    'Hujatumia akaunti yako ya TZed kwa miaka 3. Ili kulinda taarifa zako binafsi, tutaifunga na kufuta taarifa zako baada ya siku 30.',
+  'To keep it, just sign in before then.': 'Ili kuiendeleza, ingia tu kabla ya hapo.',
   'Contact support': 'Wasiliana na huduma kwa wateja',
   'Sign in': 'Ingia',
   'We received your message: {subject} [#{id}]': 'Tumepokea ujumbe wako: {subject} [#{id}]',
