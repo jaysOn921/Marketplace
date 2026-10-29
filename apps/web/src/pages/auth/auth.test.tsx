@@ -113,6 +113,37 @@ describe('Register', () => {
 });
 
 describe('Account pages', () => {
+  it('lets buyers choose whether sellers see their phone number', async () => {
+    const sent: unknown[] = [];
+    mockApi(
+      {
+        'PUT /me/phone-sharing': (body) => {
+          sent.push(body);
+          return {
+            body: { user: { ...sampleUser, phone: '+260977123456', sharePhoneOnOrders: true } },
+          };
+        },
+      },
+      { user: { ...sampleUser, phone: '+260977123456' } },
+    );
+    renderApp('/account');
+    const box = await screen.findByRole('checkbox', { name: /Show my phone number to the seller/ });
+    expect(box).not.toBeChecked(); // private unless they choose
+    await userEvent.click(box);
+    await screen.findAllByText('Saved.');
+    expect(box).toBeChecked();
+    expect(sent).toEqual([{ share: true }]);
+  });
+
+  it('can’t share a phone number they haven’t added', async () => {
+    mockApi({}, { user: sampleUser });
+    renderApp('/account');
+    expect(
+      await screen.findByRole('checkbox', { name: /Show my phone number to the seller/ }),
+    ).toBeDisabled();
+    expect(screen.getByText(/Add a phone number to your profile/)).toBeInTheDocument();
+  });
+
   it('turns news and offers emails on and off', async () => {
     const sent: unknown[] = [];
     mockApi(

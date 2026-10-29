@@ -150,6 +150,46 @@ function PasswordForm() {
   );
 }
 
+function PhoneSharing({ user }: { user: SessionUser }) {
+  const { t } = useTranslation();
+  const setMe = useSetMe();
+  const save = useMutation({
+    mutationFn: (share: boolean) => put<MeResponse>('/me/phone-sharing', { share }),
+    onSuccess: (data) => setMe(data.user),
+  });
+  return (
+    <Card title={t('account.phoneSharing.title')} description={t('account.phoneSharing.intro')}>
+      <label className="flex items-start gap-2 text-sm text-stone-700">
+        <input
+          type="checkbox"
+          checked={save.isPending ? save.variables : user.sharePhoneOnOrders}
+          disabled={save.isPending || (!user.phone && !user.sharePhoneOnOrders)}
+          onChange={(e) => save.mutate(e.target.checked)}
+          className="mt-0.5 h-4 w-4 rounded border-stone-300 accent-brand-700"
+        />
+        <span>{t('account.phoneSharing.label')}</span>
+      </label>
+      {!user.phone && (
+        <p className="mt-2 text-sm text-stone-500">{t('account.phoneSharing.noPhone')}</p>
+      )}
+      {user.sellerProfile && (
+        <p className="mt-2 text-sm text-stone-500">
+          {t('account.phoneSharing.sellerNote')}{' '}
+          <Link to="/account/seller" className="text-brand-700 underline">
+            {t('account.phoneSharing.sellerLink')}
+          </Link>
+        </p>
+      )}
+      {save.isSuccess && (
+        <p role="status" className="mt-2 text-sm text-brand-700">
+          {t('account.emails.saved')}
+        </p>
+      )}
+      {save.isError && <Alert>{apiErrors(save.error).message}</Alert>}
+    </Card>
+  );
+}
+
 function EmailPreferences({ user }: { user: SessionUser }) {
   const { t } = useTranslation();
   const setMe = useSetMe();
@@ -284,6 +324,7 @@ export function AccountPage() {
 
       <ProfileForm user={user} />
       <PasswordForm />
+      <PhoneSharing user={user} />
       <TwoStepSettings user={user} />
       <EmailPreferences user={user} />
       <DataAndDeletion />

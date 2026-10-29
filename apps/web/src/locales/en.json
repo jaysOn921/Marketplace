@@ -294,6 +294,14 @@
       "onText": "Two-step sign-in is on.",
       "newCodes": "Get new backup codes",
       "turnOff": "Turn off two-step sign-in"
+    },
+    "phoneSharing": {
+      "title": "Phone number on orders",
+      "intro": "Buyers and sellers talk in TZed messages. Your number is only shown to a seller once they accept your order, and only if you allow it.",
+      "label": "Show my phone number to the seller once they accept my order.",
+      "noPhone": "Add a phone number to your profile above to share it.",
+      "sellerNote": "As a seller, you choose whether buyers see your number in your",
+      "sellerLink": "shop settings."
     }
   },
   "seller": {
@@ -349,7 +357,7 @@
         },
         {
           "heading": "Using other people's details",
-          "body": "When an order is accepted, the buyer and seller see each other's name and phone number. Use them only for that order: never for marketing, never shared with others, and delete them when the order and any problem are finished. Tell TZed straight away if you think someone's details were misused or leaked."
+          "body": "When an order is accepted, the buyer and seller see each other's name, and the phone number of anyone who chose to share it. Otherwise, talk in TZed messages. Use these details only for that order: never for marketing, never shared with others, and delete them when the order and any problem are finished. Tell TZed straight away if you think someone's details were misused or leaked."
         },
         {
           "heading": "Problems between buyers and sellers",
@@ -398,7 +406,7 @@
         },
         {
           "heading": "Who sees it",
-          "body": "• Everyone: a seller's shop name, town, listings and reviews.\n• The other person in an order: name and phone number, only after the seller accepts. They may use them for that order only.\n• TZed admins: what they need to review listings, reports, problems and support requests.\n• Service providers who work for us under contract: hosting, email delivery and backups.\n• Authorities, when the law requires it."
+          "body": "• Everyone: a seller's shop name, town, listings and reviews.\n• The other person in an order: your name, once the seller accepts. Your phone number only if you chose to share it (sellers in shop settings, buyers in My account); otherwise you talk in TZed messages. Email addresses are never shown.\n• TZed admins: what they need to review listings, reports, problems and support requests.\n• Service providers who work for us under contract: hosting, email delivery and backups.\n• Authorities, when the law requires it."
         },
         {
           "heading": "Data across borders",
@@ -842,7 +850,7 @@
     "seller": "Seller",
     "buyer": "Buyer",
     "phone": "Phone:",
-    "noPhone": "No phone number shared. Use TZed messages to stay in touch.",
+    "noPhone": "They prefer to keep their number private. Use TZed messages to stay in touch.",
     "contactAfterAccept": "Contact details are shared once the seller accepts the order.",
     "timeline": "Timeline",
     "safety": "Pay only after the seller accepts, and check the item before paying when you can. Something wrong?",
@@ -948,7 +956,8 @@
     "ask": "Ask the seller a question",
     "askLabel": "Message {{shop}}",
     "askPlaceholder": "e.g. Is it still available? Can you send it to Lusaka?",
-    "removed": "This message was removed by TZed."
+    "removed": "This message was removed by TZed.",
+    "contactTip": "Tip: for your safety, keep talking and paying through TZed. Phone numbers are shared on the order page once an order is accepted, if the person allows it."
   },
   "reviews": {
     "title": "Reviews",

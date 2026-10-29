@@ -5,6 +5,7 @@ import {
   changePasswordSchema,
   deleteAccountSchema,
   marketingPreferenceSchema,
+  phoneSharingSchema,
   sellerProfileSchema,
   updateProfileSchema,
 } from '@tzed/shared';
@@ -133,6 +134,7 @@ export async function exportData(user: AuthUser, req: Request) {
         consentAt: true,
         ageConfirmedAt: true,
         marketingOptInAt: true,
+        sharePhoneOnOrders: true,
         twoStepEnabledAt: true,
         locale: true,
         lastLoginAt: true,
@@ -216,6 +218,19 @@ export async function setMarketing(user: AuthUser, input: unknown, req: Request)
   });
 }
 
+/** Whether sellers see this buyer's phone number once they accept an order. */
+export async function setPhoneSharing(user: AuthUser, input: unknown, req: Request) {
+  const { share } = phoneSharingSchema.parse(input);
+  if (share === user.sharePhoneOnOrders) return;
+  await prisma.user.update({ where: { id: user.id }, data: { sharePhoneOnOrders: share } });
+  await recordAudit({
+    action: share ? 'user.phone_sharing_on' : 'user.phone_sharing_off',
+    targetType: 'user',
+    targetId: user.id,
+    req,
+  });
+}
+
 export async function deleteAccount(user: AuthUser, input: unknown, req: Request) {
   const { password } = deleteAccountSchema.parse(input);
   await checkPassword(user, password);
@@ -252,6 +267,7 @@ export async function anonymiseUser(tx: Prisma.TransactionClient, userId: number
       passwordHash: '!',
       emailVerifiedAt: null,
       marketingOptInAt: null,
+      sharePhoneOnOrders: false,
       twoStepSecret: null,
       twoStepEnabledAt: null,
       twoStepLastStep: null,

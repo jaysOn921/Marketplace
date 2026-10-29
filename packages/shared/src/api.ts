@@ -61,6 +61,8 @@ export interface SessionUser {
   emailVerified: boolean;
   /** Agreed to news and offers by email. */
   marketingEmails: boolean;
+  /** Show my phone number to the seller once they accept my order. */
+  sharePhoneOnOrders: boolean;
   twoStepEnabled: boolean;
   /** Must use two-step sign-in (admins, in production): admin tools stay locked until it's on. */
   twoStepRequired: boolean;

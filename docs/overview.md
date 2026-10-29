@@ -28,17 +28,17 @@ team. This page is the whole picture; `PLAN.md` §7 is the to-do list.
 
 ### Buyers
 
-| Module                               | What it does                                                                                                                                                                  |
-| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Accounts (`auth`, `users`)           | Sign up, confirm email, sign in, reset password, edit profile, change password, download my data, delete account                                                              |
-| Saved items (`saved`)                | Heart a listing; get a notification when its price drops                                                                                                                      |
-| Cart (`cart`)                        | Items from several sellers; one checkout creates one order per seller, all or nothing                                                                                         |
-| Orders (`orders`)                    | Place an order, see its status and history, "I've paid", "I received it", cancel; customs acknowledgement for cross-border orders; seller contact details shown once accepted |
-| Problem with this order (`disputes`) | Report a problem (not received, not as described, damaged, payment, no response); one conversation with the seller and TZed until resolved                                    |
-| Messages (`messaging`)               | Chat with a seller about a listing; email for the first unread message                                                                                                        |
-| Reviews (`reviews`)                  | Rate the seller once an order is completed                                                                                                                                    |
-| Reports (`reports`)                  | Report a listing, user or message                                                                                                                                             |
-| Notifications (`notifications`)      | Bell with counts, a notifications page, and emails for the important ones                                                                                                     |
+| Module                               | What it does                                                                                                                                                                                                           |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Accounts (`auth`, `users`)           | Sign up, confirm email, sign in, reset password, edit profile, change password, download my data, delete account                                                                                                       |
+| Saved items (`saved`)                | Heart a listing; get a notification when its price drops                                                                                                                                                               |
+| Cart (`cart`)                        | Items from several sellers; one checkout creates one order per seller, all or nothing                                                                                                                                  |
+| Orders (`orders`)                    | Place an order, see its status and history, "I've paid", "I received it", cancel; customs acknowledgement for cross-border orders; seller contact details shown once accepted                                          |
+| Problem with this order (`disputes`) | Report a problem (not received, not as described, damaged, payment, no response); one conversation with the seller and TZed until resolved                                                                             |
+| Messages (`messaging`)               | Chat with a seller about a listing or order; email for the first unread message; a safety tip when someone types a phone number or email. Phone numbers stay private unless the person chooses to share them on orders |
+| Reviews (`reviews`)                  | Rate the seller once an order is completed                                                                                                                                                                             |
+| Reports (`reports`)                  | Report a listing, user or message                                                                                                                                                                                      |
+| Notifications (`notifications`)      | Bell with counts, a notifications page, and emails for the important ones                                                                                                                                              |
 
 ### Sellers
 

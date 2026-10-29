@@ -71,27 +71,28 @@ enum UserStatus {
 }
 
 model User {
-  id               Int        @id @default(autoincrement())
-  email            String     @unique @db.VarChar(191)
-  passwordHash     String     @db.VarChar(255)
-  name             String     @db.VarChar(100)
-  phone            String?    @db.VarChar(20)
-  countryId        Int
-  role             Role       @default(USER)
-  status           UserStatus @default(ACTIVE)
-  emailVerifiedAt  DateTime?
-  consentAt        DateTime?
-  ageConfirmedAt   DateTime? // ticked "I am 18 or older" at sign-up
-  marketingOptInAt DateTime? // set while they agree to marketing emails
-  twoStepSecret    String?    @db.VarChar(255) // authenticator key, encrypted
-  twoStepEnabledAt DateTime?
-  twoStepLastStep  Int? // last code accepted (30-second step), so a code works once
-  locale           String     @default("en") @db.VarChar(5)
-  lastLoginAt      DateTime?
-  lastActiveAt     DateTime? // updated at most daily; used to find dormant accounts
-  dormantWarnedAt  DateTime?
-  createdAt        DateTime   @default(now())
-  updatedAt        DateTime   @updatedAt
+  id                 Int        @id @default(autoincrement())
+  email              String     @unique @db.VarChar(191)
+  passwordHash       String     @db.VarChar(255)
+  name               String     @db.VarChar(100)
+  phone              String?    @db.VarChar(20)
+  countryId          Int
+  role               Role       @default(USER)
+  status             UserStatus @default(ACTIVE)
+  emailVerifiedAt    DateTime?
+  consentAt          DateTime?
+  ageConfirmedAt     DateTime? // ticked "I am 18 or older" at sign-up
+  marketingOptInAt   DateTime? // set while they agree to marketing emails
+  sharePhoneOnOrders Boolean    @default(false) // buyers: show my number to the seller once an order is accepted
+  twoStepSecret      String?    @db.VarChar(255) // authenticator key, encrypted
+  twoStepEnabledAt   DateTime?
+  twoStepLastStep    Int? // last code accepted (30-second step), so a code works once
+  locale             String     @default("en") @db.VarChar(5)
+  lastLoginAt        DateTime?
+  lastActiveAt       DateTime? // updated at most daily; used to find dormant accounts
+  dormantWarnedAt    DateTime?
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
 
   country               Country              @relation(fields: [countryId], references: [id])
   sellerProfile         SellerProfile?

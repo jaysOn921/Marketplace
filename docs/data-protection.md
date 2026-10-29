@@ -25,20 +25,20 @@ information.
 
 ## 2. What we hold about sellers (data map)
 
-| Data                                              | Where                           | Who sees it                                             | Why (lawful basis)                               |
-| ------------------------------------------------- | ------------------------------- | ------------------------------------------------------- | ------------------------------------------------ |
-| Name, email, password hash, country, consent time | `users`                         | Seller, admins                                          | Contract (an account)                            |
-| Phone number                                      | `users.phone`                   | Buyers **after the seller accepts their order**, admins | Contract (arranging delivery and payment)        |
-| Shop name, bio, town, region                      | `seller_profiles`               | Public                                                  | Contract; the seller publishes it                |
-| Verified-seller check and admin note              | `seller_profiles.verified*`     | Public badge; note admin-only                           | Legitimate interest (fraud prevention); see §5   |
-| Listings and photos                               | `listings`, uploads             | Public                                                  | Contract                                         |
-| Orders, order events, buyer and delivery notes    | `orders*`                       | Buyer, seller, admins                                   | Contract; tax and accounting records             |
-| Messages, problem threads                         | `messages`, `order_disputes`    | The parties, admins (on report or problem)              | Contract; legitimate interest (safety, disputes) |
-| Reviews received                                  | `reviews`                       | Public                                                  | Legitimate interest (marketplace trust)          |
-| Shop analytics (views, cart adds)                 | `analytics` tables              | Seller, admins                                          | Legitimate interest; no buyer identities shown   |
-| Audit log with IP address and user agent          | `audit_logs`                    | Admins                                                  | Legitimate interest (security); legal obligation |
-| Session cookie, CSRF cookie                       | `sessions`                      | —                                                       | Strictly necessary                               |
-| Language, notification history                    | `users.locale`, `notifications` | Seller                                                  | Contract                                         |
+| Data                                              | Where                           | Who sees it                                                                                                                                                                  | Why (lawful basis)                                              |
+| ------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| Name, email, password hash, country, consent time | `users`                         | Seller, admins                                                                                                                                                               | Contract (an account)                                           |
+| Phone number                                      | `users.phone`                   | The other party of an accepted order **only if the person chose to share it** (sellers: shop contact preference; buyers: `users.sharePhoneOnOrders`, off by default), admins | Consent (an opt-in setting), for arranging delivery and payment |
+| Shop name, bio, town, region                      | `seller_profiles`               | Public                                                                                                                                                                       | Contract; the seller publishes it                               |
+| Verified-seller check and admin note              | `seller_profiles.verified*`     | Public badge; note admin-only                                                                                                                                                | Legitimate interest (fraud prevention); see §5                  |
+| Listings and photos                               | `listings`, uploads             | Public                                                                                                                                                                       | Contract                                                        |
+| Orders, order events, buyer and delivery notes    | `orders*`                       | Buyer, seller, admins                                                                                                                                                        | Contract; tax and accounting records                            |
+| Messages, problem threads                         | `messages`, `order_disputes`    | The parties, admins (on report or problem)                                                                                                                                   | Contract; legitimate interest (safety, disputes)                |
+| Reviews received                                  | `reviews`                       | Public                                                                                                                                                                       | Legitimate interest (marketplace trust)                         |
+| Shop analytics (views, cart adds)                 | `analytics` tables              | Seller, admins                                                                                                                                                               | Legitimate interest; no buyer identities shown                  |
+| Audit log with IP address and user agent          | `audit_logs`                    | Admins                                                                                                                                                                       | Legitimate interest (security); legal obligation                |
+| Session cookie, CSRF cookie                       | `sessions`                      | —                                                                                                                                                                            | Strictly necessary                                              |
+| Language, notification history                    | `users.locale`, `notifications` | Seller                                                                                                                                                                       | Contract                                                        |
 
 Photo upload re-encodes every image (sharp), which drops EXIF metadata such as GPS location.
 That matters because sellers often photograph items at home. Keep it that way.
@@ -120,7 +120,7 @@ users and need a Tanzanian transfer permit for Tanzanians. Options, from simples
    order. The seller terms must say so, and misuse should be reportable (the report flow exists).
    - This matters because sellers become **controllers themselves** for the buyer data they
      receive.
-   - Better still, in the long run: masked contact (in-app messages only).
+   - **Done:** masked contact. Numbers are private by default and shared only by the person's own choice; emails are never shown; everyone can talk in TZed messages on each order, and a tip appears when a number or email is typed into a message.
 3. **Verification, without ID documents.** The "Verified seller" badge rests on checks that
    need no ID on TZed:
    - **Track record:** completed orders, reviews, reply time and account age (already shown).

@@ -14,6 +14,7 @@ export function toSessionUser(user: AuthUser): SessionUser {
     role: user.role,
     emailVerified: user.emailVerifiedAt !== null,
     marketingEmails: user.marketingOptInAt !== null,
+    sharePhoneOnOrders: user.sharePhoneOnOrders,
     twoStepEnabled: user.twoStepEnabledAt !== null,
     twoStepRequired: twoStepRequiredFor(user),
     createdAt: user.createdAt.toISOString(),

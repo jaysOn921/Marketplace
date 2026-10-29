@@ -62,9 +62,11 @@ export function toOrderSummary(order: OrderRow, viewerId: number): OrderSummary 
 
 function toParty(p: PartyRow, showPhone: boolean, asSeller: boolean): OrderParty {
   const sp = p.sellerProfile;
-  // A seller's number is only shared if they chose to be contactable by phone.
-  const phoneAllowed =
-    !asSeller || sp?.contactPreference === 'PHONE' || sp?.contactPreference === 'BOTH';
+  // Numbers are only shared by choice: sellers through their contact preference, buyers
+  // with "share my number on orders". Otherwise the two talk in TZed messages.
+  const phoneAllowed = asSeller
+    ? sp?.contactPreference === 'PHONE' || sp?.contactPreference === 'BOTH'
+    : p.sharePhoneOnOrders;
   return {
     id: p.id,
     name: p.name,

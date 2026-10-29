@@ -294,6 +294,14 @@
       "onText": "Kuingia kwa hatua mbili kumewashwa.",
       "newCodes": "Pata namba mpya za akiba",
       "turnOff": "Zima kuingia kwa hatua mbili"
+    },
+    "phoneSharing": {
+      "title": "Namba ya simu kwenye oda",
+      "intro": "Wanunuzi na wauzaji huwasiliana kupitia jumbe za TZed. Namba yako inaonyeshwa kwa muuzaji tu akishakubali oda yako, na tu ukiruhusu.",
+      "label": "Mwonyeshe muuzaji namba yangu ya simu akishakubali oda yangu.",
+      "noPhone": "Ongeza namba ya simu kwenye wasifu wako hapo juu ili uishiriki.",
+      "sellerNote": "Kama muuzaji, unachagua kama wanunuzi wanaona namba yako kwenye",
+      "sellerLink": "mipangilio ya duka."
     }
   },
   "seller": {
@@ -349,7 +357,7 @@
         },
         {
           "heading": "Kutumia taarifa za watu wengine",
-          "body": "Oda ikikubaliwa, mnunuzi na muuzaji wanaona jina na namba ya simu ya kila mmoja. Zitumie kwa oda hiyo tu: kamwe si kwa matangazo, kamwe usizishiriki na wengine, na uzifute oda na tatizo lolote vikishamalizika. Ijulishe TZed mara moja ukidhani taarifa za mtu zimetumiwa vibaya au zimevuja."
+          "body": "Oda ikikubaliwa, mnunuzi na muuzaji wanaona jina la kila mmoja, na namba ya simu ya aliyechagua kuishiriki. Vinginevyo, wasilianeni kupitia jumbe za TZed. Tumieni taarifa hizi kwa oda hiyo tu: kamwe si kwa matangazo, kamwe usizishiriki na wengine, na uzifute oda na tatizo lolote vikishamalizika. Ijulishe TZed mara moja ukidhani taarifa za mtu zimetumiwa vibaya au zimevuja."
         },
         {
           "heading": "Matatizo kati ya wanunuzi na wauzaji",
@@ -398,7 +406,7 @@
         },
         {
           "heading": "Nani anaziona",
-          "body": "• Kila mtu: jina la duka la muuzaji, mji, matangazo na tathmini.\n• Mtu mwingine kwenye oda: jina na namba ya simu, baada tu ya muuzaji kukubali. Wanaweza kuzitumia kwa oda hiyo tu.\n• Wasimamizi wa TZed: wanachohitaji kukagua matangazo, ripoti, matatizo na maombi ya msaada.\n• Watoa huduma wanaotufanyia kazi kwa mkataba: uhifadhi wa tovuti, utumaji wa barua pepe na nakala za akiba.\n• Mamlaka, pale sheria inapotaka."
+          "body": "• Kila mtu: jina la duka la muuzaji, mji, matangazo na tathmini.\n• Mtu mwingine kwenye oda: jina lako, muuzaji akishakubali. Namba yako ya simu ikiwa tu umechagua kuishiriki (wauzaji kwenye mipangilio ya duka, wanunuzi kwenye Akaunti yangu); vinginevyo mnawasiliana kupitia jumbe za TZed. Barua pepe haionyeshwi kamwe.\n• Wasimamizi wa TZed: wanachohitaji kukagua matangazo, ripoti, matatizo na maombi ya msaada.\n• Watoa huduma wanaotufanyia kazi kwa mkataba: uhifadhi wa tovuti, utumaji wa barua pepe na nakala za akiba.\n• Mamlaka, pale sheria inapotaka."
         },
         {
           "heading": "Taarifa kuvuka mipaka",
@@ -842,7 +850,7 @@
     "seller": "Muuzaji",
     "buyer": "Mnunuzi",
     "phone": "Simu:",
-    "noPhone": "Hakuna namba ya simu iliyotolewa. Tumia jumbe za TZed kuwasiliana.",
+    "noPhone": "Wanapendelea namba yao ibaki siri. Tumia jumbe za TZed kuwasiliana.",
     "contactAfterAccept": "Mawasiliano yanatolewa muuzaji akishakubali oda.",
     "timeline": "Mfuatano",
     "safety": "Lipa tu baada ya muuzaji kukubali, na ikiwezekana kagua bidhaa kabla ya kulipa. Kuna tatizo?",
@@ -948,7 +956,8 @@
     "ask": "Muulize muuzaji swali",
     "askLabel": "Tuma ujumbe kwa {{shop}}",
     "askPlaceholder": "mf. Bado inapatikana? Unaweza kuituma Lusaka?",
-    "removed": "Ujumbe huu uliondolewa na TZed."
+    "removed": "Ujumbe huu uliondolewa na TZed.",
+    "contactTip": "Kidokezo: kwa usalama wako, endelea kuwasiliana na kulipa kupitia TZed. Namba za simu huonyeshwa kwenye ukurasa wa oda oda ikishakubaliwa, kama mtu ameruhusu."
   },
   "reviews": {
     "title": "Tathmini",

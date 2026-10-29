@@ -147,6 +147,17 @@ describe('Messages page', () => {
     expect(await screen.findByText('Great, I will order now.')).toBeInTheDocument();
     expect(sent).toEqual({ body: 'Great, I will order now.' });
     expect(screen.getByLabelText('Write a message')).toHaveValue('');
+
+    // Typing a phone number or email shows a safety tip; a price doesn't.
+    const box = screen.getByLabelText('Write a message');
+    await userEvent.type(box, 'It costs 380,000');
+    expect(screen.queryByText(/keep talking and paying through TZed/)).not.toBeInTheDocument();
+    await userEvent.clear(box);
+    await userEvent.type(box, 'Call me on 0977 123 456');
+    expect(screen.getByText(/keep talking and paying through TZed/)).toBeInTheDocument();
+    await userEvent.clear(box);
+    await userEvent.type(box, 'or natasha@example.com');
+    expect(screen.getByText(/keep talking and paying through TZed/)).toBeInTheDocument();
   });
 });
 

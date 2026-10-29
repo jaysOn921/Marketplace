@@ -5,7 +5,13 @@ import { prisma } from '../../db.js';
 import { testOutbox } from '../../lib/mailer.js';
 import { testClient } from '../../test/client.js';
 import { resetDb } from '../../test/db.js';
-import { createListing, createSeller, createUser, TEST_PASSWORD } from '../../test/factories.js';
+import {
+  auditActions,
+  createListing,
+  createSeller,
+  createUser,
+  TEST_PASSWORD,
+} from '../../test/factories.js';
 
 const app = createApp();
 
@@ -27,6 +33,7 @@ async function setup(listingOverrides: Parameters<typeof createListing>[1] = {})
     countryCode: 'ZM',
     phone: '+260977123456',
     name: 'Natasha Phiri',
+    sharePhoneOnOrders: true,
   });
   return {
     seller,
@@ -263,6 +270,26 @@ describe('order steps', () => {
     });
     await sellerClient.post(`/orders/${id}/accept`);
     expect((await buyerClient.get(`/orders/${id}`)).body.order.seller.phone).toBeNull();
+  });
+
+  it('keeps a buyer’s phone private unless they chose to share it', async () => {
+    const { id, buyer, sellerClient, buyerClient } = await placed();
+    await buyerClient.put('/me/phone-sharing', { share: false });
+    expect(
+      (await prisma.user.findUniqueOrThrow({ where: { id: buyer.id } })).sharePhoneOnOrders,
+    ).toBe(false);
+    const accepted = await sellerClient.post(`/orders/${id}/accept`);
+    expect(accepted.body.order.buyer).toMatchObject({ name: 'Natasha Phiri', phone: null });
+    expect(accepted.body.order.buyer).not.toHaveProperty('email');
+
+    // Turning it on later shares it on existing orders too.
+    expect((await buyerClient.put('/me/phone-sharing', { share: true })).body.user).toMatchObject({
+      sharePhoneOnOrders: true,
+    });
+    expect((await sellerClient.get(`/orders/${id}`)).body.order.buyer.phone).toBe('+260977123456');
+    expect(await auditActions(buyer.id)).toEqual(
+      expect.arrayContaining(['user.phone_sharing_off', 'user.phone_sharing_on']),
+    );
   });
 
   it('declining needs a reason and puts the stock back (relisting a sold-out item)', async () => {

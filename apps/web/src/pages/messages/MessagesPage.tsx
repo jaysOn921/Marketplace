@@ -8,6 +8,13 @@ import { apiErrors } from '../../lib/forms';
 import { useConversation, useConversations, useSendMessage } from '../../lib/messaging';
 import { timeAgo } from '../../lib/time';
 
+/**
+ * A phone number (7+ digits, spaces or dashes between them) or an email address. Prices such
+ * as "380,000" don't match: the comma breaks the run of digits.
+ */
+const sharesContact = (text: string) =>
+  /\+?\d(?:[\s-]?\d){6,}/.test(text) || /[^\s@]+@[^\s@]+\.[a-z]{2,}/i.test(text);
+
 function ConversationList({
   conversations,
   activeId,
@@ -188,7 +195,13 @@ function Thread({ id }: { id: number }) {
               {t('messages.send')}
             </button>
           </div>
-          <p className="mt-1 text-xs text-stone-500">{t('messages.safety')}</p>
+          {sharesContact(body) ? (
+            <p role="status" className="mt-1 text-xs font-medium text-amber-800">
+              {t('messages.contactTip')}
+            </p>
+          ) : (
+            <p className="mt-1 text-xs text-stone-500">{t('messages.safety')}</p>
+          )}
         </form>
       ) : (
         <p className="border-t border-stone-200 p-3 text-sm text-stone-600">

@@ -52,6 +52,12 @@ usersRouter.post('/two-step/disable', async (req, res) => {
   res.json(await freshMe(user.id));
 });
 
+usersRouter.put('/phone-sharing', async (req, res) => {
+  const user = currentUser(req);
+  await users.setPhoneSharing(user, req.body, req);
+  res.json(await freshMe(user.id));
+});
+
 usersRouter.put('/marketing', async (req, res) => {
   const user = currentUser(req);
   await users.setMarketing(user, req.body, req);

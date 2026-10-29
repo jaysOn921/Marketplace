@@ -68,6 +68,9 @@ export const registerSchema = withPhone(
 );
 export type RegisterInput = z.input<typeof registerSchema>;
 
+export const phoneSharingSchema = z.object({ share: z.boolean() });
+export type PhoneSharingInput = z.input<typeof phoneSharingSchema>;
+
 export const marketingPreferenceSchema = z.object({ marketing: z.boolean() });
 export type MarketingPreferenceInput = z.input<typeof marketingPreferenceSchema>;
 
