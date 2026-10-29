@@ -63,7 +63,7 @@ The seed is safe to re-run. It only adds what's missing and never changes an exi
 Then:
 
 1. Open `https://<your domain>` and sign in as the admin.
-2. Go to **Account** and change the admin password.
+2. Go to **Account** and change the admin password. Then turn on **two-step sign-in** there, with an authenticator app (Google Authenticator, Microsoft Authenticator…), and keep the backup codes somewhere safe. The admin tools stay locked until it's on.
 3. Delete `SEED_ADMIN_PASSWORD` from `.env`.
 4. Go to **Admin → Exchange rate** and set today's ZMW→TZS rate. The seed starts at 1 ZMW = 131.04 TZS, the rate on 23 Oct 2026.
 5. Go to **Admin → Help articles** and check the help centre and the prohibited-items policy before launch.
@@ -160,7 +160,9 @@ Logs are rotated: at most 5 × 20 MB for the app.
 - **System updates:** turn on automatic security updates (`unattended-upgrades` on Ubuntu/Debian).
 - **Ports:** only 22, 80 and 443 open. MySQL is never published.
 - **`.env`:** permissions `600`. Never commit it.
-- **Secrets:** rotate `SESSION_SECRET` if you think it has leaked. Everyone is signed out.
+- **Secrets:** rotate `SESSION_SECRET` if you think it has leaked. Everyone is signed out. Two-step keys are encrypted with `TWO_STEP_KEY` (or `SESSION_SECRET` if it isn't set), so set `TWO_STEP_KEY` to a separate random value first: otherwise changing `SESSION_SECRET` breaks everyone's two-step sign-in.
+- **Two-step sign-in** is required for admins in production (`ADMIN_TWO_STEP=false` turns that off; don't). Someone who lost their phone and backup codes: another admin uses **Admin → Users → Reset two-step sign-in**. If the only admin is locked out, reset it in the database and sign in with the password, then turn it on again:
+  `docker compose exec mysql sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" tzed -e "UPDATE users SET twoStepSecret=NULL, twoStepEnabledAt=NULL, twoStepLastStep=NULL WHERE email=\"admin@…\"; DELETE c FROM two_step_backup_codes c JOIN users u ON u.id=c.userId WHERE u.email=\"admin@…\";"'`
 - **Admins:** each admin has their own account. Remove accounts that are no longer needed.
 - **Audit log:** review it now and then (**Admin → Audit log**).
 

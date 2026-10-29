@@ -14,6 +14,7 @@ import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { Alert, Card, SelectField, SubmitButton, TextField } from '../../components/Form';
+import { TwoStepSettings } from '../../components/TwoStepSettings';
 import { clearCsrfToken, del, patch, post, put } from '../../lib/api';
 import { meKey, useMe, useSetMe } from '../../lib/auth';
 import { apiErrors, validate, type FieldErrors } from '../../lib/forms';
@@ -283,6 +284,7 @@ export function AccountPage() {
 
       <ProfileForm user={user} />
       <PasswordForm />
+      <TwoStepSettings user={user} />
       <EmailPreferences user={user} />
       <DataAndDeletion />
     </div>

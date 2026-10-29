@@ -23,6 +23,10 @@ const envSchema = z.object({
   DISABLE_RATE_LIMITS: z.stringbool().default(false),
   /** Daily clean-up of old personal data (src/jobs/retention.ts). */
   RETENTION_JOB: z.stringbool().default(true),
+  /** Admins must use two-step sign-in. Defaults to on in production, off elsewhere. */
+  ADMIN_TWO_STEP: z.stringbool().optional(),
+  /** Encrypts authenticator keys; defaults to SESSION_SECRET (changing it turns two-step off for everyone). */
+  TWO_STEP_KEY: z.preprocess((v) => (v === '' ? undefined : v), z.string().min(32).optional()),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
 });
 
@@ -63,5 +67,6 @@ export const config = {
     parsed.data.UPLOAD_DIR ?? fileURLToPath(new URL('../../../uploads/', import.meta.url)),
   isProduction: parsed.data.NODE_ENV === 'production',
   isTest: parsed.data.NODE_ENV === 'test',
+  adminTwoStepRequired: parsed.data.ADMIN_TWO_STEP ?? parsed.data.NODE_ENV === 'production',
   version: process.env.npm_package_version ?? '0.1.0',
 };

@@ -70,6 +70,7 @@ export interface AdminUserRow {
   role: 'USER' | 'ADMIN';
   status: 'ACTIVE' | 'SUSPENDED' | 'DELETED';
   emailVerified: boolean;
+  twoStepEnabled: boolean;
   shopName: string | null;
   shopSlug: string | null;
   /** When the seller was verified, if they are. */

@@ -13,6 +13,8 @@ declare module 'express-session' {
   interface SessionData {
     userId?: number;
     csrfToken?: string;
+    /** Password was right; waiting for the two-step code. */
+    twoStep?: { userId: number; startedAt: number; tries: number };
   }
 }
 

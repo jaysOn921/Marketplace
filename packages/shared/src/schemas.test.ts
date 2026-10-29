@@ -30,6 +30,7 @@ describe('registerSchema', () => {
     countryCode: 'TZ',
     phone: '0712 345 678',
     consent: true,
+    adult: true,
   } as const;
 
   it('trims, lowercases and normalises the phone number', () => {
@@ -40,6 +41,7 @@ describe('registerSchema', () => {
       countryCode: 'TZ',
       phone: '+255712345678',
       consent: true,
+      adult: true,
     });
   });
 

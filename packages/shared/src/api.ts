@@ -61,6 +61,9 @@ export interface SessionUser {
   emailVerified: boolean;
   /** Agreed to news and offers by email. */
   marketingEmails: boolean;
+  twoStepEnabled: boolean;
+  /** Must use two-step sign-in (admins, in production): admin tools stay locked until it's on. */
+  twoStepRequired: boolean;
   createdAt: string;
   sellerProfile: SellerProfileDto | null;
 }

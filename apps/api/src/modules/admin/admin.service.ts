@@ -158,6 +158,7 @@ export async function listUsers(query: Record<string, unknown>): Promise<Paged<A
       role: u.role,
       status: u.status,
       emailVerified: u.emailVerifiedAt !== null,
+      twoStepEnabled: u.twoStepEnabledAt !== null,
       shopName: u.sellerProfile?.shopName ?? null,
       shopSlug: u.sellerProfile?.slug ?? null,
       verifiedAt: u.sellerProfile?.verifiedAt?.toISOString() ?? null,

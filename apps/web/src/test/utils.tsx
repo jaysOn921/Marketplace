@@ -29,6 +29,8 @@ export const sampleUser: SessionUser = {
   role: 'USER',
   emailVerified: true,
   marketingEmails: false,
+  twoStepEnabled: false,
+  twoStepRequired: false,
   createdAt: '2026-10-01T00:00:00.000Z',
   sellerProfile: null,
 };

@@ -296,6 +296,6 @@ See `docs/overview.md` for everything built so far.
 
 **Can be built now**
 - [x] Age confirmation (18+) at sign-up, and a separate opt-in for marketing emails (changeable under My account → Emails).
-- [ ] Two-step sign-in for admins.
+- [x] Two-step sign-in with an authenticator app: required for admins in production, optional for everyone (My account → Two-step sign-in), with backup codes and an admin reset.
 - [ ] Breach response runbook and register (`docs/data-protection.md` §6).
 - [ ] Masked contact (in-app messages only) instead of sharing phone numbers.

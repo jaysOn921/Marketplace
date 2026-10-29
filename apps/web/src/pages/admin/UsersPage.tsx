@@ -18,6 +18,9 @@ function UserRow({ u }: { u: AdminUserRow }) {
     ({ action, reason }: { action: 'verify' | 'unverify'; reason: string }) =>
       adminPost(`users/${u.id}/${action}`, { reason }),
   );
+  const resetTwoStep = useAdminAction(({ reason }: { reason: string }) =>
+    adminPost(`users/${u.id}/reset-two-step`, { reason }),
+  );
   return (
     <li className="space-y-2 p-4">
       <div className="flex flex-wrap items-start justify-between gap-2">
@@ -103,6 +106,15 @@ function UserRow({ u }: { u: AdminUserRow }) {
           onConfirm={(reason) =>
             verify.mutate({ action: u.verifiedAt ? 'unverify' : 'verify', reason })
           }
+        />
+      )}
+      {u.twoStepEnabled && u.status !== 'DELETED' && (
+        <ReasonAction
+          label={t('admin.users.resetTwoStep')}
+          danger
+          pending={resetTwoStep.isPending}
+          error={resetTwoStep.error}
+          onConfirm={(reason) => resetTwoStep.mutate({ reason })}
         />
       )}
     </li>

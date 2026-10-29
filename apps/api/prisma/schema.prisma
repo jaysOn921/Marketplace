@@ -83,6 +83,9 @@ model User {
   consentAt        DateTime?
   ageConfirmedAt   DateTime? // ticked "I am 18 or older" at sign-up
   marketingOptInAt DateTime? // set while they agree to marketing emails
+  twoStepSecret    String?    @db.VarChar(255) // authenticator key, encrypted
+  twoStepEnabledAt DateTime?
+  twoStepLastStep  Int? // last code accepted (30-second step), so a code works once
   locale           String     @default("en") @db.VarChar(5)
   lastLoginAt      DateTime?
   lastActiveAt     DateTime? // updated at most daily; used to find dormant accounts
@@ -103,6 +106,7 @@ model User {
   conversationsAsSeller Conversation[]       @relation("SellerConversations")
   messages              Message[]
   notifications         Notification[]
+  twoStepBackupCodes    TwoStepBackupCode[]
   supportTickets        SupportTicket[]
   ticketMessages        TicketMessage[]
   reportsFiled          Report[]             @relation("ReportsFiled")
@@ -690,4 +694,16 @@ model DisputeMessage {
 
   @@index([disputeId, createdAt])
   @@map("dispute_messages")
+}
+
+/// One-time codes for signing in when the authenticator app is lost. Stored hashed.
+model TwoStepBackupCode {
+  id       Int       @id @default(autoincrement())
+  userId   Int
+  codeHash String    @db.Char(64)
+  usedAt   DateTime?
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("two_step_backup_codes")
 }

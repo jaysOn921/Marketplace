@@ -1,12 +1,30 @@
 import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink, Outlet } from 'react-router';
+import { Link, NavLink, Outlet } from 'react-router';
+import { Alert } from '../../components/Form';
+import { useMe } from '../../lib/auth';
 import { useCounts } from '../../lib/messaging';
 
 /** Admin area: side menu on desktop, a scrollable strip on phones. */
 export function AdminLayout() {
   const { t } = useTranslation();
+  const { data: me } = useMe();
   const { data: counts } = useCounts();
+  // The API refuses admin requests until two-step sign-in is on; say why, and where.
+  if (me?.twoStepRequired && !me.twoStepEnabled) {
+    return (
+      <div className="mx-auto max-w-xl space-y-4">
+        <h1 className="text-2xl font-semibold">{t('admin.twoStep.title')}</h1>
+        <Alert kind="info">{t('admin.twoStep.body')}</Alert>
+        <Link
+          to="/account#two-step"
+          className="inline-block rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white hover:bg-brand-800"
+        >
+          {t('admin.twoStep.action')}
+        </Link>
+      </div>
+    );
+  }
   const links: { to: string; label: string; badge?: number }[] = [
     { to: '/admin', label: t('admin.nav.dashboard') },
     { to: '/admin/analytics', label: t('admin.nav.analytics') },

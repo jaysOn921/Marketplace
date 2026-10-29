@@ -219,6 +219,14 @@
       "checking": "Tunakagua kiungo chako…",
       "done": "Asante, barua pepe yako imethibitishwa.",
       "toAccount": "Nenda kwenye akaunti yangu"
+    },
+    "twoStep": {
+      "title": "Weka namba yako",
+      "intro": "Akaunti yako inatumia kuingia kwa hatua mbili. Fungua programu yako ya uthibitishaji na uweke namba 6 za TZed.",
+      "code": "Namba",
+      "backupHint": "Umepoteza simu? Weka mojawapo ya namba zako za akiba badala yake.",
+      "submit": "Ingia",
+      "restart": "Anza upya"
     }
   },
   "account": {
@@ -265,6 +273,27 @@
       "title": "Barua pepe",
       "intro": "Barua pepe za oda, jumbe na akaunti hutumwa kila mara. Habari na ofa ni hiari yako.",
       "saved": "Imehifadhiwa."
+    },
+    "twoStep": {
+      "title": "Kuingia kwa hatua mbili",
+      "intro": "Baada ya nenosiri, unaweka pia namba kutoka kwenye programu ya uthibitishaji kwenye simu yako, kama Google Authenticator au Microsoft Authenticator. Mtu akijua nenosiri lako bado hawezi kuingia.",
+      "requiredForAdmins": "Wasimamizi lazima wawashe hili kabla ya kutumia zana za wasimamizi.",
+      "offText": "Kuingia kwa hatua mbili kumezimwa.",
+      "turnOn": "Washa kuingia kwa hatua mbili",
+      "step1": "Sakinisha programu ya uthibitishaji kwenye simu yako, kama huna.",
+      "step2": "Kwenye programu, ongeza akaunti na uskani msimbo huu wa QR.",
+      "qrLabel": "Msimbo wa QR kwa programu yako ya uthibitishaji",
+      "manual": "Huwezi kuuskani? Andika ufunguo huu kwenye programu:",
+      "step3": "Weka namba 6 zinazoonyeshwa na programu",
+      "confirm": "Washa",
+      "codesIntro": "Kuingia kwa hatua mbili kumewashwa. Hifadhi namba hizi za akiba mahali salama, kama kwenye kidhibiti cha manenosiri au karatasi. Kila moja inakuingiza mara moja ukipoteza simu. Zinaonyeshwa sasa tu.",
+      "codesLabel": "Namba za akiba",
+      "codesFileTitle": "Namba za akiba za TZed. Kila namba inafanya kazi mara moja.",
+      "download": "Pakua namba",
+      "savedThem": "Nimezihifadhi",
+      "onText": "Kuingia kwa hatua mbili kumewashwa.",
+      "newCodes": "Pata namba mpya za akiba",
+      "turnOff": "Zima kuingia kwa hatua mbili"
     }
   },
   "seller": {
@@ -645,7 +674,8 @@
       "suspend": "Simamisha",
       "reinstate": "Rejesha",
       "verify": "Thibitisha muuzaji",
-      "unverify": "Ondoa beji ya uthibitisho"
+      "unverify": "Ondoa beji ya uthibitisho",
+      "resetTwoStep": "Weka upya kuingia kwa hatua mbili"
     },
     "listings": {
       "search": "Jina, #namba au barua pepe ya muuzaji",
@@ -727,6 +757,11 @@
       "order": "Oda #{{id}}",
       "intro": "Tathmini zilizofichwa zinabaki zimehifadhiwa lakini zinaondoka kwenye ukurasa wa duka na alama ya muuzaji. Mwandishi anaarifiwa sababu.",
       "rating": "Nyota"
+    },
+    "twoStep": {
+      "title": "Washa kuingia kwa hatua mbili kwanza",
+      "body": "Ili kulinda taarifa za wanunuzi na wauzaji, wasimamizi lazima watumie kuingia kwa hatua mbili. Kiweke kwenye Akaunti yangu; inachukua karibu dakika moja.",
+      "action": "Kiweke sasa"
     }
   },
   "card": {

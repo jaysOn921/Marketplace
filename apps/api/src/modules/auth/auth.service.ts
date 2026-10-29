@@ -12,6 +12,7 @@ import { hashToken, randomToken } from '../../lib/tokens.js';
 import { recordAudit, recordAuditInBackground } from '../audit/audit.service.js';
 import { resetPasswordMessage, verifyEmailMessage } from './emails.js';
 import { destroyUserSessions } from './session-store.js';
+import { startPendingTwoStep, verifyPendingTwoStep } from './two-step.service.js';
 
 const TOKEN_TTL_MS: Record<AuthTokenType, number> = {
   EMAIL_VERIFY: 48 * 60 * 60 * 1000,
@@ -141,11 +142,32 @@ export async function login(input: LoginInput, req: Request) {
   if (argon2.needsRehash(usable.passwordHash, HASH_OPTIONS)) {
     updates.passwordHash = await hashPassword(password);
   }
+  if (usable.twoStepEnabledAt) {
+    // Password is right, but they aren't signed in until the code step.
+    if (updates.passwordHash) {
+      await prisma.user.update({
+        where: { id: usable.id },
+        data: { passwordHash: updates.passwordHash },
+      });
+    }
+    const csrfToken = await startPendingTwoStep(req, usable.id);
+    recordAuditInBackground({ action: 'auth.password_ok', actorId: usable.id, req });
+    return { userId: null, csrfToken };
+  }
   await prisma.user.update({ where: { id: usable.id }, data: updates });
 
   const csrfToken = await startSession(req, usable.id);
   recordAuditInBackground({ action: 'auth.login', actorId: usable.id, req });
   return { userId: usable.id, csrfToken };
+}
+
+/** The second step of signing in: the code from the app, or a backup code. */
+export async function loginTwoStep(input: unknown, req: Request) {
+  const userId = await verifyPendingTwoStep(req, input);
+  await prisma.user.update({ where: { id: userId }, data: { lastLoginAt: new Date() } });
+  const csrfToken = await startSession(req, userId);
+  recordAuditInBackground({ action: 'auth.login', actorId: userId, req });
+  return { userId, csrfToken };
 }
 
 export async function logout(req: Request) {

@@ -12,7 +12,7 @@ cd "$(dirname "$0")/.." || exit 1
 BASE="${BASE_URL:-http://localhost:5173}"
 TESTS=("$@")
 [ ${#TESTS[@]} -eq 0 ] && TESTS=(auth-flow listing-flow search-flow order-flow review-flow
-  messaging-flow support-flow admin-flow cart-flow problem-flow journey a11y)
+  messaging-flow support-flow admin-flow cart-flow problem-flow two-step-flow journey a11y)
 
 started=""
 if ! curl -sf -o /dev/null "$BASE" || ! curl -sf -o /dev/null http://127.0.0.1:4000/api/v1/health; then

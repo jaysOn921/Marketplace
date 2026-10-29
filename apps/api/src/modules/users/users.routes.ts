@@ -5,6 +5,7 @@ import { authUserInclude, currentUser, requireAuth } from '../../middleware/auth
 import { sellerAnalytics } from '../analytics/analytics.service.js';
 import { SESSION_COOKIE } from '../auth/session-store.js';
 import { toSessionUser } from './user-dto.js';
+import * as twoStep from '../auth/two-step.service.js';
 import * as users from './users.service.js';
 
 export const usersRouter = Router();
@@ -27,6 +28,28 @@ usersRouter.patch('/', async (req, res) => {
 usersRouter.post('/password', async (req, res) => {
   await users.changePassword(currentUser(req), req.body, req);
   res.json({ ok: true });
+});
+
+usersRouter.post('/two-step/setup', async (req, res) => {
+  res.set('Cache-Control', 'no-store').json(await twoStep.beginSetup(currentUser(req)));
+});
+
+usersRouter.post('/two-step/enable', async (req, res) => {
+  const user = currentUser(req);
+  const { backupCodes } = await twoStep.enable(user, req.body, req);
+  res.set('Cache-Control', 'no-store').json({ backupCodes, ...(await freshMe(user.id)) });
+});
+
+usersRouter.post('/two-step/backup-codes', async (req, res) => {
+  res
+    .set('Cache-Control', 'no-store')
+    .json(await twoStep.regenerateBackupCodes(currentUser(req), req.body, req));
+});
+
+usersRouter.post('/two-step/disable', async (req, res) => {
+  const user = currentUser(req);
+  await twoStep.disable(user, req.body, req, users.checkPassword);
+  res.json(await freshMe(user.id));
 });
 
 usersRouter.put('/marketing', async (req, res) => {

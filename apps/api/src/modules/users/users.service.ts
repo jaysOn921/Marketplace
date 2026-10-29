@@ -16,7 +16,7 @@ import { recordAudit } from '../audit/audit.service.js';
 import { hashPassword } from '../auth/auth.service.js';
 import { destroyUserSessions } from '../auth/session-store.js';
 
-async function checkPassword(user: AuthUser, password: string) {
+export async function checkPassword(user: AuthUser, password: string) {
   if (!(await argon2.verify(user.passwordHash, password).catch(() => false))) {
     throw new AppError(400, 'WRONG_PASSWORD', 'That password is incorrect.', {
       fields: { password: 'That password is incorrect.' },
@@ -133,6 +133,7 @@ export async function exportData(user: AuthUser, req: Request) {
         consentAt: true,
         ageConfirmedAt: true,
         marketingOptInAt: true,
+        twoStepEnabledAt: true,
         locale: true,
         lastLoginAt: true,
         lastActiveAt: true,
@@ -240,6 +241,7 @@ export async function anonymiseUser(tx: Prisma.TransactionClient, userId: number
   await tx.notification.deleteMany({ where: { userId } });
   await tx.cartItem.deleteMany({ where: { userId } });
   await tx.savedListing.deleteMany({ where: { userId } });
+  await tx.twoStepBackupCode.deleteMany({ where: { userId } });
   await tx.user.update({
     where: { id: userId },
     data: {
@@ -250,6 +252,9 @@ export async function anonymiseUser(tx: Prisma.TransactionClient, userId: number
       passwordHash: '!',
       emailVerifiedAt: null,
       marketingOptInAt: null,
+      twoStepSecret: null,
+      twoStepEnabledAt: null,
+      twoStepLastStep: null,
       lastActiveAt: null,
       dormantWarnedAt: null,
     },

@@ -3,6 +3,7 @@ import type { RequestHandler } from 'express';
 import { prisma } from '../db.js';
 import { AppError } from '../lib/errors.js';
 import { localeFrom } from '../lib/i18n.js';
+import { mustSetUpTwoStep } from '../modules/auth/two-step.service.js';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -47,7 +48,17 @@ export const requireAuth: RequestHandler = (req, _res, next) => {
 
 export const requireAdmin: RequestHandler = (req, _res, next) => {
   if (!req.user) return next(AppError.unauthorized());
-  next(req.user.role === 'ADMIN' ? undefined : AppError.forbidden());
+  if (req.user.role !== 'ADMIN') return next(AppError.forbidden());
+  if (mustSetUpTwoStep(req.user)) {
+    return next(
+      new AppError(
+        403,
+        'TWO_STEP_SETUP_REQUIRED',
+        'Turn on two-step sign-in in My account to use the admin tools.',
+      ),
+    );
+  }
+  next();
 };
 
 /** Narrows req.user for handlers behind requireAuth. */

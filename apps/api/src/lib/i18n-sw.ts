@@ -66,6 +66,25 @@ export const SW: Record<string, string> = {
   'You need to accept the terms and privacy policy.':
     'Unahitaji kukubali masharti na sera ya faragha.',
   'You must be 18 or older to use TZed.': 'Lazima uwe na miaka 18 au zaidi kutumia TZed.',
+  'Enter the 6-digit code from your app, or a backup code.':
+    'Weka namba 6 kutoka kwenye programu yako, au namba ya akiba.',
+  'That code is not right. Check the app and try again.':
+    'Namba hiyo si sahihi. Angalia programu kisha ujaribu tena.',
+  'Please sign in again: the code step timed out or had too many tries.':
+    'Tafadhali ingia tena: hatua ya namba imepitwa na muda au imejaribiwa mara nyingi mno.',
+  'Two-step sign-in is already on.': 'Kuingia kwa hatua mbili tayari kumewashwa.',
+  'Two-step sign-in is not on for this user.':
+    'Kuingia kwa hatua mbili hakujawashwa kwa mtumiaji huyu.',
+  'Start the set-up again.': 'Anza kuweka upya.',
+  'Admins must keep two-step sign-in on.':
+    'Wasimamizi lazima waache kuingia kwa hatua mbili kukiwa kumewashwa.',
+  'Turn on two-step sign-in in My account to use the admin tools.':
+    'Washa kuingia kwa hatua mbili kwenye Akaunti yangu ili kutumia zana za wasimamizi.',
+  'Two-step sign-in was turned off': 'Kuingia kwa hatua mbili kumezimwa',
+  'The TZed team turned off two-step sign-in on your account, as you asked.':
+    'Timu ya TZed imezima kuingia kwa hatua mbili kwenye akaunti yako, kama ulivyoomba.',
+  "Sign in with your password and turn it on again from My account. If you didn't ask for this, contact support straight away.":
+    'Ingia kwa nenosiri lako kisha ukuwashe tena kupitia Akaunti yangu. Kama hukuomba hili, wasiliana na huduma kwa wateja mara moja.',
   'Enter a valid phone number.': 'Weka namba ya simu halali.',
   'Use at least {n} characters.': 'Tumia angalau herufi {n}.',
   'Use at most {n} characters.': 'Tumia herufi {n} au chache zaidi.',

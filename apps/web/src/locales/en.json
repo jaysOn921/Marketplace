@@ -219,6 +219,14 @@
       "checking": "Checking your link…",
       "done": "Thanks, your email is confirmed.",
       "toAccount": "Go to my account"
+    },
+    "twoStep": {
+      "title": "Enter your code",
+      "intro": "Your account uses two-step sign-in. Open your authenticator app and enter the 6-digit code for TZed.",
+      "code": "Code",
+      "backupHint": "Lost your phone? Enter one of your backup codes instead.",
+      "submit": "Sign in",
+      "restart": "Start again"
     }
   },
   "account": {
@@ -265,6 +273,27 @@
       "title": "Emails",
       "intro": "Order, message and account emails are always sent. News and offers are up to you.",
       "saved": "Saved."
+    },
+    "twoStep": {
+      "title": "Two-step sign-in",
+      "intro": "After your password, you also enter a code from an authenticator app on your phone, such as Google Authenticator or Microsoft Authenticator. Someone who learns your password still can't sign in.",
+      "requiredForAdmins": "Admins must turn this on before they can use the admin tools.",
+      "offText": "Two-step sign-in is off.",
+      "turnOn": "Turn on two-step sign-in",
+      "step1": "Install an authenticator app on your phone, if you don't have one.",
+      "step2": "In the app, add an account and scan this QR code.",
+      "qrLabel": "QR code for your authenticator app",
+      "manual": "Can't scan it? Type this key into the app:",
+      "step3": "Enter the 6-digit code the app shows",
+      "confirm": "Turn on",
+      "codesIntro": "Two-step sign-in is on. Keep these backup codes somewhere safe, such as a password manager or on paper. Each one signs you in once if you lose your phone. They are only shown now.",
+      "codesLabel": "Backup codes",
+      "codesFileTitle": "TZed backup codes. Each code works once.",
+      "download": "Download codes",
+      "savedThem": "I've saved them",
+      "onText": "Two-step sign-in is on.",
+      "newCodes": "Get new backup codes",
+      "turnOff": "Turn off two-step sign-in"
     }
   },
   "seller": {
@@ -645,7 +674,8 @@
       "suspend": "Suspend",
       "reinstate": "Reinstate",
       "verify": "Verify seller",
-      "unverify": "Remove verified badge"
+      "unverify": "Remove verified badge",
+      "resetTwoStep": "Reset two-step sign-in"
     },
     "listings": {
       "search": "Title, #id or seller email",
@@ -727,6 +757,11 @@
       "order": "Order #{{id}}",
       "intro": "Hidden reviews stay stored but leave the shop page and the seller's rating. The reviewer is told why.",
       "rating": "Rating"
+    },
+    "twoStep": {
+      "title": "Turn on two-step sign-in first",
+      "body": "To protect buyers' and sellers' data, admins must use two-step sign-in. Set it up in My account; it takes about a minute.",
+      "action": "Set it up now"
     }
   },
   "card": {

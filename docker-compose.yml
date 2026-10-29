@@ -38,6 +38,7 @@ services:
       APP_URL: ${APP_URL:?Set APP_URL in .env, e.g. https://tzed.example.com}
       DATABASE_URL: mysql://tzed:${MYSQL_PASSWORD}@mysql:3306/tzed
       SESSION_SECRET: ${SESSION_SECRET:?Set SESSION_SECRET in .env}
+      TWO_STEP_KEY: ${TWO_STEP_KEY:-}
       SMTP_URL: ${SMTP_URL:?Set SMTP_URL in .env}
       MAIL_FROM: ${MAIL_FROM:-TZed <no-reply@tzed.local>}
       LOG_LEVEL: ${LOG_LEVEL:-info}

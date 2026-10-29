@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { idParam } from '../../lib/params.js';
 import { currentUser, requireAdmin } from '../../middleware/auth.js';
 import { adminAnalytics } from '../analytics/analytics.service.js';
+import * as twoStep from '../auth/two-step.service.js';
 import * as admin from './admin.service.js';
 
 /** Everything under /api/v1/admin (admins only). */
@@ -22,6 +23,11 @@ adminRouter.post('/users/:id/suspend', async (req, res) => {
 });
 adminRouter.post('/users/:id/reinstate', async (req, res) => {
   await admin.setUserStatus(currentUser(req), idParam(req.params.id), false, req.body, req);
+  res.json({ ok: true });
+});
+
+adminRouter.post('/users/:id/reset-two-step', async (req, res) => {
+  await twoStep.adminReset(currentUser(req), idParam(req.params.id), req.body, req);
   res.json({ ok: true });
 });
 

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import type { CsrfResponse, MeResponse } from '@tzed/shared';
+import type { CsrfResponse, LoginResponse, MeResponse } from '@tzed/shared';
 import { forgotPasswordSchema, verifyEmailSchema } from '@tzed/shared';
 import { currentUser, requireAuth } from '../../middleware/auth.js';
 import { ensureCsrfToken } from '../../middleware/csrf.js';
@@ -36,6 +36,19 @@ export function authRouter(limits: RateLimits | null) {
 
   router.post('/login', limit('login'), async (req, res) => {
     const { userId, csrfToken } = await auth.login(req.body, req);
+    if (userId === null) {
+      const body: LoginResponse = { user: null, csrfToken, twoStepRequired: true };
+      return res.json(body);
+    }
+    const user = await prisma.user.findUniqueOrThrow({
+      where: { id: userId },
+      include: authUserInclude,
+    });
+    res.json({ user: toSessionUser(user), csrfToken });
+  });
+
+  router.post('/login/two-step', limit('login'), async (req, res) => {
+    const { userId, csrfToken } = await auth.loginTwoStep(req.body, req);
     const user = await prisma.user.findUniqueOrThrow({
       where: { id: userId },
       include: authUserInclude,

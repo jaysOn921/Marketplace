@@ -2,9 +2,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   CountriesResponse,
   LoginInput,
+  LoginResponse,
   MeResponse,
   RegisterInput,
   SessionUser,
+  TwoStepCodeInput,
 } from '@tzed/shared';
 import { api, clearCsrfToken, post } from './api';
 
@@ -28,7 +30,18 @@ export function useSetMe() {
 export function useLogin() {
   const setMe = useSetMe();
   return useMutation({
-    mutationFn: (input: LoginInput) => post<MeResponse>('/auth/login', input),
+    mutationFn: (input: LoginInput) => post<LoginResponse>('/auth/login', input),
+    onSuccess: (data) => {
+      if (data.user) setMe(data.user);
+    },
+  });
+}
+
+/** The second step of signing in, when two-step sign-in is on. */
+export function useLoginTwoStep() {
+  const setMe = useSetMe();
+  return useMutation({
+    mutationFn: (input: TwoStepCodeInput) => post<MeResponse>('/auth/login/two-step', input),
     onSuccess: (data) => setMe(data.user),
   });
 }

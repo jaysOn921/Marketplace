@@ -1,5 +1,6 @@
 import type { SessionUser } from '@tzed/shared';
 import type { AuthUser } from '../../middleware/auth.js';
+import { twoStepRequiredFor } from '../auth/two-step.service.js';
 
 export function toSessionUser(user: AuthUser): SessionUser {
   const sp = user.sellerProfile;
@@ -13,6 +14,8 @@ export function toSessionUser(user: AuthUser): SessionUser {
     role: user.role,
     emailVerified: user.emailVerifiedAt !== null,
     marketingEmails: user.marketingOptInAt !== null,
+    twoStepEnabled: user.twoStepEnabledAt !== null,
+    twoStepRequired: twoStepRequiredFor(user),
     createdAt: user.createdAt.toISOString(),
     sellerProfile: sp
       ? {
