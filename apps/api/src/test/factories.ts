@@ -22,6 +22,7 @@ export async function createUser(
       countryId: country.id,
       emailVerifiedAt: new Date(),
       consentAt: new Date(),
+      ageConfirmedAt: new Date(),
       ...data,
     },
   });

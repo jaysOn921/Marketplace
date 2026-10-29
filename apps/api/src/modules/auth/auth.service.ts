@@ -97,6 +97,8 @@ export async function register(input: RegisterInput, req: Request) {
       passwordHash: await hashPassword(data.password),
       countryId: country.id,
       consentAt: new Date(),
+      ageConfirmedAt: new Date(),
+      marketingOptInAt: data.marketing ? new Date() : null,
     },
   });
 

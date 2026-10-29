@@ -196,7 +196,9 @@
       "phoneHint": "Only shown to buyers you've accepted an order from.",
       "passwordHint": "At least {{min}} characters.",
       "consentPrefix": "I agree to the",
-      "consentAnd": "and the"
+      "consentAnd": "and the",
+      "adult": "I am 18 or older.",
+      "marketing": "Email me occasional news and offers from TZed (optional). You can stop these at any time."
     },
     "forgot": {
       "title": "Reset your password",
@@ -258,6 +260,11 @@
       "start": "Delete my account",
       "confirmLabel": "Enter your password to confirm",
       "confirm": "Permanently delete"
+    },
+    "emails": {
+      "title": "Emails",
+      "intro": "Order, message and account emails are always sent. News and offers are up to you.",
+      "saved": "Saved."
     }
   },
   "seller": {

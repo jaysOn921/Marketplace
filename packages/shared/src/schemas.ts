@@ -61,9 +61,15 @@ export const registerSchema = withPhone(
     countryCode,
     phone: optionalPhone,
     consent: z.literal(true, { error: 'You need to accept the terms and privacy policy.' }),
+    adult: z.literal(true, { error: 'You must be 18 or older to use TZed.' }),
+    /** Optional: occasional news and offers by email. */
+    marketing: z.boolean().optional(),
   }),
 );
 export type RegisterInput = z.input<typeof registerSchema>;
+
+export const marketingPreferenceSchema = z.object({ marketing: z.boolean() });
+export type MarketingPreferenceInput = z.input<typeof marketingPreferenceSchema>;
 
 export const loginSchema = z.object({
   email,

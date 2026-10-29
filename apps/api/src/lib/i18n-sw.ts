@@ -63,6 +63,9 @@ export const SW: Record<string, string> = {
   'Enter your password.': 'Weka nenosiri lako.',
   'Enter your current password.': 'Weka nenosiri lako la sasa.',
   'Enter your password to confirm.': 'Weka nenosiri lako ili kuthibitisha.',
+  'You need to accept the terms and privacy policy.':
+    'Unahitaji kukubali masharti na sera ya faragha.',
+  'You must be 18 or older to use TZed.': 'Lazima uwe na miaka 18 au zaidi kutumia TZed.',
   'Enter a valid phone number.': 'Weka namba ya simu halali.',
   'Use at least {n} characters.': 'Tumia angalau herufi {n}.',
   'Use at most {n} characters.': 'Tumia herufi {n} au chache zaidi.',

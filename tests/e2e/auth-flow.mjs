@@ -23,10 +23,11 @@ const step = (s) => console.log('✓', s);
 await p.goto(base + '/register');
 await p.getByText('Zambia', { exact: true }).click();
 await p.getByLabel('Full name').fill('Mwila E2E');
-await p.getByLabel('Email').fill(email);
+await p.getByLabel('Email', { exact: true }).fill(email);
 await p.getByLabel('Phone number (optional)').fill('0977 123 456');
 await p.getByLabel('Password').fill('e2e-password-123');
-await p.getByRole('checkbox').check();
+await p.getByLabel(/I agree to the/).check();
+await p.getByLabel('I am 18 or older.').check();
 await p.getByRole('button', { name: 'Create account' }).click();
 await p.getByText('Welcome to TZed!').waitFor();
 step('registered and landed on account page with welcome + verify banner');
@@ -55,7 +56,7 @@ await p.getByRole('heading', { name: 'Buy and sell across Tanzania and Zambia' }
 step('signed out from the mobile menu, back on the home page');
 
 await p.goto(base + '/login');
-await p.getByLabel('Email').fill(email);
+await p.getByLabel('Email', { exact: true }).fill(email);
 await p.getByLabel('Password').fill('wrong-password');
 await p.getByRole('button', { name: 'Sign in' }).click();
 await p.getByText('Email or password is incorrect.').waitFor();

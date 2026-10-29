@@ -17,6 +17,7 @@ const registration = {
   countryCode: 'ZM',
   phone: '0977 123 456',
   consent: true,
+  adult: true,
 };
 
 /** Pulls the token out of the last email's link. */
@@ -77,6 +78,9 @@ describe('registration', () => {
     const user = await prisma.user.findUniqueOrThrow({ where: { email: 'natasha@example.com' } });
     expect(user.passwordHash).toMatch(/^\$argon2id\$/);
     expect(user.consentAt).not.toBeNull();
+    expect(user.ageConfirmedAt).not.toBeNull();
+    expect(user.marketingOptInAt).toBeNull(); // only when they tick the box
+    expect(res.body.user.marketingEmails).toBe(false);
     expect(testOutbox).toHaveLength(1);
     expect(testOutbox[0]).toMatchObject({
       to: 'natasha@example.com',
@@ -99,12 +103,43 @@ describe('registration', () => {
       email: 'nope',
       password: 'short',
       consent: false,
+      adult: false,
     });
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe('VALIDATION_ERROR');
     expect(Object.keys(res.body.error.details.fields)).toEqual(
-      expect.arrayContaining(['email', 'password', 'consent']),
+      expect.arrayContaining(['email', 'password', 'consent', 'adult']),
     );
+  });
+});
+
+describe('age and marketing emails', () => {
+  it('refuses sign-up without the 18+ confirmation', async () => {
+    const client = await testClient(app);
+    const { adult: _, ...rest } = registration;
+    const res = await client.post('/auth/register', rest, { 'Accept-Language': 'sw' });
+    expect(res.status).toBe(400);
+    expect(res.body.error.details.fields.adult).toBe(
+      'Lazima uwe na miaka 18 au zaidi kutumia TZed.',
+    );
+  });
+
+  it('records the marketing choice at sign-up, and lets people change it later', async () => {
+    const client = await testClient(app);
+    const res = await client.post('/auth/register', { ...registration, marketing: true });
+    expect(res.body.user.marketingEmails).toBe(true);
+
+    const off = await client.put('/me/marketing', { marketing: false });
+    expect(off.body.user.marketingEmails).toBe(false);
+    const user = await prisma.user.findUniqueOrThrow({ where: { email: 'natasha@example.com' } });
+    expect(user.marketingOptInAt).toBeNull();
+    expect((await client.put('/me/marketing', { marketing: true })).body.user.marketingEmails).toBe(
+      true,
+    );
+    expect(await auditActions(user.id)).toEqual(
+      expect.arrayContaining(['user.marketing_opt_out', 'user.marketing_opt_in']),
+    );
+    expect((await client.put('/me/marketing', {})).status).toBe(400);
   });
 });
 

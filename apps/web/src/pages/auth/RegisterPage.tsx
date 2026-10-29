@@ -23,6 +23,8 @@ export function RegisterPage() {
     countryCode: '' as CountryCode | '',
     phone: '',
     consent: false,
+    adult: false,
+    marketing: false,
   });
   const [errors, setErrors] = useState<FieldErrors>({});
 
@@ -154,6 +156,31 @@ export function RegisterPage() {
             </label>
           )}
         </Field>
+
+        <Field label="" error={err('adult')}>
+          {(a11y) => (
+            <label htmlFor={a11y.id} className="flex items-start gap-2 text-sm text-stone-700">
+              <input
+                {...a11y}
+                type="checkbox"
+                checked={values.adult}
+                onChange={(e) => setValues({ ...values, adult: e.target.checked })}
+                className="mt-0.5 h-4 w-4 rounded border-stone-300 accent-brand-700"
+              />
+              <span>{t('auth.register.adult')}</span>
+            </label>
+          )}
+        </Field>
+
+        <label className="flex items-start gap-2 text-sm text-stone-700">
+          <input
+            type="checkbox"
+            checked={values.marketing}
+            onChange={(e) => setValues({ ...values, marketing: e.target.checked })}
+            className="mt-0.5 h-4 w-4 rounded border-stone-300 accent-brand-700"
+          />
+          <span>{t('auth.register.marketing')}</span>
+        </label>
 
         <SubmitButton pending={register.isPending}>{t('auth.register.submit')}</SubmitButton>
       </form>

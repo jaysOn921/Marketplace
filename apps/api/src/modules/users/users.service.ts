@@ -4,6 +4,7 @@ import argon2 from 'argon2';
 import {
   changePasswordSchema,
   deleteAccountSchema,
+  marketingPreferenceSchema,
   sellerProfileSchema,
   updateProfileSchema,
 } from '@tzed/shared';
@@ -130,6 +131,8 @@ export async function exportData(user: AuthUser, req: Request) {
         status: true,
         emailVerifiedAt: true,
         consentAt: true,
+        ageConfirmedAt: true,
+        marketingOptInAt: true,
         locale: true,
         lastLoginAt: true,
         lastActiveAt: true,
@@ -196,6 +199,22 @@ export async function exportData(user: AuthUser, req: Request) {
  * Deletes the account by removing personal data. Orders, messages and reviews stay
  * (shown as "Deleted user") because the other party needs them for their own records.
  */
+/** Turns news and offers by email on or off, recording when and from where. */
+export async function setMarketing(user: AuthUser, input: unknown, req: Request) {
+  const { marketing } = marketingPreferenceSchema.parse(input);
+  if (marketing === (user.marketingOptInAt !== null)) return;
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { marketingOptInAt: marketing ? new Date() : null },
+  });
+  await recordAudit({
+    action: marketing ? 'user.marketing_opt_in' : 'user.marketing_opt_out',
+    targetType: 'user',
+    targetId: user.id,
+    req,
+  });
+}
+
 export async function deleteAccount(user: AuthUser, input: unknown, req: Request) {
   const { password } = deleteAccountSchema.parse(input);
   await checkPassword(user, password);
@@ -230,6 +249,7 @@ export async function anonymiseUser(tx: Prisma.TransactionClient, userId: number
       phone: null,
       passwordHash: '!',
       emailVerifiedAt: null,
+      marketingOptInAt: null,
       lastActiveAt: null,
       dormantWarnedAt: null,
     },

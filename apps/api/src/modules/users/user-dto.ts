@@ -12,6 +12,7 @@ export function toSessionUser(user: AuthUser): SessionUser {
     currency: user.country.currencyCode as SessionUser['currency'],
     role: user.role,
     emailVerified: user.emailVerifiedAt !== null,
+    marketingEmails: user.marketingOptInAt !== null,
     createdAt: user.createdAt.toISOString(),
     sellerProfile: sp
       ? {

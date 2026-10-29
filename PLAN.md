@@ -295,7 +295,7 @@ See `docs/overview.md` for everything built so far.
 - [ ] **SMTP provider** for real emails, with a data processing agreement.
 
 **Can be built now**
-- [ ] Age confirmation (18+) at sign-up, and a separate opt-in for marketing emails.
+- [x] Age confirmation (18+) at sign-up, and a separate opt-in for marketing emails (changeable under My account → Emails).
 - [ ] Two-step sign-in for admins.
 - [ ] Breach response runbook and register (`docs/data-protection.md` §6).
 - [ ] Masked contact (in-app messages only) instead of sharing phone numbers.

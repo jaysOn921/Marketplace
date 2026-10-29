@@ -72,6 +72,7 @@ describe('Register', () => {
     expect(
       screen.getByText('You need to accept the terms and privacy policy.'),
     ).toBeInTheDocument();
+    expect(screen.getByText('You must be 18 or older to use TZed.')).toBeInTheDocument();
 
     await userEvent.click(screen.getByText('Zambia'));
     await userEvent.click(screen.getByRole('button', { name: 'Create account' }));
@@ -95,7 +96,8 @@ describe('Register', () => {
     await userEvent.type(screen.getByLabelText('Email'), 'Natasha@Example.com');
     await userEvent.type(screen.getByLabelText('Phone number (optional)'), '0977 123 456');
     await userEvent.type(screen.getByLabelText('Password'), 'a-good-password');
-    await userEvent.click(screen.getByRole('checkbox'));
+    await userEvent.click(screen.getByRole('checkbox', { name: /I agree to the/ }));
+    await userEvent.click(screen.getByRole('checkbox', { name: 'I am 18 or older.' }));
     await userEvent.click(screen.getByRole('button', { name: 'Create account' }));
 
     expect(await screen.findByText(/Welcome to TZed!/)).toBeInTheDocument();
@@ -104,11 +106,33 @@ describe('Register', () => {
       email: 'natasha@example.com',
       phone: '+260977123456',
       countryCode: 'ZM',
+      adult: true,
+      marketing: false, // not ticked unless they choose to
     });
   });
 });
 
 describe('Account pages', () => {
+  it('turns news and offers emails on and off', async () => {
+    const sent: unknown[] = [];
+    mockApi(
+      {
+        'PUT /me/marketing': (body) => {
+          sent.push(body);
+          return { body: { user: { ...sampleUser, marketingEmails: true } } };
+        },
+      },
+      { user: sampleUser },
+    );
+    renderApp('/account');
+    const box = await screen.findByRole('checkbox', { name: /Email me occasional news/ });
+    expect(box).not.toBeChecked();
+    await userEvent.click(box);
+    expect(await screen.findByText('Saved.')).toBeInTheDocument();
+    expect(box).toBeChecked();
+    expect(sent).toEqual([{ marketing: true }]);
+  });
+
   it('redirects to sign-in when signed out', async () => {
     mockApi();
     renderApp('/account');

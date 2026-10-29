@@ -196,7 +196,9 @@
       "phoneHint": "Inaonyeshwa tu kwa wanunuzi ambao umekubali oda zao.",
       "passwordHint": "Angalau herufi {{min}}.",
       "consentPrefix": "Nakubaliana na",
-      "consentAnd": "na"
+      "consentAnd": "na",
+      "adult": "Nina miaka 18 au zaidi.",
+      "marketing": "Nitumie habari na ofa za mara kwa mara kutoka TZed kwa barua pepe (hiari). Unaweza kuzisimamisha wakati wowote."
     },
     "forgot": {
       "title": "Weka upya nenosiri lako",
@@ -258,6 +260,11 @@
       "start": "Futa akaunti yangu",
       "confirmLabel": "Andika nenosiri lako kuthibitisha",
       "confirm": "Futa kabisa"
+    },
+    "emails": {
+      "title": "Barua pepe",
+      "intro": "Barua pepe za oda, jumbe na akaunti hutumwa kila mara. Habari na ofa ni hiari yako.",
+      "saved": "Imehifadhiwa."
     }
   },
   "seller": {

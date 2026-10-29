@@ -14,7 +14,7 @@ import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { Alert, Card, SelectField, SubmitButton, TextField } from '../../components/Form';
-import { clearCsrfToken, del, patch, post } from '../../lib/api';
+import { clearCsrfToken, del, patch, post, put } from '../../lib/api';
 import { meKey, useMe, useSetMe } from '../../lib/auth';
 import { apiErrors, validate, type FieldErrors } from '../../lib/forms';
 
@@ -149,6 +149,35 @@ function PasswordForm() {
   );
 }
 
+function EmailPreferences({ user }: { user: SessionUser }) {
+  const { t } = useTranslation();
+  const setMe = useSetMe();
+  const save = useMutation({
+    mutationFn: (marketing: boolean) => put<MeResponse>('/me/marketing', { marketing }),
+    onSuccess: (data) => setMe(data.user),
+  });
+  return (
+    <Card title={t('account.emails.title')} description={t('account.emails.intro')}>
+      <label className="flex items-start gap-2 text-sm text-stone-700">
+        <input
+          type="checkbox"
+          checked={save.isPending ? save.variables : user.marketingEmails}
+          disabled={save.isPending}
+          onChange={(e) => save.mutate(e.target.checked)}
+          className="mt-0.5 h-4 w-4 rounded border-stone-300 accent-brand-700"
+        />
+        <span>{t('auth.register.marketing')}</span>
+      </label>
+      {save.isSuccess && (
+        <p role="status" className="mt-2 text-sm text-brand-700">
+          {t('account.emails.saved')}
+        </p>
+      )}
+      {save.isError && <Alert>{apiErrors(save.error).message}</Alert>}
+    </Card>
+  );
+}
+
 function DataAndDeletion() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -254,6 +283,7 @@ export function AccountPage() {
 
       <ProfileForm user={user} />
       <PasswordForm />
+      <EmailPreferences user={user} />
       <DataAndDeletion />
     </div>
   );

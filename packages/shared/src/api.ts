@@ -59,6 +59,8 @@ export interface SessionUser {
   currency: CurrencyCode;
   role: 'USER' | 'ADMIN';
   emailVerified: boolean;
+  /** Agreed to news and offers by email. */
+  marketingEmails: boolean;
   createdAt: string;
   sellerProfile: SellerProfileDto | null;
 }

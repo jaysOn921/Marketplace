@@ -29,6 +29,12 @@ usersRouter.post('/password', async (req, res) => {
   res.json({ ok: true });
 });
 
+usersRouter.put('/marketing', async (req, res) => {
+  const user = currentUser(req);
+  await users.setMarketing(user, req.body, req);
+  res.json(await freshMe(user.id));
+});
+
 usersRouter.put('/seller-profile', async (req, res) => {
   const user = currentUser(req);
   await users.upsertSellerProfile(user, req.body);

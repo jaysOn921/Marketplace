@@ -63,9 +63,10 @@ async function register(page, { country, name, email }) {
   await page.goto(base + '/register');
   await page.getByText(country, { exact: true }).click();
   await page.getByLabel('Full name').fill(name);
-  await page.getByLabel('Email').fill(email);
+  await page.getByLabel('Email', { exact: true }).fill(email);
   await page.getByLabel('Password').fill(password);
-  await page.getByRole('checkbox').check();
+  await page.getByLabel(/I agree to the/).check();
+  await page.getByLabel('I am 18 or older.').check();
   await page.getByRole('button', { name: 'Create account' }).click();
   await page.getByText('Welcome to TZed!').waitFor();
   await page.goto(await linkFromOutbox(email, /http:\/\/\S+verify-email\?token=\S+/));
@@ -107,7 +108,7 @@ step(`seller listed #${listingId} at TSh 131,040 with a photo and submitted it`)
 // ── 2. Admin approves ───────────────────────────────────────────────────────
 const admin = await newPage();
 await admin.goto(base + '/login');
-await admin.getByLabel('Email').fill('admin@tzed.local');
+await admin.getByLabel('Email', { exact: true }).fill('admin@tzed.local');
 await admin.getByLabel('Password').fill('admin-dev-password');
 await admin.getByRole('button', { name: 'Sign in' }).click();
 await admin.getByRole('heading', { name: 'My account' }).waitFor();
