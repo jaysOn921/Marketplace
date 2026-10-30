@@ -20,3 +20,6 @@ tests/artifacts/*
 !tests/artifacts/.gitkeep
 playwright-report/
 test-results/
+
+# Incident evidence holds personal data: never committed
+incidents/

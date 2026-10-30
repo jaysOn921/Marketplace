@@ -297,5 +297,5 @@ See `docs/overview.md` for everything built so far.
 **Can be built now**
 - [x] Age confirmation (18+) at sign-up, and a separate opt-in for marketing emails (changeable under My account → Emails).
 - [x] Two-step sign-in with an authenticator app: required for admins in production, optional for everyone (My account → Two-step sign-in), with backup codes and an admin reset.
-- [ ] Breach response runbook and register (`docs/data-protection.md` §6).
+- [x] Breach response plan (`docs/breach-response.md`), with `scripts/incident.sh` for evidence, signing everyone out, locking passwords and listing who to notify. Still to do: fill in the names and contacts, and run the first drill.
 - [x] Masked contact: buyers and sellers talk in TZed messages; phone numbers are shared only by choice (sellers in shop settings, buyers in My account), emails never, and a tip appears when someone types a number or email in a message.

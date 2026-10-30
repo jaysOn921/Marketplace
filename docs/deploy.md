@@ -166,6 +166,10 @@ Logs are rotated: at most 5 × 20 MB for the app.
 - **Admins:** each admin has their own account. Remove accounts that are no longer needed.
 - **Audit log:** review it now and then (**Admin → Audit log**).
 
+## 7a. If you suspect a data breach
+
+Follow `docs/breach-response.md`. Start with `scripts/incident.sh evidence` before changing anything; `scripts/incident.sh --help` lists the other tools.
+
 ## 8. Troubleshooting
 
 | Problem                                                           | What to check                                                                                                                                                                                                                         |
