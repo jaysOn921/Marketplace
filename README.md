@@ -63,6 +63,7 @@ API tests run against a separate `tzed_test` database (`TEST_DATABASE_URL`), mig
 | `scripts/backup-db.sh [--local]`                                | Back up the database and photos into `backups/` (keeps the newest 14); see `docs/deploy.md`                                                                                                 |
 | `scripts/restore-db.sh <db.sql.gz> [--uploads <photos.tar.gz>]` | Restore a backup (asks first, takes a safety backup)                                                                                                                                        |
 | `node tests/e2e/production-smoke.mjs https://<domain>`          | Read-only check of a deployed site                                                                                                                                                          |
+| `scripts/pwa-check.sh`                                          | Installable app check against a production build: manifest, service worker, offline reading, notifications                                                                                  |
 
 ## Repo layout
 

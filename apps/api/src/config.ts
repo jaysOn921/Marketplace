@@ -23,6 +23,11 @@ const envSchema = z.object({
   DISABLE_RATE_LIMITS: z.stringbool().default(false),
   /** Daily clean-up of old personal data (src/jobs/retention.ts). */
   RETENTION_JOB: z.stringbool().default(true),
+  /** Phone notifications (Web Push). Generate with: npm run vapid-keys -w @tzed/api */
+  VAPID_PUBLIC_KEY: z.preprocess((v) => (v === '' ? undefined : v), z.string().optional()),
+  VAPID_PRIVATE_KEY: z.preprocess((v) => (v === '' ? undefined : v), z.string().optional()),
+  /** Who push services contact about problems: a mailto: or https: address. */
+  VAPID_SUBJECT: z.string().default('mailto:support@tzed.local'),
   /** Admins must use two-step sign-in. Defaults to on in production, off elsewhere. */
   ADMIN_TWO_STEP: z.stringbool().optional(),
   /** Encrypts authenticator keys; defaults to SESSION_SECRET (changing it turns two-step off for everyone). */

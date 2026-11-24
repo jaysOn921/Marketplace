@@ -15,6 +15,7 @@ import { createRateLimits } from './middleware/rate-limit.js';
 import { adminRouter } from './modules/admin/admin.routes.js';
 import { authRouter } from './modules/auth/auth.routes.js';
 import { cartRouter } from './modules/cart/cart.routes.js';
+import { pushRouter } from './modules/push/push.routes.js';
 import { disputesRouter } from './modules/disputes/disputes.routes.js';
 import { PrismaSessionStore, SESSION_COOKIE } from './modules/auth/session-store.js';
 import { geoRouter } from './modules/geo/geo.routes.js';
@@ -92,6 +93,7 @@ export function createApp(options: AppOptions = {}) {
   api.use(geoRouter);
   api.use('/auth', authRouter(rateLimit ? createRateLimits() : null));
   api.use(notificationsRouter); // includes /me/counts, so it comes before the /me router
+  api.use(pushRouter); // /push/key and /me/push, before the /me router too
   api.use(savedRouter); // /me/saved, and /listings/by-ids before /listings/:id
   api.use('/me', usersRouter);
   api.use(listingsRouter);
@@ -122,7 +124,19 @@ export function createApp(options: AppOptions = {}) {
         fallthrough: false,
       }),
     );
-    app.use(express.static(webDist, { index: false, maxAge: '1h' }));
+    app.use(
+      express.static(webDist, {
+        index: false,
+        maxAge: '1h',
+        // The service worker and app manifest must be re-checked every time, or phones could
+        // keep running an old version of the app.
+        setHeaders: (res, path) => {
+          if (/[\\/](sw\.js|manifest\.webmanifest|offline\.html)$/.test(path)) {
+            res.setHeader('Cache-Control', 'no-cache');
+          }
+        },
+      }),
+    );
     // index.html is always revalidated, so a new release reaches people straight away.
     app.get('/{*path}', (_req, res) =>
       res.set('Cache-Control', 'no-cache').sendFile('index.html', { root: webDist }),

@@ -68,6 +68,19 @@ export const registerSchema = withPhone(
 );
 export type RegisterInput = z.input<typeof registerSchema>;
 
+/** A browser's push subscription, as PushSubscription.toJSON() gives it. */
+export const pushSubscriptionSchema = z.object({
+  endpoint: z.url({ protocol: /^https$/ }).max(1024),
+  keys: z.object({ p256dh: z.string().min(1).max(255), auth: z.string().min(1).max(255) }),
+});
+export type PushSubscriptionInput = z.input<typeof pushSubscriptionSchema>;
+export const pushEndpointSchema = z.object({ endpoint: z.string().min(1).max(1024) });
+
+export interface PushKeyResponse {
+  /** null when phone notifications aren't set up on this server. */
+  publicKey: string | null;
+}
+
 export const phoneSharingSchema = z.object({ share: z.boolean() });
 export type PhoneSharingInput = z.input<typeof phoneSharingSchema>;
 

@@ -398,7 +398,7 @@
         },
         {
           "heading": "What we collect",
-          "body": "• Account: name, email, country, password (stored only as a secure hash), language, and when you agreed to these terms.\n• Optional: phone number; for sellers, shop name, town, region and description.\n• What you create: listings and photos, orders, messages, reviews, reports, support tickets and problem reports.\n• Activity: sign-ins, last visit, and security logs with IP address and browser.\n• Counts of listing views and cart adds (numbers only, not who viewed).\nWe do not collect national ID numbers, passport numbers, ID photos, card numbers or mobile money PINs."
+          "body": "• Account: name, email, country, password (stored only as a secure hash), language, and when you agreed to these terms.\n• Optional: phone number; for sellers, shop name, town, region and description.\n• What you create: listings and photos, orders, messages, reviews, reports, support tickets and problem reports.\n• Activity: sign-ins, last visit, and security logs with IP address and browser.\n• Counts of listing views and cart adds (numbers only, not who viewed).\n• If you turn on notifications: the address your browser gives us for sending them to that phone. It's removed when you turn them off, sign out on that phone, or delete your account.\nWe do not collect national ID numbers, passport numbers, ID photos, card numbers or mobile money PINs."
         },
         {
           "heading": "Why we use it",
@@ -426,7 +426,7 @@
         },
         {
           "heading": "Cookies",
-          "body": "We use only the cookies needed to keep you signed in and protect forms. Your language choice is stored in your browser. No advertising or tracking cookies."
+          "body": "We use only the cookies needed to keep you signed in and protect forms. Your language choice is stored in your browser. If you install the app, recently viewed listings and photos are kept on your phone for offline reading; they're cleared when you sign out. No advertising or tracking cookies."
         },
         {
           "heading": "Children",
@@ -1199,5 +1199,36 @@
     "resolution": "Outcome (shown to both sides)",
     "resolutionPlaceholder": "e.g. The seller will refund TSh 25,000 by mobile money within 2 days.",
     "resolve": "Resolve problem"
+  },
+  "pwa": {
+    "region": "App notices",
+    "updateReady": "A new version of TZed is ready.",
+    "reload": "Reload",
+    "installTitle": "Get the TZed app",
+    "installText": "Add TZed to your home screen: it opens faster and uses less data.",
+    "iosText": "Tap the Share button, then “Add to Home Screen”.",
+    "install": "Install",
+    "notNow": "Not now",
+    "gotIt": "Got it",
+    "installMenu": "Install the app"
+  },
+  "push": {
+    "title": "Notifications on this phone",
+    "intro": "Get a notification when you have a new order, a message, or news about your order, even when TZed is closed.",
+    "unsupported": "This browser can't show notifications. On an iPhone, add TZed to your home screen first (Share → Add to Home Screen), then open it from there.",
+    "unavailable": "Phone notifications aren't available yet.",
+    "blocked": "Notifications are blocked for TZed in this browser. To allow them, open the browser's site settings for TZed and turn Notifications on, then reload.",
+    "on": "Notifications are on for this phone.",
+    "off": "Notifications are off for this phone.",
+    "turnOn": "Turn on notifications",
+    "turnOff": "Turn off on this phone",
+    "failed": "Notifications couldn't be turned on. Please try again.",
+    "otherDevices_one": "Notifications are also on for 1 other phone or browser.",
+    "otherDevices_other": "Notifications are also on for {{count}} other phones or browsers.",
+    "turnOffEverywhere": "Turn off everywhere",
+    "prompt": {
+      "buyer": "Get a notification when the seller replies or updates this order?",
+      "seller": "Get a notification as soon as someone orders or messages you?"
+    }
   }
 }

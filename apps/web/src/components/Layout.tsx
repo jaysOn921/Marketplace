@@ -7,6 +7,8 @@ import { LanguageSwitcher } from './LanguageSwitcher';
 import { HeaderIcons } from './HeaderIcons';
 import { SearchBar } from './SearchBar';
 import { UserMenu } from './UserMenu';
+import { askInstall, canInstall, promptInstall, usePwa } from '../lib/pwa';
+import { AppPrompts } from './AppPrompts';
 import { useLogout, useMe } from '../lib/auth';
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -34,6 +36,7 @@ export function Layout() {
   const { data: user } = useMe();
   const logout = useLogout();
   const navigate = useNavigate();
+  const pwa = usePwa();
   const links = [
     { to: '/search', label: t('nav.browse') },
     { to: '/sell', label: t('nav.sell') },
@@ -114,6 +117,19 @@ export function Layout() {
                 {l.label}
               </NavLink>
             ))}
+            {canInstall(pwa) && (
+              <button
+                type="button"
+                className={`block w-full text-left ${navLinkClass({ isActive: false })}`}
+                onClick={() => {
+                  setMenuOpen(false);
+                  if (pwa.installEvent) void promptInstall();
+                  else askInstall();
+                }}
+              >
+                {t('pwa.installMenu')}
+              </button>
+            )}
             {user && (
               <button
                 type="button"
@@ -159,6 +175,7 @@ export function Layout() {
           <p>{t('footer.rights', { year: new Date().getFullYear() })}</p>
         </div>
       </footer>
+      <AppPrompts />
     </div>
   );
 }

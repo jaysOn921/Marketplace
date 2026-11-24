@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router';
 import { Price } from '../../components/Price';
 import { StatusBadge } from '../../components/StatusBadge';
+import { PushPrompt } from '../../components/PushSettings';
+import { markEngaged } from '../../lib/pwa';
 import { useMyListings } from '../../lib/listings';
 
 const TABS: (ListingStatus | 'ALL')[] = [
@@ -23,8 +25,10 @@ export function MyListingsPage() {
   const counts = all.data?.counts ?? {};
   const total = Object.values(counts).reduce((a, b) => a + (b ?? 0), 0);
 
+  if (total > 0) markEngaged();
   return (
     <div className="space-y-6">
+      {total > 0 && <PushPrompt context="seller" />}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold">{t('myListings.title')}</h1>
         <Link

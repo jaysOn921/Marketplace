@@ -39,6 +39,9 @@ services:
       DATABASE_URL: mysql://tzed:${MYSQL_PASSWORD}@mysql:3306/tzed
       SESSION_SECRET: ${SESSION_SECRET:?Set SESSION_SECRET in .env}
       TWO_STEP_KEY: ${TWO_STEP_KEY:-}
+      VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY:-}
+      VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY:-}
+      VAPID_SUBJECT: ${VAPID_SUBJECT:-mailto:support@tzed.local}
       SMTP_URL: ${SMTP_URL:?Set SMTP_URL in .env}
       MAIL_FROM: ${MAIL_FROM:-TZed <no-reply@tzed.local>}
       LOG_LEVEL: ${LOG_LEVEL:-info}

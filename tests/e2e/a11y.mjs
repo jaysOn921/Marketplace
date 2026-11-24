@@ -16,6 +16,7 @@ const chromiumDir =
   existsSync(browsers) && readdirSync(browsers).find((d) => /^chromium-\d+$/.test(d));
 const executablePath =
   process.env.CHROMIUM_PATH ??
+  (existsSync(join(browsers, 'chromium')) ? join(browsers, 'chromium') : undefined) ??
   (chromiumDir ? join(browsers, chromiumDir, 'chrome-linux', 'chrome') : undefined);
 const axeSource = readFileSync(
   createRequire(import.meta.url).resolve('axe-core/axe.min.js'),

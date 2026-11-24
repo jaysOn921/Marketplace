@@ -166,6 +166,20 @@ Logs are rotated: at most 5 × 20 MB for the app.
 - **Admins:** each admin has their own account. Remove accounts that are no longer needed.
 - **Audit log:** review it now and then (**Admin → Audit log**).
 
+## 7b. The installable app and phone notifications
+
+TZed installs on phones from the browser (Android: an "Install" banner; iPhone: Share → Add to Home Screen). Phone notifications need two keys, made once:
+
+```
+docker compose exec app node -e "console.log(require('web-push').generateVAPIDKeys())"
+```
+
+Put them in `.env` as `VAPID_PUBLIC_KEY` and `VAPID_PRIVATE_KEY`, set `VAPID_SUBJECT` to a `mailto:` address you read, and run `docker compose up -d`. **Keep the same keys from then on**: new keys silently stop notifications for everyone who turned them on. Without keys the app still installs; the notification switch says they aren't available yet.
+
+After a release, installed apps pick up the new version on their next launch and show "A new version of TZed is ready". `sw.js` and the manifest are served with `no-cache` so that this always works; keep it that way if you put another cache or CDN in front.
+
+To check installing, offline reading and notifications against a production build locally: `scripts/pwa-check.sh`. Then check notifications on a real Android phone: turn them on under My account, and place a test order for one of that account's listings from another account.
+
 ## 7a. If you suspect a data breach
 
 Follow `docs/breach-response.md`. Start with `scripts/incident.sh evidence` before changing anything; `scripts/incident.sh --help` lists the other tools.

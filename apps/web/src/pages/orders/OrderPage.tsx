@@ -9,6 +9,8 @@ import { apiErrors } from '../../lib/forms';
 import { useStartConversation } from '../../lib/messaging';
 import { useOrder, useOrderAction } from '../../lib/orders';
 import { ProblemSection } from './ProblemSection';
+import { PushPrompt } from '../../components/PushSettings';
+import { markEngaged } from '../../lib/pwa';
 import { ReviewSection } from './ReviewSection';
 
 const FLAG = { TZ: '🇹🇿', ZM: '🇿🇲' } as const;
@@ -261,6 +263,7 @@ export function OrderPage() {
   if (isPending) return <p className="text-stone-500">{t('common.loading')}</p>;
   if (isError || !order) return <Alert>{t('order.notFound')}</Alert>;
 
+  markEngaged();
   const converted = order.buyerCurrency !== order.currency;
   const otherCountry = order.seller.countryCode === 'TZ' ? 'ZM' : 'TZ';
   return (
@@ -286,6 +289,9 @@ export function OrderPage() {
         <Alert kind="success">{t('order.placedNotice')}</Alert>
       )}
       <Alert kind="info">{t(`order.next.${order.role}.${order.status}`)}</Alert>
+      {['PLACED', 'ACCEPTED', 'READY'].includes(order.status) && (
+        <PushPrompt context={order.role} />
+      )}
       {order.buyerPaidAt && order.paymentStatus === 'UNPAID' && (
         <Alert kind="info">
           {t(`order.buyerPaidNotice.${order.role}`, { date: when(order.buyerPaidAt) })}

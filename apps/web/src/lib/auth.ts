@@ -8,6 +8,7 @@ import type {
   SessionUser,
   TwoStepCodeInput,
 } from '@tzed/shared';
+import { clearOfflineData, turnOffPush } from './pwa';
 import { api, clearCsrfToken, post } from './api';
 
 export const meKey = ['me'] as const;
@@ -57,8 +58,14 @@ export function useRegister() {
 export function useLogout() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: () => post<null>('/auth/logout'),
+    mutationFn: async () => {
+      // A shared phone shouldn't keep getting this person's notifications.
+      await turnOffPush().catch(() => undefined);
+      return post<null>('/auth/logout');
+    },
     onSettled: () => {
+      void clearOfflineData();
+      qc.removeQueries({ queryKey: ['push'] });
       clearCsrfToken();
       qc.setQueryData<MeResponse>(meKey, { user: null });
       qc.removeQueries({ predicate: (q) => q.queryKey[0] !== 'me' && q.queryKey[0] !== 'rates' });

@@ -108,6 +108,7 @@ model User {
   messages              Message[]
   notifications         Notification[]
   twoStepBackupCodes    TwoStepBackupCode[]
+  pushSubscriptions     PushSubscription[]
   supportTickets        SupportTicket[]
   ticketMessages        TicketMessage[]
   reportsFiled          Report[]             @relation("ReportsFiled")
@@ -707,4 +708,22 @@ model TwoStepBackupCode {
 
   @@index([userId])
   @@map("two_step_backup_codes")
+}
+
+/// A phone or browser that agreed to receive notifications (Web Push).
+model PushSubscription {
+  id           Int       @id @default(autoincrement())
+  userId       Int
+  endpoint     String    @db.VarChar(1024)
+  /// Hash of the endpoint, for a unique index (the endpoint itself is too long to index).
+  endpointHash String    @unique @db.Char(64)
+  p256dh       String    @db.VarChar(255)
+  auth         String    @db.VarChar(255)
+  userAgent    String?   @db.VarChar(255)
+  createdAt    DateTime  @default(now())
+  lastSentAt   DateTime?
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("push_subscriptions")
 }

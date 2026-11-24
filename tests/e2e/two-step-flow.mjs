@@ -13,6 +13,7 @@ const chromiumDir =
   existsSync(browsers) && readdirSync(browsers).find((d) => /^chromium-\d+$/.test(d));
 const executablePath =
   process.env.CHROMIUM_PATH ??
+  (existsSync(join(browsers, 'chromium')) ? join(browsers, 'chromium') : undefined) ??
   (chromiumDir ? join(browsers, chromiumDir, 'chrome-linux', 'chrome') : undefined);
 const email = `e2e.twostep.${Date.now()}@example.com`;
 const password = 'e2e-password-123';
@@ -33,7 +34,9 @@ function totp(key, offsetSteps = 0) {
 }
 
 const b = await chromium.launch({ executablePath });
-const ctx = await b.newContext({ viewport: { width: 390, height: 844 } });
+// Against a production build behind HTTP (scripts/pwa-check.sh style), say it came over HTTPS.
+const extraHTTPHeaders = process.env.BEHIND_HTTPS_PROXY ? { 'X-Forwarded-Proto': 'https' } : {};
+const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, extraHTTPHeaders });
 const p = await ctx.newPage();
 const errors = [];
 p.on('pageerror', (e) => errors.push(e.message));
@@ -61,6 +64,9 @@ await p.getByText('Two-step sign-in is on.').waitFor();
 step('turned on with the QR key, got 10 backup codes');
 
 async function signInWith(code) {
+  // Let the page's own requests finish first: each response renews the session cookie, so a
+  // late one would put back the cookie we are about to clear.
+  await p.waitForLoadState('networkidle');
   await ctx.clearCookies();
   await p.goto(base + '/login');
   await p.getByLabel('Email', { exact: true }).fill(email);

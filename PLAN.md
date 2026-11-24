@@ -295,6 +295,8 @@ See `docs/overview.md` for everything built so far.
 - [ ] **SMTP provider** for real emails, with a data processing agreement.
 
 **Can be built now**
+- [x] Installable app: install banner (Android) and Add to Home Screen tip (iPhone), offline reading of recent listings, new-version notice, phone notifications for orders, messages, problems and price drops (`scripts/pwa-check.sh`).
+- [ ] Play Store listing (wraps the installable app; needs a Google Play developer account, one-off $25).
 - [x] Age confirmation (18+) at sign-up, and a separate opt-in for marketing emails (changeable under My account → Emails).
 - [x] Two-step sign-in with an authenticator app: required for admins in production, optional for everyone (My account → Two-step sign-in), with backup codes and an admin reset.
 - [x] Breach response plan (`docs/breach-response.md`), with `scripts/incident.sh` for evidence, signing everyone out, locking passwords and listing who to notify. Still to do: fill in the names and contacts, and run the first drill.

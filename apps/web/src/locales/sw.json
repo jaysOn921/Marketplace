@@ -398,7 +398,7 @@
         },
         {
           "heading": "Tunachokusanya",
-          "body": "• Akaunti: jina, barua pepe, nchi, nenosiri (huhifadhiwa kwa njia salama isiyosomeka tu), lugha, na ulipokubali masharti haya.\n• Hiari: namba ya simu; kwa wauzaji, jina la duka, mji, mkoa na maelezo.\n• Unachounda: matangazo na picha, oda, jumbe, tathmini, ripoti, tiketi za msaada na ripoti za matatizo.\n• Shughuli: kuingia, ziara ya mwisho, na kumbukumbu za usalama zenye anwani ya IP na kivinjari.\n• Idadi ya waliotazama matangazo na walioweka kwenye kikapu (namba tu, si nani alitazama).\nHatukusanyi namba za vitambulisho vya taifa, namba za pasipoti, picha za vitambulisho, namba za kadi wala namba za siri za pesa za simu."
+          "body": "• Akaunti: jina, barua pepe, nchi, nenosiri (huhifadhiwa kwa njia salama isiyosomeka tu), lugha, na ulipokubali masharti haya.\n• Hiari: namba ya simu; kwa wauzaji, jina la duka, mji, mkoa na maelezo.\n• Unachounda: matangazo na picha, oda, jumbe, tathmini, ripoti, tiketi za msaada na ripoti za matatizo.\n• Shughuli: kuingia, ziara ya mwisho, na kumbukumbu za usalama zenye anwani ya IP na kivinjari.\n• Idadi ya waliotazama matangazo na walioweka kwenye kikapu (namba tu, si nani alitazama).\n• Ukiwasha arifa: anwani ambayo kivinjari chako kinatupa ili kutuma arifa kwenye simu hiyo. Inafutwa ukizima arifa, ukitoka kwenye simu hiyo, au ukifuta akaunti yako.\nHatukusanyi namba za vitambulisho vya taifa, namba za pasipoti, picha za vitambulisho, namba za kadi wala namba za siri za pesa za simu."
         },
         {
           "heading": "Kwa nini tunazitumia",
@@ -426,7 +426,7 @@
         },
         {
           "heading": "Vidakuzi",
-          "body": "Tunatumia vidakuzi vinavyohitajika tu ili ubaki umeingia na kulinda fomu. Lugha uliyochagua huhifadhiwa kwenye kivinjari chako. Hakuna vidakuzi vya matangazo wala vya kufuatilia."
+          "body": "Tunatumia vidakuzi vinavyohitajika tu ili ubaki umeingia na kulinda fomu. Lugha uliyochagua huhifadhiwa kwenye kivinjari chako. Ukisakinisha programu, matangazo na picha ulizotazama hivi karibuni huhifadhiwa kwenye simu yako ili uyasome bila mtandao; yanafutwa ukitoka. Hakuna vidakuzi vya matangazo wala vya kufuatilia."
         },
         {
           "heading": "Watoto",
@@ -1224,5 +1224,36 @@
     "resolution": "Uamuzi (utaonyeshwa kwa pande zote)",
     "resolutionPlaceholder": "mf. Muuzaji atarudisha TSh 25,000 kwa pesa ya simu ndani ya siku 2.",
     "resolve": "Tatua tatizo"
+  },
+  "pwa": {
+    "region": "Taarifa za programu",
+    "updateReady": "Toleo jipya la TZed liko tayari.",
+    "reload": "Pakia upya",
+    "installTitle": "Pata programu ya TZed",
+    "installText": "Weka TZed kwenye skrini yako ya mwanzo: inafunguka haraka na inatumia data kidogo.",
+    "iosText": "Gusa kitufe cha Shiriki, kisha “Ongeza kwenye Skrini ya Mwanzo”.",
+    "install": "Sakinisha",
+    "notNow": "Si sasa",
+    "gotIt": "Sawa",
+    "installMenu": "Sakinisha programu"
+  },
+  "push": {
+    "title": "Arifa kwenye simu hii",
+    "intro": "Pata arifa ukiwa na oda mpya, ujumbe, au habari kuhusu oda yako, hata TZed ikiwa imefungwa.",
+    "unsupported": "Kivinjari hiki hakiwezi kuonyesha arifa. Kwenye iPhone, ongeza TZed kwenye skrini ya mwanzo kwanza (Shiriki → Ongeza kwenye Skrini ya Mwanzo), kisha uifungue kutoka hapo.",
+    "unavailable": "Arifa za simu bado hazipatikani.",
+    "blocked": "Arifa za TZed zimezuiwa kwenye kivinjari hiki. Ili kuziruhusu, fungua mipangilio ya tovuti ya TZed kwenye kivinjari na uwashe Arifa, kisha pakia upya.",
+    "on": "Arifa zimewashwa kwa simu hii.",
+    "off": "Arifa zimezimwa kwa simu hii.",
+    "turnOn": "Washa arifa",
+    "turnOff": "Zima kwenye simu hii",
+    "failed": "Arifa hazikuweza kuwashwa. Tafadhali jaribu tena.",
+    "otherDevices_one": "Arifa pia zimewashwa kwa simu au kivinjari kingine 1.",
+    "otherDevices_other": "Arifa pia zimewashwa kwa simu au vivinjari vingine {{count}}.",
+    "turnOffEverywhere": "Zima kila mahali",
+    "prompt": {
+      "buyer": "Upate arifa muuzaji akijibu au akibadilisha oda hii?",
+      "seller": "Upate arifa mara tu mtu akiagiza au akikutumia ujumbe?"
+    }
   }
 }

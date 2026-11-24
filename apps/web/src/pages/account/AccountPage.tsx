@@ -14,6 +14,7 @@ import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { Alert, Card, SelectField, SubmitButton, TextField } from '../../components/Form';
+import { PushSettings } from '../../components/PushSettings';
 import { TwoStepSettings } from '../../components/TwoStepSettings';
 import { clearCsrfToken, del, patch, post, put } from '../../lib/api';
 import { meKey, useMe, useSetMe } from '../../lib/auth';
@@ -324,6 +325,7 @@ export function AccountPage() {
 
       <ProfileForm user={user} />
       <PasswordForm />
+      <PushSettings />
       <PhoneSharing user={user} />
       <TwoStepSettings user={user} />
       <EmailPreferences user={user} />

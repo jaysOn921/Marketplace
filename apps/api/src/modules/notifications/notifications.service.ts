@@ -3,6 +3,7 @@ import { prisma } from '../../db.js';
 import { renderEmail } from '../../lib/email-layout.js';
 import { translate, type Locale } from '../../lib/i18n.js';
 import { sendMailInBackground } from '../../lib/mailer.js';
+import { sendPushInBackground } from '../push/push.service.js';
 
 export interface NotificationInput {
   type: string; // e.g. listing.approved, order.placed, message.new
@@ -28,6 +29,9 @@ export async function notify(userId: number, n: NotificationInput) {
   await prisma.notification.create({
     data: { userId, type: n.type, title, body: body ?? null, link: n.link ?? null },
   });
+  // And to their phones, if they turned notifications on. One per page: a new message in the
+  // same conversation replaces the previous notification instead of stacking up.
+  sendPushInBackground(userId, { title, body, link: n.link, tag: n.link, lang: locale });
 
   if (n.email) {
     sendMailInBackground({

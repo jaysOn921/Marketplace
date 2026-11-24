@@ -120,6 +120,7 @@ export async function exportData(user: AuthUser, req: Request) {
     cart,
     saved,
     problems,
+    pushDevices,
   ] = await Promise.all([
     prisma.user.findUniqueOrThrow({
       where: { id },
@@ -169,6 +170,10 @@ export async function exportData(user: AuthUser, req: Request) {
       where: { order: { OR: [{ buyerId: id }, { sellerId: id }] } },
       include: { messages: { where: { authorId: id } } },
     }),
+    prisma.pushSubscription.findMany({
+      where: { userId: id },
+      select: { userAgent: true, createdAt: true, lastSentAt: true },
+    }),
   ]);
 
   await recordAudit({ action: 'user.data_export', targetType: 'user', targetId: id, req });
@@ -190,6 +195,7 @@ export async function exportData(user: AuthUser, req: Request) {
     reportsFiled: reports,
     cart,
     savedItems: saved,
+    phonesWithNotifications: pushDevices,
     orderProblems: problems.map((p) => ({
       ...p,
       messagesYouSent: p.messages,
@@ -257,6 +263,7 @@ export async function anonymiseUser(tx: Prisma.TransactionClient, userId: number
   await tx.cartItem.deleteMany({ where: { userId } });
   await tx.savedListing.deleteMany({ where: { userId } });
   await tx.twoStepBackupCode.deleteMany({ where: { userId } });
+  await tx.pushSubscription.deleteMany({ where: { userId } });
   await tx.user.update({
     where: { id: userId },
     data: {

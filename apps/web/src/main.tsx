@@ -5,12 +5,15 @@ import { BrowserRouter } from 'react-router';
 import { App } from './App';
 import './i18n';
 import './index.css';
+import { registerServiceWorker } from './lib/pwa';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: { staleTime: 30_000, retry: 1, refetchOnWindowFocus: false },
   },
 });
+
+registerServiceWorker();
 
 const root = document.getElementById('root');
 if (!root) throw new Error('Root element #root not found');

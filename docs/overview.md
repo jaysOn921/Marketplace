@@ -24,6 +24,7 @@ team. This page is the whole picture; `PLAN.md` §7 is the to-do list.
 | Help centre (`help`, `support`)          | Articles (prohibited items, customs, safety…), a contact form, and private ticket links for guests                                        |
 | Recently viewed                          | Kept in the browser only, shown on the home page                                                                                          |
 | Language                                 | English or Swahili, remembered; server messages and emails follow it                                                                      |
+| Installable app                          | Add to home screen (Android banner, iPhone tip), opens fast, recent listings readable offline, new-version notice, phone notifications    |
 | Legal                                    | Terms of use and privacy policy (drafts for legal review)                                                                                 |
 
 ### Buyers
@@ -38,7 +39,7 @@ team. This page is the whole picture; `PLAN.md` §7 is the to-do list.
 | Messages (`messaging`)               | Chat with a seller about a listing or order; email for the first unread message; a safety tip when someone types a phone number or email. Phone numbers stay private unless the person chooses to share them on orders |
 | Reviews (`reviews`)                  | Rate the seller once an order is completed                                                                                                                                                                             |
 | Reports (`reports`)                  | Report a listing, user or message                                                                                                                                                                                      |
-| Notifications (`notifications`)      | Bell with counts, a notifications page, and emails for the important ones                                                                                                                                              |
+| Notifications (`notifications`)      | Bell with counts, a notifications page, emails for the important ones, and phone notifications (opt-in, per phone)                                                                                                     |     |
 
 ### Sellers
 
